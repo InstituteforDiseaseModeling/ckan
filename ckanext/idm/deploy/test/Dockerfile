@@ -1,4 +1,4 @@
-FROM docker_ckan
+FROM idm_ckan
 
 USER root
 

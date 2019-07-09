@@ -5,6 +5,7 @@ networks:
 
 services:
   ckan-test:
+    image: idm_ckan-test
     container_name: ckan-test
     build:
       context: ""
@@ -30,6 +31,7 @@ services:
       - ${CKAN_TEST_RESULTS_OUT}:/home/ckan/test_results
 
   db-test:
+    image: idm_db-test
     container_name: db-test
     build:
       context: ../../../..
@@ -48,6 +50,7 @@ services:
       - "5433:5432"
 
   solr-test:
+    image: idm_solr-test
     container_name: solr-test
     build:
       context: ../../../..

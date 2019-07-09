@@ -11,6 +11,7 @@ volumes:
 
 services:
   ckan:
+    image: idm_ckan
     container_name: ckan
     build:
       context: ../../../
@@ -53,6 +54,7 @@ services:
       - "8800:8800"
 
   db:
+    image: idm_db
     container_name: db
     build:
       context: ../../../
@@ -69,13 +71,13 @@ services:
       test: ["CMD", "pg_isready", "-U", "postgres"]
 
   solr:
+    image: idm_solr
     container_name: solr
     build:
       context: ../../../
       dockerfile: ckanext/idm/deploy/solr/Dockerfile
     volumes:
       - solr_data:/opt/solr/server/solr/ckan/data
-
 
   redis:
     container_name: redis
