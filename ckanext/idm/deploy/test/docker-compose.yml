@@ -1,0 +1,70 @@
+version: "3"
+
+networks:
+  test-net:
+
+services:
+  ckan-test:
+    container_name: ckan-test
+    build:
+      context: ""
+    links:
+      - db-test
+      - solr-test
+      - redis-test
+    depends_on:
+      - db-test
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - DS_RO_PASS=${POSTGRES_PASSWORD}
+      - CKAN_TEST_RUN
+      - CKAN_TEST_1
+      - CKAN_TEST_2
+    networks:
+      test-net:
+        aliases:
+        - ckan
+    ports:
+      - "5001:5000"
+    volumes:
+      - ${CKAN_TEST_RESULTS_OUT}:/home/ckan/test_results
+
+  db-test:
+    container_name: db-test
+    build:
+      context: ../../../..
+      dockerfile: ckanext/idm/deploy/postgresql/Dockerfile
+      args:
+      - DS_RO_PASS=${DATASTORE_READONLY_PASSWORD}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    environment:
+      - DS_RO_PASS=${DATASTORE_READONLY_PASSWORD}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      test-net:
+        aliases:
+        - db
+    ports:
+      - "5433:5432"
+
+  solr-test:
+    container_name: solr-test
+    build:
+      context: ../../../..
+      dockerfile: ckanext/idm/deploy/solr/Dockerfile
+    networks:
+      test-net:
+        aliases:
+        - solr
+    ports:
+      - "8984:8983"
+
+  redis-test:
+    container_name: redis-test
+    image: redis:latest
+    networks:
+      test-net:
+        aliases:
+        - redis
+    ports:
+      - "6380:6379"

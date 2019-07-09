@@ -1,0 +1,20 @@
+{% ckan_extends %}
+
+{% block basic_fields_url %}
+{{ super() }}
+
+{#  {{ form.input('custom_resource_text', label=_('Custom Text'), id='field-custom_resource_text', placeholder=_('custom resource text'), value=data.custom_resource_text, error=errors.custom_resource_text, classes=['control-medium']) }}#}
+  
+  <div class="control-group">
+    <label class="control-label" for="field-resource_type">{{ _("Type") }}</label>
+    <div class="controls">
+      <select id="field-resource_type" name="resource_type" data-module="autocomplete">
+        {% for resource_type in h.resource_type()  %}
+          <option value="{{ resource_type }}" {% if resource_type in data.get('resource_type', []) %} selected="selected"{% endif %}>{{ resource_type }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+&nbsp;
+  
+{% endblock %}

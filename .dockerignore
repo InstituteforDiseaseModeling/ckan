@@ -1,0 +1,17 @@
+.circleci
+.coverage
+.dockerignore
+.editorconfig
+.git
+.gitattributes
+.github
+.gitignore
+.idea
+.travis.yml
+.tx
+CHANGELOG.rst
+ckan.egg-info
+ckanext/example_*
+ckanext/idm/deploy
+data
+**/*.pyc
