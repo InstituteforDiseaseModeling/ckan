@@ -30,6 +30,16 @@ services:
     volumes:
       - ${CKAN_TEST_RESULTS_OUT}:/home/ckan/test_results
 
+  datapusher-test:
+    container_name: datapusher
+    image: clementmouchet/datapusher
+    networks:
+      test-net:
+        aliases:
+        - datapusher
+    ports:
+      - "8801:8800"
+
   db-test:
     image: idm_db-test
     container_name: db-test

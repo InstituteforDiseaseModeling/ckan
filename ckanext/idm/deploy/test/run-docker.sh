@@ -13,7 +13,7 @@ docker-compose down
 docker-compose build
 
 rm -f $CKAN_TEST_RESULTS_OUT/*
-docker-compose up -d db-test solr-test redis-test
+docker-compose up -d db-test solr-test redis-test datapusher-test
 sleep 10
 docker-compose up -d ckan-test
 

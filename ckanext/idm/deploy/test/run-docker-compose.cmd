@@ -32,7 +32,7 @@ EXIT /B
 :UP
 docker-compose down
 DEL %CKAN_TEST_RESULTS_OUT%\*.* /Q
-docker-compose up -d db-test solr-test redis-test
+docker-compose up -d db-test solr-test redis-test datapusher-test
 timeout 10
 docker-compose up -d ckan-test
 EXIT /B
