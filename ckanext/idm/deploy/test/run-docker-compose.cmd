@@ -19,6 +19,8 @@ IF "%command%"=="" (
   EXIT /B
 )
 
+GOTO :END
+
 :BUILD
 pushd ..
 docker-compose build ckan
