@@ -34,8 +34,9 @@ cat $CKAN_TEST_RESULTS/nohup.out
 if [[ $CKAN_TEST_RUN == "True" ]]; then
   sleep 5
   cd $CKAN_HOME/node_modules/mocha-phantomjs/bin/
-  ./mocha-phantomjs http://localhost:5000/base/test/index.html>$CKAN_TEST_RESULTS/mocha-phantomjs.log
-  cat $CKAN_TEST_RESULTS/mocha-phantomjs.log
+  ./mocha-phantomjs -R xunit http://localhost:5000/base/test/index.html > $CKAN_TEST_RESULTS/result.log
+  while read line; do echo $line | awk '/</{print $0}'; done < $CKAN_TEST_RESULTS/result.log > $CKAN_TEST_RESULTS/mocha-phantomjs.xml
+  cat $CKAN_TEST_RESULTS/mocha-phantomjs.xml
 
   #start tests
   cd $CKAN_HOME
