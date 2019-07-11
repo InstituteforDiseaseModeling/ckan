@@ -100,11 +100,11 @@ Windows:
 
 CentOS 7
 
-    cd c:\git\ckan\ckanext\idm\deploy 
-    docker-compose build  
-    docker-compose up -d      
-    
-    On the host machine open ports:
+    cd c:\git\ckan\ckanext\idm\deploy
+    chmod +x deploy.sh 
+    ./deploy.sh
+        
+    # On the host machine open ports:
     firewall-cmd --permanent --add-port=5000/tcp
     firewall-cmd --permanent --add-port=8800/tcp
     firewall-cmd --reload
