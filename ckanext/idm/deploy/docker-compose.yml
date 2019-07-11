@@ -3,8 +3,6 @@
 version: "3"
 
 volumes:
-  ckan_config:
-  ckan_home:
   ckan_storage:
   pg_data:
   solr_data:
@@ -41,8 +39,6 @@ services:
       - DS_RO_PASS=${DATASTORE_READONLY_PASSWORD}
 
     volumes:
-      - ckan_config:/etc/ckan
-      - ckan_home:/usr/lib/ckan
       - ckan_storage:/var/lib/ckan
     entrypoint: /ckan-entrypoint.sh
     command: ckan-paster serve /etc/ckan/production.ini

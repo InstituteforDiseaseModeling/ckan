@@ -92,9 +92,23 @@ Build Docker image using the latest CKAN code and run all components as Docker c
     
 ## Deploy to Production  
 
+Windows:
+
     cd c:\git\ckan\ckanext\idm\deploy 
     run-docker-compose.cmd prod  
     explorer http://localhost:5000/  
+
+CentOS 7
+
+    cd c:\git\ckan\ckanext\idm\deploy 
+    docker-compose build  
+    docker-compose up -d      
+    
+    On the host machine open ports:
+    firewall-cmd --permanent --add-port=5000/tcp
+    firewall-cmd --permanent --add-port=8800/tcp
+    firewall-cmd --reload
+
 
 ... more coming soon...
 

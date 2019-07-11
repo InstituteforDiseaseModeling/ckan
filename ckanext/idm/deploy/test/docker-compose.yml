@@ -31,7 +31,7 @@ services:
       - ${CKAN_TEST_RESULTS_OUT}:/home/ckan/test_results
 
   datapusher-test:
-    container_name: datapusher
+    container_name: datapusher-test
     image: clementmouchet/datapusher
     networks:
       test-net:

@@ -50,6 +50,7 @@ set_environment
 # If we don't already have a config file, bootstrap
 if [ ! -e "$CONFIG" ]; then
   write_config
+  sed -i 's/ckan.plugins = stats/ckan.plugins = idm stats/g' "${CKAN_CONFIG}/production.ini"
 fi
 
 # Get or create CKAN_SQLALCHEMY_URL
@@ -70,5 +71,5 @@ if [ -z "$CKAN_DATAPUSHER_URL" ]; then
 fi
 
 ckan-paster --plugin=ckan db init -c "${CKAN_CONFIG}/production.ini"
-sed -i 's/ckan.plugins = /ckan.plugins = idm /g' "${CKAN_CONFIG}/production.ini"
+
 exec "$@"

@@ -43,7 +43,7 @@ ADD . $CKAN_HOME/
 # Install CKAN
 RUN pip install -e $CKAN_HOME/ && \
     ln -s $CKAN_HOME/ckan/config/who.ini $CKAN_CONFIG/who.ini && \
-    cp -v $CKAN_HOME/contrib/docker/ckan-entrypoint.sh /ckan-entrypoint.sh && \
+    cp -v $CKAN_HOME/ckanext/idm/deploy/ckan-entrypoint.sh /ckan-entrypoint.sh && \
     chmod +x /ckan-entrypoint.sh && \
     chown -R ckan:ckan $CKAN_HOME $CKAN_CONFIG $CKAN_STORAGE_PATH && \
     chmod a-x $(find $CKAN_HOME -name "*.py" -type f)

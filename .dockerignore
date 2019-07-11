@@ -1,7 +1,9 @@
 .circleci
+.cmd
 .coverage
 .dockerignore
 .editorconfig
+.env
 .git
 .gitattributes
 .github
@@ -11,7 +13,8 @@
 .tx
 CHANGELOG.rst
 ckan.egg-info
-ckanext/example_*
-ckanext/idm/deploy
+ckanext/idm/deploy/test
 data
+docker-*.yml
+Dockerfile
 **/*.pyc
