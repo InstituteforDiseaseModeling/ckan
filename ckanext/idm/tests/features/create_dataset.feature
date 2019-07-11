@@ -38,7 +38,6 @@ Feature: Create a new dataset
       | Visibility  | Public                |
     And I can click add data upload myfile
 
-
   Scenario Outline: Update dataset
     Given I know my dataset url
     When I Click manage
@@ -57,8 +56,74 @@ Feature: Create a new dataset
     When I Click manage
     And I click delete
     Then the dataset url should now be invalid
+	
+  Scenario: Set required field "Name"
+    Given There is a data set "Name" field
+    When I create a new dataset
+    Then I am required to fill in the "Name" field
+	
+  Scenario: Set required field "Research Team"
+    Given There is a list of Research Teams to pick from
+    When User selects a "Research Team"
+    Then User is required to fill in the "Research Team" field
 
+  Examples: 
+      |Research Teams                | 
+      |Applied Math                  |
+      |Data Dynamics and Analytics   |
+      |Health Econ                   |
+      |HIV/TB                        |
+      |Malaria                       |
+      |Measles                       |
+      |MNCH                          |
+      |SMUG (Polio, Vaccine Delivery)|
+      |Malaria                       |
 
+  Background:
+  	Given a list of pre-defined "Tags" has been loaded in the system
+    
+  Scenario Outline: Set "Tags" for a data set
+    Given There is a Tags field
+    When User starts to type a tag that is a pre-defined tag
+    Then The system suggests the existing tag
+    Then User can select the pre-existing tag to auto-complete their tag
 
+  Examples: 
+     | fields           | values      |
+     | Category         | Population  |  
+     | Disease          | Measles     |  
+     | Stage            | Raw         |  
+     | Spatial coverage | Pakistan    | 
 
+  Scenario: User enters a data set with temporal coverage
+    Given I enter a data set with temporal coverage
+    When I fill out the Temporal coverage field
+    Then I should have the option to provide a year or date range between years the data is for
 
+  Scenario Outline: Set required field "Source" for the data
+    Given User enters a new data
+    When The user enters the Source for the data
+    Then They can select an organization that has been pre-defined in the system
+
+  Examples: 
+      |options     |
+      |IDM         |
+      |WHO         |
+	  
+  Scenario: Set required field "Point of Contact"
+    Given User enters new data
+    When The user enters the "Point of Contact" for the data
+    Then This field is required
+    Then The user can pick from IDM users set in the system
+	
+  Scenario Outline: Set required field "Terms of Use"
+    Given User enters new data
+     When The user selects the "Terms of Use" field
+     Then They are required to select the options in this drop down
+     Then They have an option to fill in a free-form text box or
+     Then They have the option to link evidence we have rights to the file (e.g. email from the source)
+
+  Example: 
+      |options      |
+      |Unrestricted |
+      |Restricted   |
