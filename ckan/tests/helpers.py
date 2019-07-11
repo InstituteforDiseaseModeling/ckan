@@ -292,6 +292,11 @@ def webtest_submit(form, name=None, index=None, value=None, **args):
     it lets us have functional tests that work.
     '''
     fields = webtest_submit_fields(form, name, index=index, submit_value=value)
+    str_fields = []
+    for field in fields:
+        str_attr = [str(attr) if attr is None else attr for attr in field]
+        str_fields.append(str_attr)
+    fields = str_fields
     if form.method.upper() != "GET":
         args.setdefault("content_type", form.enctype)
     return form.response.goto(form.action, method=form.method,
