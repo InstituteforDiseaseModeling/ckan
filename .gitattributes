@@ -1,2 +1,3 @@
 #*.po -diff
 *.mo -diff
+* text eol=lf
