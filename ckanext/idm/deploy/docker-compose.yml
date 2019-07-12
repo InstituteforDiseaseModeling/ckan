@@ -33,15 +33,16 @@ services:
       - CKAN_SOLR_URL=http://solr:8983/solr/ckan
       - CKAN_REDIS_URL=redis://redis:6379/1
       - CKAN_DATAPUSHER_URL=http://datapusher:8800
-      - CKAN_SITE_URL=${CKAN_SITE_URL}
-      - CKAN_MAX_UPLOAD_SIZE_MB=${CKAN_MAX_UPLOAD_SIZE_MB}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - DS_RO_PASS=${DATASTORE_READONLY_PASSWORD}
-
+      - CKAN_SITE_URL
+      - CKAN_MAX_UPLOAD_SIZE_MB
+      - POSTGRES_PASSWORD
+      - CKAN_PLUGINS
     volumes:
       - ckan_storage:/var/lib/ckan
     entrypoint: /ckan-entrypoint.sh
     command: ckan-paster serve /etc/ckan/production.ini
+#    command: tail -F anything
 
   datapusher:
     container_name: datapusher

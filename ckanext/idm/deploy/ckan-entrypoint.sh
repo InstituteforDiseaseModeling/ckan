@@ -34,6 +34,8 @@ set_environment () {
   export CKAN_SMTP_PASSWORD=${CKAN_SMTP_PASSWORD}
   export CKAN_SMTP_MAIL_FROM=${CKAN_SMTP_MAIL_FROM}
   export CKAN_MAX_UPLOAD_SIZE_MB=${CKAN_MAX_UPLOAD_SIZE_MB}
+  export CKAN_PLUGINS="${CKAN_PLUGINS%\"}"
+  export CKAN_PLUGINS="${CKAN_PLUGINS#\"}"
 }
 
 write_config () {
@@ -50,7 +52,7 @@ set_environment
 # If we don't already have a config file, bootstrap
 if [ ! -e "$CONFIG" ]; then
   write_config
-  sed -i 's/ckan.plugins = stats/ckan.plugins = idm stats/g' "${CKAN_CONFIG}/production.ini"
+  sed -i "/^ckan.plugins.*=/s/=.*/= ${CKAN_PLUGINS}/" "${CKAN_CONFIG}/production.ini"
 fi
 
 # Get or create CKAN_SQLALCHEMY_URL
