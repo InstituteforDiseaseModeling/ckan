@@ -43,7 +43,8 @@ Create Python 2.7 virtual environment using Anaconda or using virtualenv
 
 - Using Anaconda (latest):
 
-      conda create -n ckan python=2.7
+      conda create -n ckan python=2.7 -y
+      activate ckan
 
 - Using Python 2.7 virtualenv
 
@@ -51,20 +52,15 @@ Create Python 2.7 virtual environment using Anaconda or using virtualenv
       virtualenv -p C:\Python27\python.exe  D:\Virtual_ckan; 
       D:\Virtual_ckan\Scripts\activate
 
-#### Apply Windows specific change in source
-To run on Windows locally, few minor source changes are needed. 
-
-Use file comparison tool to see which lines have to be modified:
-
-    C:\git\ckan\ckanext\idm\deploy\windows-local\source_change\before
-    C:\git\ckan\ckanext\idm\deploy\windows-local\source_change\after
-
 #### Run local setup
 
-Set up locally and run it from the command line (to confirm the setup was successful).
+Run as administrator:
 
-    cd c:\git\ckan\ckanext\idm\deploy\windows-local     
+    cd c:\git\ckan\ckanext\idm\deploy\windows-local         
     setup.cmd
+
+Confirm the setup was successful by running:
+    
     docker stop ckan
     START paster serve development.ini
     explorer http://localhost:5000/   
@@ -81,7 +77,8 @@ Debug with PyCharm using paster.py and the below configuration
     Parameters: 
     serve development.ini  
 
-#### Verify by running from docker-compose 
+#### Verify by running from docker-compose
+ 
 Build Docker image using the latest CKAN code and run all components as Docker containers.  
 
     cd c:\git\ckan\ckanext\idm\deploy 

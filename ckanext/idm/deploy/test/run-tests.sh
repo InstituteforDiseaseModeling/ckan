@@ -27,6 +27,7 @@ paster datastore -c test-core.ini set-permissions | psql --host=db -U ckan
 paster db init -c test-core.ini
 
 mkdir -p $CKAN_TEST_RESULTS
+# TODO: see if "--daemon" could be used instead
 nohup paster serve test-core.ini 2>$CKAN_TEST_RESULTS/nohup.out &
 jobs -l
 cat $CKAN_TEST_RESULTS/nohup.out

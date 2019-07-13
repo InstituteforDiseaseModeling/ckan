@@ -1,6 +1,6 @@
 ECHO OFF
 
-cd %~dp0
+pushd %~dp0
 REM copy .dockerignore ..\..\..\.dockerignore
 SET ts=%DATE:~-4%%DATE:~4,2%%DATE:~7,2%_%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
 SET ts=%ts: =0%
@@ -102,6 +102,6 @@ docker cp solr:/opt/solr/server/solr/ckan/data %bk_dir%\solr
 EXIT /B
 
 :END
-
+popd
 REM popd
 ECHO ON

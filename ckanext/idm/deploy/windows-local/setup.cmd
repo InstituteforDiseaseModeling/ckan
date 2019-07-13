@@ -8,24 +8,29 @@ REM https://github.com/ckan/ckan/wiki/How-to-Install-CKAN-2.5.2-on-Windows-7
 REM Navigate to scripts dir (needed to be able to reference relative dirs).
 pushd %~dp0
 
+REM Apply needed ckan core chnages
+xcopy source_change\after ..\..\..\.. /Y /S
+
 REM Runs depending containers
-CALL ..\run-docker-compose.cmd debug
+CALL ..\run-docker-compose.cmd dev
 timeout 10
 
 REM Install required Python packages
-pip install -r ..\..\requirements.txt
+pip install pip==9.0.1>nul 2>&1
+pip install pip==9.0.1
+pip install -r ..\..\..\..\requirements.txt
 pip install python-magic-bin==0.4.14 python-dotenv==0.10.3 configparser==3.7.4
 pip install --upgrade bleach
 
 REM Creates config files
-IF NOT EXIST who.ini MKLINK who.ini ..\..\ckan\config\who.ini
+IF NOT EXIST who.ini MKLINK who.ini ..\..\..\..\ckan\config\who.ini
 IF NOT EXIST development.ini (
   paster make-config --no-interactive ckan development.ini
   python populate_ini.py
 )
 
 REM Navigate to the ckan parent dir.
-pushd ..\..\..
+pushd ..\..\..\..\..
 
 REM Initializes CKAN postgres db (requires installing and uninstalling CKAN python package).
 pip install -e ckan
@@ -39,7 +44,6 @@ pip uninstall ckan -y
 popd
 popd
 
-ECHO To debug CKAN use IDE (like PyCharm). To start CKAN directly use the below "paster" command, then open http://localhost:5000
-ECHO paster serve development.ini
+CALL start.cmd
 
 ECHO ON
