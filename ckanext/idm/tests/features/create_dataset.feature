@@ -57,18 +57,38 @@ Feature: Create a new dataset
     And I click delete
     Then the dataset url should now be invalid
 	
-  Scenario: Set required field "Name"
-    Given There is a data set "Name" field
+  Scenario: Set required field "Title"
+    Given There is a data set "Title" field
     When I create a new dataset
-    Then I am required to fill in the "Name" field
+    Then I am required to fill in the "Title" field
 	
-  Scenario: Set required field "Research Team"
-    Given There is a list of Research Teams to pick from
-    When User selects a "Research Team"
-    Then User is required to fill in the "Research Team" field
+  Scenario: Set required field "Description"
+  Given There is a data set "Description" field
+  When I create a new dataset
+  Then I am required to fill in the "Description" field
+  
+  Scenario: Set optional field "Notes"
+  Given There is a data set "Notes" field
+  When I create a new dataset
+  Then I can optionally fill in the "Notes" field
+  
+  Scenario: Set required field "Maintainer email"
+  Given There is a data set "Maintainer email" field
+  When I create a new dataset
+  Then I am required to fill in the "Maintainer email" field
+  
+  Scenario: Set required field "Type"
+  Given There is a data set "Categorization Type" field
+  When I create a new dataset
+  Then I am required to select the options in the drop down for the <Type> field
+	
+  Scenario Outline: Set required field "Research Group"
+    Given There is a list of Research Groups to pick from
+    When User selects a <Research Group>
+    Then User is required to fill in the <Research Group> field
 
   Examples: 
-      |Research Teams                | 
+      |Research Group                | 
       |Applied Math                  |
       |Data Dynamics and Analytics   |
       |Health Econ                   |
@@ -78,35 +98,101 @@ Feature: Create a new dataset
       |MNCH                          |
       |SMUG (Polio, Vaccine Delivery)|
       |Malaria                       |
+	  
+  Scenario Outline: Set required field "Disease"
+  Given There is a list of Diseases to pick from
+  When User selects a <Disease>
+  Then User is required to fill in the <Disease> field
+
+  Examples: 
+      |Disease                       | 
+	  |Dengue                        |
+	  |Ebola                         |
+	  |Enteric                       |
+      |HIV                           |
+	  |Flu                           |
+      |Malaria                       |
+      |Measles                       |
+      |Polio                         |
+      |TB                            |
 
   Background:
   	Given a list of pre-defined "Tags" has been loaded in the system
     
   Scenario Outline: Set "Tags" for a data set
     Given There is a Tags field
-    When User starts to type a tag that is a pre-defined tag
-    Then The system suggests the existing tag
-    Then User can select the pre-existing tag to auto-complete their tag
+    When User starts to type a tag that is a pre-defined <tags>
+    Then The system suggests the existing <tags>
+    Then User can select the pre-existing <tags> to auto-complete their tag
 
   Examples: 
-     | fields           | values      |
+     | Tags           | Values      |
      | Category         | Population  |  
      | Disease          | Measles     |  
      | Stage            | Raw         |  
      | Spatial coverage | Pakistan    | 
+	 
+  Background:
+  	Given a list of pre-defined "Topics" has been loaded in the system
+    
+  Scenario Outline: Set a "Topic" for a data set
+    Given There is a Topic field
+    When User clicks on the Topic field
+    Then The a drop-down of available <topic> are listed
+    Then User can select the pre-existing <topic> to auto-complete their topic field
+
+  Examples: 
+     | Topic           |
+     | Incidence Data  |  
+     | Mortality       | 
+     | Population      |  
+     | Serosurvey      |
+	 | Shapefiles	   |
+	 | Births          |
+	 | Climate         |
 
   Scenario: User enters a data set with temporal coverage
     Given I enter a data set with temporal coverage
-    When I fill out the Temporal coverage field
-    Then I should have the option to provide a year or date range between years the data is for
+    When I fill out the <Temporal> coverage field
+    Then I should have the option to provide a <Start Date> and <End Date> the data is for
+	
+  Scenario Outline: User enters data set with spatial coverage
+    Given I enter a data set for a specific country or covers a set of countries
+	When I fill out the Spatial section
+	Then I will be required to select a <Country>, Countries, or World to indicate a world-wide dataset
+	
+  Examples:
+  | Country                                 |
+  | Pakistan                                |
+  | Pakistan, Nigeria, Indonesia, Ethiopia  |
+  | World                                   |
+  
+  Scenario Outline: User enters data set with spatial coverage
+    Given I enter a data set for a specific LGA or a set of LGAs
+	When I fill out the Spatial section
+	Then I will be an optional field <LGA> to select <LGA>
+	
+  Examples:
+  | LGA                                                                                                       |
+  | Asia:PAKISTAN:GILGIT BALTISTAN:GHANCHE                                                                    |
+  | Asia:PAKISTAN:GILGIT BALTISTAN:GHANCHE, Asia:PAKISTAN:GILGIT BALTISTAN:GHIZER, Asia:PAKISTAN:SINDH:GHOTKI |
+  
+  Scenario Outline: User enters data set with spatial coverage
+    Given I enter a data set for a specific place
+	When I fill out the Spatial section
+	Then I will be an optional field <place> to enter text
+	
+  Examples:
+  | Place                                 |
+  | Lake Kariba                           |
 
-  Scenario Outline: Set required field "Source" for the data
+  Scenario Outline: Set required field "Publisher" for the data
     Given User enters a new data
-    When The user enters the Source for the data
-    Then They can select an organization that has been pre-defined in the system
+    When The user enters the <Publisher> for the data
+    Then They can select a <Publisher> that has been pre-defined in the system
 
   Examples: 
-      |options     |
+      |Publisher   |
       |IDM         |
       |WHO         |
 	  
@@ -127,3 +213,20 @@ Feature: Create a new dataset
       |options      |
       |Unrestricted |
       |Restricted   |
+	  
+  Scenario: Manage Research Group
+  Given User needs to create a new Research Group
+  When The user selects "Add Group"
+  Then The user will be required to fill in a <Name>, <URL>
+  Then The user can optionally fill in a <Description>
+  Then The user can optionally upload an image and set a link
+  Then The user must select the button "Create Group" to save the new Research Group
+  
+  Scenario: Manage Topics
+  Given User needs to create a new Topic
+  When The user selects "Add Topic"
+  Then The user will be required to fill in a <Name>, <URL>
+  Then The user can optionally fill in a <Description>
+  Then The user can optionally upload an image and set a link
+  Then The user must select the button "Create Topic" to save the new Topic
+ 
