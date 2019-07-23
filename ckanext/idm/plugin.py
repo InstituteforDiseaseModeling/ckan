@@ -1,4 +1,5 @@
 import logging
+import os
 
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as tk
@@ -116,7 +117,12 @@ class IdmPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm): #, tk.DefaultGr
     # IConfigurer
 
     def update_config(self, config_):
-        tk.add_template_directory(config_, 'templates')
+
+        for k, v in config_.items():
+            if type(v) == str:
+                config_[k] = v.replace(os.sep, '/')
+
+        tk.add_template_directory(config_, './ckanext/idm/templates')
         #tk.add_public_directory(config_, 'public')
         #tk.add_resource('fanstatic', 'idm')
 
