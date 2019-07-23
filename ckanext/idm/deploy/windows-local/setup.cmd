@@ -26,7 +26,7 @@ REM Creates config files
 IF NOT EXIST who.ini MKLINK who.ini ..\..\..\..\ckan\config\who.ini
 IF NOT EXIST development.ini (
   paster make-config --no-interactive ckan development.ini
-  python populate_ini.py
+  python populate_ini.py ..\.env development.ini
 )
 
 REM Navigate to the ckan parent dir.

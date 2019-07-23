@@ -1,15 +1,17 @@
 import configparser
 import os
+import sys
 
 from dotenv import load_dotenv
 
+env_path = sys.argv[1]
+ini_file_name = sys.argv[2]
 
-load_dotenv(dotenv_path='../.env')
+load_dotenv(dotenv_path=env_path)
 
 volumes_dir = os.path.expanduser('~/ckan')
 storage_path = os.path.normpath(os.path.join(volumes_dir, 'storage'))
 
-ini_file_name = 'development.ini'
 ini = configparser.RawConfigParser()
 ini.read(ini_file_name)
 

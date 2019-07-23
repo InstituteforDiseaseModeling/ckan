@@ -59,11 +59,7 @@ Run as administrator:
     cd c:\git\ckan\ckanext\idm\deploy\windows-local         
     setup.cmd
 
-Confirm the setup was successful by running:
-    
-    docker stop ckan
-    START paster serve development.ini
-    explorer http://localhost:5000/   
+After setup is complete, the script will open the CKAN home page. Try using it to confirm the setup was successful.
 
 #### Debug with PyCharm
  
@@ -76,7 +72,10 @@ Debug with PyCharm using paster.py and the below configuration
     
     Parameters: 
     serve development.ini  
-
+    
+    Working directory:  
+    C:\git\ckan\ckanext\idm\deploy\windows-local  
+    
 #### Verify by running from docker-compose
  
 Build Docker image using the latest CKAN code and run all components as Docker containers.  
