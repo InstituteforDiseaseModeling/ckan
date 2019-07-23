@@ -26,13 +26,12 @@ psql --host=db -U ckan -c "CREATE DATABASE datastore_test OWNER ckan_default;"
 paster datastore -c test-core.ini set-permissions | psql --host=db -U ckan
 paster db init -c test-core.ini
 
-mkdir -p $CKAN_TEST_RESULTS
-# TODO: see if "--daemon" could be used instead
-nohup paster serve test-core.ini 2>$CKAN_TEST_RESULTS/nohup.out &
-jobs -l
-cat $CKAN_TEST_RESULTS/nohup.out
-
 if [[ $CKAN_TEST_RUN == "True" ]]; then
+  mkdir -p $CKAN_TEST_RESULTS
+  TODO: see if "--daemon" could be used instead
+  nohup paster serve test-core.ini 2>$CKAN_TEST_RESULTS/nohup.out &
+  jobs -l
+  cat $CKAN_TEST_RESULTS/nohup.out
   sleep 5
   cd $CKAN_HOME/node_modules/mocha-phantomjs/bin/
   ./mocha-phantomjs -R xunit http://localhost:5000/base/test/index.html > $CKAN_TEST_RESULTS/result.log
@@ -46,8 +45,10 @@ if [[ $CKAN_TEST_RUN == "True" ]]; then
   nosetests -v --ckan --reset-db --with-pylons=test-core.ini --nologcapture --with-coverage --cover-package=ckan --cover-package=ckanext --with-xunit --xunit-file=$CKAN_TEST_RESULTS/junit.xml $CKAN_TEST_1 $CKAN_TEST_2
   # --collect-only
 else
-    echo "noop"
-    tail -F anything
+  sed -i "/^ckan.site_url.*=/s/=.*/= http:\/\/localhost:5000/" test-core.ini
+  paster serve test-core.ini
+  echo "noop"
+  tail -F anything
 fi
 
 
