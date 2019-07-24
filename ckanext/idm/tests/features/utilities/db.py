@@ -10,7 +10,7 @@ def get_record(context, query):
         record = cursor.fetchall()
         return record
     except (Exception, psycopg2.Error) as error:
-        print("Error while connecting to PostgreSQL:", error)
+        print(u'Error while connecting to PostgreSQL:', error)
     finally:
         if connection:
             cursor.close()
@@ -23,5 +23,5 @@ def connect(context):
                                   port=context.postgres_port,
                                   database=context.postgres_db)
 
-    print(connection.get_dsn_parameters(), "\n")
+    print(connection.get_dsn_parameters(), u'\n')
     return connection

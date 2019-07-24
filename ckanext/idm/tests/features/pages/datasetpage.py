@@ -8,32 +8,32 @@ class datasetPage(basepage):
             datasetname = context.datasetname
         except AttributeError:
             datasetname = ''
-        context.relative_url = "dataset" + "/{}".format(datasetname)\
-            if datasetname != '' else "dataset"
+        context.relative_url = u'dataset' + u'/{}'.format(datasetname)\
+            if datasetname != '' else u'dataset'
         super().__init__(context)
 
     locator_dictionary = {
-        "searchTextField": (By.ID, 'field-giant-search'),
-        "searchButton": (By.CSS_SELECTOR, 'span.input-group-btn'),
-        "datasetItems": (By.CSS_SELECTOR, 'li.dataset-item'),
-        "adddataTab": (By.PARTIAL_LINK_TEXT, 'Add Dataset'),
+        u'searchTextField': (By.ID, u'field-giant-search'),
+        u'searchButton': (By.CSS_SELECTOR, u'span.input-group-btn'),
+        u'datasetItems': (By.CSS_SELECTOR, u'li.dataset-item'),
+        u'adddataTab': (By.PARTIAL_LINK_TEXT, u'Add Dataset'),
 
         # found dataset
-        "exploreResourceTab": (By.PARTIAL_LINK_TEXT, 'Explore'),
-        "moreinfoTab": (By.PARTIAL_LINK_TEXT, 'More information'),
-        "gotoReourceTab": (By.PARTIAL_LINK_TEXT, 'Go to resource'),
-        "editResourceTab": (By.PARTIAL_LINK_TEXT, 'Edit'),
-        "resourceItems": (By.CSS_SELECTOR, 'li.resource-item')
+        u'exploreResourceTab': (By.PARTIAL_LINK_TEXT, u'Explore'),
+        u'moreinfoTab': (By.PARTIAL_LINK_TEXT, u'More information'),
+        u'gotoReourceTab': (By.PARTIAL_LINK_TEXT, u'Go to resource'),
+        u'editResourceTab': (By.PARTIAL_LINK_TEXT, u'Edit'),
+        u'resourceItems': (By.CSS_SELECTOR, u'li.resource-item')
     }
 
     def find_resource_by_title(self, title):
         resourcefound = False
         for resource in self.resourceItems:
-            link = resource.find_element_by_tag_name('a')
+            link = resource.find_element_by_tag_name(u'a')
             if str(link.text).strip(' ') == title:
-                linkref = link.get_attribute("href")
+                linkref = link.get_attribute(u'href')
                 resourceid = linkref.split('/')[-1]
                 resourcefound = True
                 return resourceid
         if not resourcefound:
-            raise Exception("resource not found:", title)
+            raise Exception(u'resource not found:', title)

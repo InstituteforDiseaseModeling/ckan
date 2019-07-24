@@ -13,7 +13,7 @@ import uuid
 
 
 class basepage(object):
-    server = "http://127.0.0.1:5000"
+    server = u'http://127.0.0.1:5000'
     relative_url = "/"
     params = ""
     url = urljoin(urljoin(server, relative_url), params)
@@ -41,12 +41,12 @@ class basepage(object):
         if self.driver.current_url is not None and \
                 self.driver.current_url != self.url:
             self.driver.get(self.url)
-        print("navigating:", self.url)
+        print(u'navigating:', self.url)
 
     def find_element(self, *loc):
         elems = self.driver.find_elements(*loc)
         if len(elems) < 1:
-            raise AttributeError(str(*loc), ": element not found!")
+            raise AttributeError(str(*loc), u': element not found!')
         return elems[0] if len(elems) == 1 else elems
 
     def hover(self, element):
@@ -70,7 +70,7 @@ class basepage(object):
                     traceback.print_exc()
                 return self.find_element(*self.locator_dictionary[elem])
         except AttributeError:
-            super(basepage, self).__getattribute__("method_missing")(elem)
+            super(basepage, self).__getattribute__(u'method_missing')(elem)
 
     def method_missing(self, elem):
-        print(elem, "Not found in ", self.url)
+        print(elem, u'Not found in ', self.url)

@@ -5,62 +5,62 @@ from .basepage import basepage
 class newdatasetpage(basepage):
 
     def __init__(self, context):
-        context.relative_url = "dataset/new"
+        context.relative_url = u'dataset/new'
         super().__init__(context)
 
     locator_dictionary = {
-        "titleField": (By.ID, 'field-title'),
-        "editButton": (By.XPATH, '//button[contains(text(), "Edit")]'),
-        "urlnameField": (By.ID, 'field-name'),
-        "descrptionField": (By.ID, 'field-notes'),
-        "tagsField": (By.ID, 's2id_field-tags'),
-        "orgField": (By.ID, 'select2-drop-mask'),
-        "visibilityField": (By.ID, 'field-private'),
-        "authorField": (By.ID, 'field-author'),
-        "emailField": (By.ID, 'field-author-email'),
-        "maintainerField": (By.ID, 'field-maintainer'),
-        "maintaineremailField": (By.ID, 'field-maintainer-email'),
-        "customFieldkey1": (By.ID, 'field-extras-0-key'),
-        "customFieldkey2": (By.ID, 'field-extras-1-key'),
-        "customFieldkey3": (By.ID, 'field-extras-2-key'),
-        "customFieldvalue1": (By.ID, 'field-extras-0-value'),
-        "customFieldvalue2": (By.ID, 'field-extras-1-value'),
-        "customFieldvalue3": (By.ID, 'field-extras-2-value'),
-        "addDataButton":
-            (By.XPATH, '//button[contains(text(), "Next: Add Data")]')
+        u'titleField': (By.ID, u'field-title'),
+        u'editButton': (By.XPATH, u'//button[contains(text(), "Edit")]'),
+        u'urlnameField': (By.ID, u'field-name'),
+        u'descrptionField': (By.ID, u'field-notes'),
+        u'tagsField': (By.ID, u's2id_field-tags'),
+        u'orgField': (By.ID, u'select2-drop-mask'),
+        u'visibilityField': (By.ID, u'field-private'),
+        u'authorField': (By.ID, u'field-author'),
+        u'emailField': (By.ID, u'field-author-email'),
+        u'maintainerField': (By.ID, u'field-maintainer'),
+        u'maintaineremailField': (By.ID, u'field-maintainer-email'),
+        u'customFieldkey1': (By.ID, u'field-extras-0-key'),
+        u'customFieldkey2': (By.ID, u'field-extras-1-key'),
+        u'customFieldkey3': (By.ID, u'field-extras-2-key'),
+        u'customFieldvalue1': (By.ID, u'field-extras-0-value'),
+        u'customFieldvalue2': (By.ID, u'field-extras-1-value'),
+        u'customFieldvalue3': (By.ID, u'field-extras-2-value'),
+        u'addDataButton':
+            (By.XPATH, u'//button[contains(text(), "Next: Add Data")]')
     }
 
     def fill_custom(self, fielddictionary):
         i = 1
         if len(fielddictionary) > 3:
-            raise Exception("only 3 custom fields allow!")
+            raise Exception(u'only 3 custom fields allow!')
         for fieldkey in fielddictionary.keys():
-            keyname = "customFieldkey" + str(i)
-            valuename = "customFieldvalue" + str(i)
+            keyname = u'customFieldkey' + str(i)
+            valuename = u'customFieldvalue' + str(i)
             getattr(self, keyname).send_keys(fieldkey)
             getattr(self, valuename).send_keys(fielddictionary[fieldkey])
             i += 1
 
     def fill_required(self, fieldname, fieldtext):
-        required_fields = {"Title": self.titleField,
-                           "Description": self.descrptionField,
-                           "Visibility": self.visibilityField
+        required_fields = {u'Title': self.titleField,
+                           u'Description': self.descrptionField,
+                           u'Visibility': self.visibilityField
                            }
 
         if fieldname in required_fields.keys():
-            if required_fields[fieldname].tag_name == "select":
+            if required_fields[fieldname].tag_name == u'select':
                 selected = False
                 for option in \
                         required_fields[fieldname].\
-                        find_elements_by_tag_name('option'):
+                        find_elements_by_tag_name(u'option'):
                     if option.text == fieldtext:
                         option.click()
                         selected = True
                         break
                 if not selected:
-                    raise Exception("selection not found: ", fieldtext)
-            elif required_fields[fieldname].tag_name == "input" or \
-                    required_fields[fieldname].tag_name == "textarea":
+                    raise Exception(u'selection not found: ', fieldtext)
+            elif required_fields[fieldname].tag_name == u'input' or \
+                    required_fields[fieldname].tag_name == u'textarea':
                 required_fields[fieldname].send_keys(fieldtext)
         else:
-            raise Exception("filed not in the required list:", fieldname)
+            raise Exception(u'filed not in the required list:', fieldname)

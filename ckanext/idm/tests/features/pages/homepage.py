@@ -8,14 +8,14 @@ class homePage(basepage):
         super().__init__(context)
 
     locator_dictionary = {
-        "logo": (By.CSS_SELECTOR, 'a.logo'),
-        "datasetTab": (By.PARTIAL_LINK_TEXT, 'Datasets'),
-        "organizationTab": (By.PARTIAL_LINK_TEXT, 'Organizations'),
-        "groupTab": (By.PARTIAL_LINK_TEXT, 'Group'),
-        "aboutTab": (By.PARTIAL_LINK_TEXT, 'About'),
-        "loginTab": (By.PARTIAL_LINK_TEXT, 'Log in'),
-        "loggedinText": (By.CSS_SELECTOR, 'span.username'),
-        "registerTab": (By.PARTIAL_LINK_TEXT, 'Register'),
-        "searchTextField": (By.ID, 'field-sitewide-search'),
-        "searchButton": (By.CSS_SELECTOR, 'button.btn-search')
+        u'logo': (By.CSS_SELECTOR, u'a.logo'),
+        u'datasetTab': (By.PARTIAL_LINK_TEXT, u'Datasets'),
+        u'organizationTab': (By.PARTIAL_LINK_TEXT, u'Organizations'),
+        u'groupTab': (By.PARTIAL_LINK_TEXT, u'Group'),
+        u'aboutTab': (By.PARTIAL_LINK_TEXT, u'About'),
+        u'loginTab': (By.PARTIAL_LINK_TEXT, u'Log in'),
+        u'loggedinText': (By.CSS_SELECTOR, u'span.username'),
+        u'registerTab': (By.PARTIAL_LINK_TEXT, u'Register'),
+        u'searchTextField': (By.ID, u'field-sitewide-search'),
+        u'searchButton': (By.CSS_SELECTOR, u'button.btn-search')
     }

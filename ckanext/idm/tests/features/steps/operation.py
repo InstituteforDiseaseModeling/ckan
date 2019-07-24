@@ -15,14 +15,14 @@ def step_impl(context):
 
 @step(u'The postgres database is up and running')
 def step_impl(context):
-    result = db.get_record(context, 'SELECT 1')
+    result = db.get_record(context, u'SELECT 1')
     assert_that(len(result), equal_to(1))
 
 
 @step(u'The solr indexing is functioning')
 def step_impl(context):
     solr = pysolr.Solr(context.solr_url, timeout=3600)
-    solr.search('ckan')
+    solr.search(u'ckan')
 
 
 @step(u'The site should be up and running')

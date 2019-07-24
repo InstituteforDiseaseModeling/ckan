@@ -6,15 +6,15 @@ from.homepage import homePage
 class loginpage(basepage):
 
     def __init__(self, context):
-        context.relative_url = "/user/login"
+        context.relative_url = u'/user/login'
         super().__init__(context)
 
     locator_dictionary = {
-        "usernameField": (By.ID, 'field-login'),
-        "passwordField": (By.ID, 'field-password'),
-        "remembermeCheckbox": (By.ID, 'field-remember'),
-        "loginButton": (By.XPATH, '//button[contains(text(), "Login")]'),
-        "loggedinText": (By.XPATH, '//*[contains(text(),"already logged in")]')
+        u'usernameField': (By.ID, u'field-login'),
+        u'passwordField': (By.ID, u'field-password'),
+        u'remembermeCheckbox': (By.ID, u'field-remember'),
+        u'loginButton': (By.XPATH, u'//button[contains(text(), "Login")]'),
+        u'loggedinText': (By.XPATH, u'//*[contains(text(),"already logged in")]')
     }
 
     def login(self, username, password):

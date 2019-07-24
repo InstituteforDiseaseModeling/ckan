@@ -5,17 +5,17 @@ from .basepage import basepage
 class registerpage(basepage):
 
     def __init__(self, context):
-        context.relative_url = "/user/register"
+        context.relative_url = u'/user/register'
         super().__init__(context)
 
     locator_dictionary = {
-        "usernameField": (By.ID, 'field-username'),
-        "fullnameField": (By.ID, 'field-fullname'),
-        "emailField": (By.ID, 'field-email'),
-        "passwordField": (By.ID, 'field-password'),
-        "passwordconfirmField": (By.ID, 'field-confirm-password'),
-        "createButton":
-            (By.XPATH, '//button[contains(text(),"Create Account")]')
+        u'usernameField': (By.ID, u'field-username'),
+        u'fullnameField': (By.ID, u'field-fullname'),
+        u'emailField': (By.ID, u'field-email'),
+        u'passwordField': (By.ID, u'field-password'),
+        u'passwordconfirmField': (By.ID, u'field-confirm-password'),
+        u'createButton':
+            (By.XPATH, u'//button[contains(text(),"Create Account")]')
     }
 
     def register(self, username, password, fullname, email):
