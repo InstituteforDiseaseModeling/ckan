@@ -6,7 +6,7 @@ class datasetPage(basepage):
     def __init__(self, context):
         try:
             datasetname = context.datasetname
-        except:
+        except AttributeError:
             datasetname = ''
         context.relative_url = "dataset" + "/{}".format(datasetname)\
             if datasetname != '' else "dataset"

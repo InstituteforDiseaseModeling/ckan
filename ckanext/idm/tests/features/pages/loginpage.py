@@ -21,7 +21,7 @@ class loginpage(basepage):
         loggedin = None
         try:
             loggedin = self.loggedinText
-        except:
+        except AttributeError:
             self.usernameField.clear()
             self.usernameField.send_keys(username)
             self.passwordField.clear()

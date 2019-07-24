@@ -1,5 +1,5 @@
-from behave import *
-from hamcrest import *
+from behave import step
+from hamcrest import assert_that, equal_to
 from pyredis import Client
 from utilities import db
 import pysolr
