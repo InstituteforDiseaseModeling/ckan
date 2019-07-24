@@ -1,8 +1,10 @@
 import psycopg2
 
+
 def get_record(context, query):
+    connection = None
     try:
-        connection =connect(context)
+        connection = connect(context)
         cursor = connection.cursor()
         cursor.execute(query)
         record = cursor.fetchall()
@@ -10,8 +12,9 @@ def get_record(context, query):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL:", error)
     finally:
-        if (connection):
+        if connection:
             cursor.close()
+
 
 def connect(context):
     connection = psycopg2.connect(user=context.postgres_user,

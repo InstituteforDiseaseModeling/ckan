@@ -1,5 +1,7 @@
-from utilities import driver
+"""This module sets the behave environment"""
 from behave import use_fixture
+from utilities import driver
+
 
 def before_tag(context, tag):
     context.driverpath = None
@@ -31,8 +33,8 @@ def before_tag(context, tag):
         elif context.browsertype == "chrome":
             use_fixture(driver.chrome_driver, context)
 
+
 def after_step(context, step):
     if step.status != "passed":
         if context.UI:
             use_fixture(driver.screenshot, context)
-
