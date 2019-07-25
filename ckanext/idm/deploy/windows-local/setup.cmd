@@ -18,12 +18,14 @@ timeout 10
 REM Install required Python packages
 pip install pip==9.0.1>nul 2>&1
 pip install pip==9.0.1
+pip install -r ..\..\..\..\requirements-setuptools.txt
 pip install -r ..\..\..\..\requirements.txt
+pip install -r ..\..\..\..\requirements-scheming.txt
 pip install python-magic-bin==0.4.14 python-dotenv==0.10.3 configparser==3.7.4
 pip install --upgrade bleach
 
 REM Creates config files
-IF NOT EXIST who.ini MKLINK who.ini ..\..\..\..\ckan\config\who.ini
+IF NOT EXIST who.ini copy  ..\..\..\..\ckan\config\who.ini who.ini
 IF NOT EXIST development.ini (
   paster make-config --no-interactive ckan development.ini
   python populate_ini.py ..\.env development.ini

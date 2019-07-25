@@ -21,6 +21,9 @@ ini['app:main']['ckan.site_url'] = os.getenv('CKAN_SITE_URL')
 ini['app:main']['ckan.plugins'] = os.environ.get('CKAN_PLUGINS')
 ini['app:main']['solr_url'] = 'http://127.0.0.1:8983/solr/ckan/'
 
+ini['app:main']['scheming.dataset_schemas'] = 'ckanext.idm:schema.yml'
+ini['app:main']['scheming.presets'] = 'ckanext.idm:presets.json'
+ini['app:main']['scheming.dataset_fallback'] = 'false'
 
 with open(ini_file_name, 'w') as ini_file:
     ini.write(ini_file)

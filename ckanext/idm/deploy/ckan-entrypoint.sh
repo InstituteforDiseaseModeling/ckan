@@ -52,7 +52,15 @@ set_environment
 # If we don't already have a config file, bootstrap
 if [ ! -e "$CONFIG" ]; then
   write_config
-  sed -i "/^ckan.plugins.*=/s/=.*/= ${CKAN_PLUGINS}/" "${CKAN_CONFIG}/production.ini"
+  sed -i "/^ckan.plugins.*=/s/=.*/= ${CKAN_PLUGINS}/" "$CONFIG"
+
+  SCHEMING_1="scheming.dataset_schemas = ckanext.idm:schema.yml"
+  SCHEMING_2="scheming.presets = ckanext.idm:presets.json"
+  SCHEMING_3="scheming.dataset_fallback = false"
+
+  sed -i "/^ckan.plugins.*=/a ${SCHEMING_3}" "$CONFIG"
+  sed -i "/^ckan.plugins.*=/a ${SCHEMING_2}" "$CONFIG"
+  sed -i "/^ckan.plugins.*=/a ${SCHEMING_1}" "$CONFIG"
 fi
 
 # Get or create CKAN_SQLALCHEMY_URL

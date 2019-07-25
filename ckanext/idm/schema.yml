@@ -1,0 +1,194 @@
+---
+scheming_version: 1
+dataset_type: dataset
+about: A reimplementation of the default CKAN dataset schema
+about_url: http://github.com/ckan/ckanext-scheming
+
+dataset_fields:
+
+- field_name: title
+  label: Title
+  required: true
+  preset: title
+  form_placeholder: eg. A descriptive title
+
+- field_name: name
+  label: URL
+  preset: dataset_slug
+  form_placeholder: eg. my-dataset
+
+- field_name: notes
+  label: Description
+  required: true
+  form_snippet: markdown.html
+  form_placeholder: 'eg. Info about data properties, spatial or temporal gaps, quality,
+    provenance or usage restrictions. '
+
+- field_name: maintainer_email
+  label: Maintainer
+  required: true
+  form_placeholder: alias@idmod.org
+  display_property: dc:contributor
+  display_snippet: email.html
+  display_email_name_field: maintainer
+
+# Categorization
+
+- field_name: purpose
+  label: Purpose
+  required: true
+  preset: select
+  choices:
+  - value: data
+    label: Data
+  - value: project
+    label: Project
+  - value: paper
+    label: Paper
+
+- field_name: owner_org
+  label: Research Group
+  required: true
+  preset: dataset_organization
+
+- field_name: disease
+  label: Disease
+  required: true
+  preset: select
+  choices_helper: get_diseases_choices
+#  choices:
+#  - value: any
+#    label: Any
+#  - value: malaria
+#    label: Malaria
+#  - value: cholera
+#    label: Cholera
+#  - value: typhoid
+#    label: Typhoid
+#  - value: polio
+#    label: Polio
+#  - value: tb
+#    label: TB
+#  - value: hiv
+#    label: HIV
+#  - value: measles
+#    label: Measles
+#  - value: ebola
+#    label: Ebola
+#  - value: pneumonia
+#    label: Pneumonia
+#  - value: hat
+#    label: HAT
+
+#
+#- field_name: topics
+#  label: Topics
+#  preset: multiple_select
+#  choices_helper: get_topics_choices
+
+- field_name: tag_string
+  label: Tags
+  preset: tag_string_autocomplete
+  form_placeholder: eg. economy, mental health, government
+
+- field_name: quality
+  label: Quality
+  preset: select
+  choices:
+  - value: great
+    label: Great
+  - value: good
+    label: Good
+  - value: bad
+    label: Bad
+
+# Temporal
+
+- field_name: start_date
+  label: Start Date
+  required: true
+  preset: date
+  form_placeholder: eg. 2001-01-01
+
+- field_name: end_date
+  label: End Date
+  required: true
+  preset: date
+  form_placeholder: eg. 2018-12-31
+
+# Spatial
+
+# Provenance
+
+- field_name: publisher
+  label: Publisher
+  preset: tag_string_autocomplete
+  form_placeholder: eg. NOAA, WHO
+
+- field_name: url
+  label: Origin URL
+  form_placeholder: http://example.com/dataset.json
+  display_property: foaf:homepage
+  display_snippet: link.html
+
+- field_name: acquisition_date
+  label: Acquisition Date
+  required: true
+  preset: date
+  form_placeholder: eg. 2018-12-31
+
+- field_name: version
+  label: Version
+  required: true
+  validators: ignore_missing unicode package_version_validator
+  form_placeholder: '1.0'
+
+# Access
+
+- field_name: restricted
+  label: Restricted
+  preset: multiple_checkbox
+  value: flase
+  choices:
+  - value: true
+    label: Must request access from maintainer
+
+- field_name: license_id
+  label: License
+  form_snippet: license.html
+  help_text: License definitions and additional information can be found at http://opendefinition.org/
+
+
+resource_fields:
+
+- field_name: url
+  label: URL
+  preset: resource_url_upload
+
+- field_name: name
+  label: Name
+  required: true
+  form_placeholder: eg. weather files
+
+- field_name: purpose
+  label: Purpose
+  required: true
+  preset: select
+  choices:
+  - value: data
+    label: Data
+  - value: code
+    label: Code
+  - value: doc
+    label: Document
+  - value: paper
+    label: Paper
+
+- field_name: description
+  label: Description
+  form_snippet: markdown.html
+  form_placeholder: Some useful notes about the data
+
+- field_name: format
+  label: Format
+  preset: resource_format_autocomplete

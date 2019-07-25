@@ -75,6 +75,9 @@ entry_points = {
         'views = ckan.lib.cli:ViewsCommand',
         'config-tool = ckan.lib.cli:ConfigToolCommand',
         'jobs = ckan.lib.cli:JobsCommand',
+        # IDM
+        'scheming = ckanext.scheming.commands:SchemingCommand',
+
     ],
     'console_scripts': [
         'ckan = ckan.cli.cli:ckan',
@@ -176,7 +179,10 @@ entry_points = {
         'example_idatastorebackend = ckanext.example_idatastorebackend.plugin:ExampleIDatastoreBackendPlugin',
         'example_ipermissionlabels = ckanext.example_ipermissionlabels.plugin:ExampleIPermissionLabelsPlugin',
         # IDM
-        'idm = ckanext.idm.plugin:IdmPlugin'
+        'idm = ckanext.idm.plugin:IdmPlugin',
+        'scheming_datasets=ckanext.scheming.plugins:SchemingDatasetsPlugin',
+        'scheming_groups=ckanext.scheming.plugins:SchemingGroupsPlugin',
+        'scheming_organizations=ckanext.scheming.plugins:SchemingOrganizationsPlugin',
     ],
     'ckan.system_plugins': [
         'domain_object_mods = ckan.model.modification:DomainObjectModificationExtension',
@@ -205,6 +211,8 @@ entry_points = {
         'test_helpers_plugin = ckan.tests.lib.test_helpers:TestHelpersPlugin',
         'test_feed_plugin = ckan.tests.controllers.test_feed:MockFeedPlugin',
         'test_js_translations_plugin = ckan.tests.lib.test_i18n:TestJSTranslationsPlugin',
+        'scheming_test_subclass=ckanext.scheming.tests.plugins:SchemingTestSubclass',
+        'scheming_test_plugin=ckanext.scheming.tests.plugins:SchemingTestSchemaPlugin',
     ],
     'babel.extractors': [
         'ckan = ckan.lib.extract:extract_ckan',
