@@ -49,42 +49,13 @@ dataset_fields:
 - field_name: owner_org
   label: Research Group
   required: true
-  preset: dataset_organization
+  preset: dataset_research_group
 
 - field_name: disease
   label: Disease
   required: true
   preset: select
   choices_helper: get_diseases_choices
-#  choices:
-#  - value: any
-#    label: Any
-#  - value: malaria
-#    label: Malaria
-#  - value: cholera
-#    label: Cholera
-#  - value: typhoid
-#    label: Typhoid
-#  - value: polio
-#    label: Polio
-#  - value: tb
-#    label: TB
-#  - value: hiv
-#    label: HIV
-#  - value: measles
-#    label: Measles
-#  - value: ebola
-#    label: Ebola
-#  - value: pneumonia
-#    label: Pneumonia
-#  - value: hat
-#    label: HAT
-
-#
-#- field_name: topics
-#  label: Topics
-#  preset: multiple_select
-#  choices_helper: get_topics_choices
 
 - field_name: tag_string
   label: Tags
@@ -108,7 +79,7 @@ dataset_fields:
   label: Start Date
   required: true
   preset: date
-  form_placeholder: eg. 2001-01-01
+  form_placeholder: eg. 01/01/2001
 
 - field_name: end_date
   label: End Date
@@ -118,12 +89,20 @@ dataset_fields:
 
 # Spatial
 
+- field_name: country
+  label: Country
+  required: true
+  preset: select
+  choices_helper: get_country_choices
+
 # Provenance
 
 - field_name: publisher
   label: Publisher
-  preset: tag_string_autocomplete
-  form_placeholder: eg. NOAA, WHO
+  required: true
+  preset: select
+  #preset: publisher_autocomplete
+  choices_helper: get_publisher_choices
 
 - field_name: url
   label: Origin URL
@@ -145,12 +124,20 @@ dataset_fields:
 
 # Access
 
-- field_name: restricted
+#- field_name: private
+#  label: Visibility
+#  required: true
+#  preset: select
+#  value: False
+#  choices:
+#  - value: True
+#    label: Only Research Group users can see
+
+- field_name: request_access
   label: Restricted
   preset: multiple_checkbox
-  value: flase
   choices:
-  - value: true
+  - value: maintainer
     label: Must request access from maintainer
 
 - field_name: license_id

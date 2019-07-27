@@ -19,9 +19,11 @@ class IdmPlugin(plugins.SingletonPlugin):
 
     def get_helpers(self):
         return {
-            'get_diseases_choices': hlp.get_diseases_choices #,
+            'get_diseases_choices': hlp.get_diseases_choices
             #'get_resource_types_choices': hlp.get_resource_types_choices
             # 'get_topics_choices': hlp.get_topics_choices
+            , 'get_country_choices': hlp.get_country_choices
+            , 'get_publisher_choices': hlp.get_publisher_choices
         }
 
 

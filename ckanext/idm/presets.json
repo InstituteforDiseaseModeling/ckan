@@ -21,6 +21,18 @@
       }
     },
     {
+      "preset_name": "publisher_autocomplete",
+      "values": {
+        "validators": "not_empty unicode",
+        "form_placeholder": "eg. NOAA, WHO",
+        "form_attrs": {
+          "data-module": "autocomplete",
+          "data-module-source": "/api/2/util/organization/autocomplete?incomplete=?"
+
+        }
+      }
+    },
+    {
       "preset_name": "tag_string_autocomplete",
       "values": {
         "validators": "ignore_missing tag_string_convert",
@@ -34,10 +46,10 @@
       }
     },
     {
-      "preset_name": "dataset_organization",
+      "preset_name": "dataset_research_group",
       "values": {
         "validators": "owner_org_validator unicode",
-        "form_snippet": "organization.html"
+        "form_snippet": "research_group.html"
       }
     },
     {
