@@ -879,7 +879,7 @@ msgstr "Incorrect group type"
 #: ckan/templates/organization/read_base.html:6
 #: ckan/templates/package/base.html:14
 msgid "Organizations"
-msgstr "Research Groups2"
+msgstr "Research Groups"
 
 #: ckan/controllers/group.py:306 ckan/controllers/home.py:62
 #: ckan/controllers/package.py:241 ckan/lib/helpers.py:834
@@ -892,7 +892,7 @@ msgstr "Research Groups2"
 #: ckan/templates/package/read_base.html:20
 #: ckan/templates/revision/diff.html:16 ckan/templates/revision/read.html:84
 msgid "Groups"
-msgstr "Topics2"
+msgstr "Topics"
 
 #: ckan/controllers/group.py:307 ckan/controllers/home.py:63
 #: ckan/controllers/package.py:242 ckan/lib/helpers.py:835
@@ -948,7 +948,7 @@ msgstr "Unauthorized to delete topic %s"
 
 #: ckan/controllers/group.py:620
 msgid "Organization has been deleted."
-msgstr ""
+msgstr "Research Group has been deleted."
 
 #: ckan/controllers/group.py:622
 msgid "Group has been deleted."
@@ -1686,7 +1686,7 @@ msgstr "An research group must be provided"
 
 #: ckan/logic/validators.py:47
 msgid "Organization does not exist"
-msgstr ""
+msgstr "Research Group does not exist"
 
 #: ckan/logic/validators.py:52
 msgid "You cannot add a dataset to this organization"
@@ -2052,7 +2052,7 @@ msgstr ""
 
 #: ckan/logic/action/update.py:1059
 msgid "Organization was not found."
-msgstr ""
+msgstr "Research Group was not found."
 
 #: ckan/logic/auth/create.py:27 ckan/logic/auth/create.py:45
 #, python-format
@@ -3263,7 +3263,7 @@ msgstr ""
 
 #: ckan/templates/organization/base_form_page.html:5
 msgid "Organization Form"
-msgstr ""
+msgstr "Research Group Form"
 
 #: ckan/templates/organization/bulk_process.html:3
 #: ckan/templates/organization/bulk_process.html:11
@@ -3317,12 +3317,12 @@ msgstr "Are you sure you want to delete research group - {name}?"
 #: ckan/templates/organization/snippets/info.html:13
 #: ckan/templates/organization/snippets/info.html:16
 msgid "Edit Organization"
-msgstr "Edit Organization"
+msgstr "Edit Research Group"
 
 #: ckan/templates/organization/index.html:13
 #: ckan/templates/user/dashboard_organizations.html:7
 msgid "Add Organization"
-msgstr ""
+msgstr "Add Research Group"
 
 #: ckan/templates/organization/index.html:20
 msgid "Search organizations..."
@@ -3375,15 +3375,15 @@ msgstr[1] ""
 #: ckan/templates/organization/new.html:7
 #: ckan/templates/organization/new.html:12
 msgid "Create an Organization"
-msgstr ""
+msgstr "Create an Research Group"
 
 #: ckan/templates/organization/new_organization_form.html:17
 msgid "Update Organization"
-msgstr ""
+msgstr "Update Research Group"
 
 #: ckan/templates/organization/new_organization_form.html:19
 msgid "Create Organization"
-msgstr ""
+msgstr "Create Research Group"
 
 #: ckan/templates/organization/read.html:5
 #: ckan/templates/package/search.html:16
@@ -3428,7 +3428,7 @@ msgstr ""
 
 #: ckan/templates/organization/snippets/organization_form.html:10
 msgid "My Organization"
-msgstr "My Organization"
+msgstr "My Research Group"
 
 #: ckan/templates/organization/snippets/organization_form.html:18
 msgid "my-organization"
@@ -3448,7 +3448,7 @@ msgstr ""
 
 #: ckan/templates/organization/snippets/organization_form.html:63
 msgid "Save Organization"
-msgstr "Save Organization"
+msgstr "Save Research Group"
 
 #: ckan/templates/organization/snippets/organization_item.html:42
 #: ckan/templates/organization/snippets/organization_item.html:43
@@ -3828,7 +3828,7 @@ msgstr ""
 #: ckan/templates/package/snippets/package_basic_fields.html:70
 #: ckan/templates/snippets/organization.html:23
 msgid "Organization"
-msgstr "Organization"
+msgstr "Research Group"
 
 #: ckan/templates/package/snippets/package_basic_fields.html:74
 msgid "No organization"
@@ -4216,8 +4216,8 @@ msgstr ""
 #: ckan/templates/snippets/search_result_text.html:21
 msgid "{number} group found for \"{query}\""
 msgid_plural "{number} groups found for \"{query}\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{number} topic found for \"{query}\""
+msgstr[1] "{number} topics found for \"{query}\""
 
 #: ckan/templates/snippets/search_result_text.html:22
 msgid "No groups found for \"{query}\""
@@ -4226,8 +4226,8 @@ msgstr "No topics found for \"{query}\""
 #: ckan/templates/snippets/search_result_text.html:23
 msgid "{number} group found"
 msgid_plural "{number} groups found"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{number} topic found"
+msgstr[1] "{number} topics found"
 
 #: ckan/templates/snippets/search_result_text.html:24
 msgid "No groups found"
@@ -4236,8 +4236,8 @@ msgstr "No topics found"
 #: ckan/templates/snippets/search_result_text.html:27
 msgid "{number} organization found for \"{query}\""
 msgid_plural "{number} organizations found for \"{query}\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{number} research group found for \"{query}\""
+msgstr[1] "{number} research groups found for \"{query}\""
 
 #: ckan/templates/snippets/search_result_text.html:28
 msgid "No organizations found for \"{query}\""
@@ -4246,8 +4246,8 @@ msgstr "No research groups found for \"{query}\""
 #: ckan/templates/snippets/search_result_text.html:29
 msgid "{number} organization found"
 msgid_plural "{number} organizations found"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{number} research group found"
+msgstr[1] "{number} research groups found"
 
 #: ckan/templates/snippets/search_result_text.html:30
 msgid "No organizations found"
