@@ -61,6 +61,9 @@ if [ ! -e "$CONFIG" ]; then
   sed -i "/^ckan.plugins.*=/a ${SCHEMING_3}" "$CONFIG"
   sed -i "/^ckan.plugins.*=/a ${SCHEMING_2}" "$CONFIG"
   sed -i "/^ckan.plugins.*=/a ${SCHEMING_1}" "$CONFIG"
+
+  paster config-tool "$CONFIG" ckan.site_title="IDM Data Catalog"
+  paster config-tool "$CONFIG" ckan.site_logo='/images/idm-logo.png'
 fi
 
 # Get or create CKAN_SQLALCHEMY_URL

@@ -28,7 +28,10 @@ REM Creates config files
 IF NOT EXIST who.ini copy  ..\..\..\..\ckan\config\who.ini who.ini
 IF NOT EXIST development.ini (
   paster make-config --no-interactive ckan development.ini
+
   python populate_ini.py ..\.env development.ini
+  paster config-tool development.ini ckan.site_title="IDM Data Catalog"
+  paster config-tool development.ini ckan.site_logo='/images/idm-logo.png'
 )
 
 REM Navigate to the ckan parent dir.
