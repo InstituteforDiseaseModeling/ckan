@@ -30,7 +30,7 @@ dataset_fields:
   form_placeholder: alias@idmod.org
   display_property: dc:contributor
   display_snippet: email.html
-  display_email_name_field: maintainer
+  display_email_name_field: maintainer_email
 
 # Categorization
 

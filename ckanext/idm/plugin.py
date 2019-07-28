@@ -5,14 +5,23 @@ import os
 
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as tk
+from ckan.lib.plugins import DefaultTranslation
 
 import helpers as hlp
 
+HERE = os.path.abspath(os.path.dirname(__file__))
+I18N_DIR = os.path.join(HERE, u'i18n')
 
-class IdmPlugin(plugins.SingletonPlugin):
-
+class IdmPlugin(plugins.SingletonPlugin, DefaultTranslation):
+    plugins.implements(plugins.ITranslation)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.ITemplateHelpers, inherit=False)
+
+    def i18n_directory(self):
+        return I18N_DIR
+
+    def i18n_domain(self):
+        return u'ckan'
 
     def update_config(self, config):
         plugins.toolkit.add_template_directory(config, 'templates')

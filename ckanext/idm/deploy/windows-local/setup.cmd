@@ -18,7 +18,7 @@ timeout 10
 REM Install required Python packages
 pip install pip==9.0.1>nul 2>&1
 pip install pip==9.0.1
-pip install -r ..\..\..\..\requirements-setuptools.txt
+pip install -r ..\..\..\..\requirement-setuptools.txt
 pip install -r ..\..\..\..\requirements.txt
 pip install -r ..\..\..\..\requirements-scheming.txt
 pip install python-magic-bin==0.4.14 python-dotenv==0.10.3 configparser==3.7.4
