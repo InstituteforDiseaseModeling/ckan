@@ -93,6 +93,7 @@ dataset_fields:
   label: Country
   required: true
   preset: select
+  #preset: country_autocomplete
   choices_helper: get_country_choices
 
 # Provenance
@@ -100,9 +101,7 @@ dataset_fields:
 - field_name: publisher
   label: Publisher
   required: true
-  preset: select
-  #preset: publisher_autocomplete
-  choices_helper: get_publisher_choices
+  preset: publisher_autocomplete
 
 - field_name: url
   label: Origin URL

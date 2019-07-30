@@ -29,19 +29,9 @@ def get_diseases_choices(field):
 def get_diseases():
     return _get_vocabilary('disease', _create_diseases)
 
-#
-# def get_topics():
-#     groups = tk.h.groups_available(am_member=True)
-#     return [str(g['name']).title() for g in groups]
-
-def get_publisher_choices(field):
-    return _to_choices_helper_format(_get_publishers())
 
 def get_country_choices(field):
     return _to_choices_helper_format(_get_countries())
-
-def _get_publishers():
-    return ['NOAA', 'WHO']
 
 
 def _get_countries():

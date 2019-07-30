@@ -21,13 +21,26 @@
       }
     },
     {
+      "preset_name": "country_autocomplete",
+      "values": {
+        "validators": "not_empty unicode",
+        "form_snippet": "tags.html",
+        "form_attrs": {
+          "data-module": "autocomplete",
+          "data-module-tags": "",
+          "data-module-source": "/idm/country/autocomplete?incomplete=?"
+        }
+      }
+    },
+    {
       "preset_name": "publisher_autocomplete",
       "values": {
         "validators": "not_empty unicode",
+        "form_snippet": "tags.html",
         "form_placeholder": "eg. NOAA, WHO",
         "form_attrs": {
           "data-module": "autocomplete",
-          "data-module-source": "/api/2/util/organization/autocomplete?incomplete=?"
+          "data-module-source": "/idm/publisher/autocomplete?incomplete=?"
 
         }
       }
@@ -67,6 +80,7 @@
       "preset_name": "resource_format_autocomplete",
       "values": {
         "validators": "if_empty_guess_format ignore_missing clean_format unicode",
+        "form_snippet": "tags.html",
         "form_placeholder": "eg. CSV, XML or JSON",
         "form_attrs": {
           "data-module": "autocomplete",
