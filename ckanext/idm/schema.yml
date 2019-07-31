@@ -89,12 +89,10 @@ dataset_fields:
 
 # Spatial
 
-- field_name: country
-  label: Country
+- field_name: location
+  label: Location
   required: true
-  preset: select
-  #preset: country_autocomplete
-  choices_helper: get_country_choices
+  preset: location_autocomplete
 
 # Provenance
 

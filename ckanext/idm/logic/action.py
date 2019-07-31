@@ -1,31 +1,15 @@
 # encoding: utf-8
 '''API functions for searching for and getting data from CKAN.'''
 
+import json
 import logging
 
 import sqlalchemy
 
-import ckan.lib.dictization
 import ckan.logic as logic
-import ckan.logic.action
 import ckan.logic.schema
-import ckan.lib.navl.dictization_functions
-import ckan.model as model
-import ckan.plugins as plugins
-import ckan.lib.search as search
-import ckan.lib.plugins as lib_plugins
 
 log = logging.getLogger('ckan.logic')
-
-# Define some shortcuts
-# Ensure they are module-private so that they don't get loaded as available
-# actions in the action API.
-_validate = ckan.lib.navl.dictization_functions.validate
-_table_dictize = ckan.lib.dictization.table_dictize
-_check_access = logic.check_access
-NotFound = logic.NotFound
-ValidationError = logic.ValidationError
-_get_or_bust = logic.get_or_bust
 
 _select = sqlalchemy.sql.select
 _aliased = sqlalchemy.orm.aliased
@@ -38,7 +22,32 @@ _text = sqlalchemy.text
 
 
 @logic.validate(logic.schema.default_autocomplete_schema)
+def location_autocomplete(context, data_dict):
+    # TODO: use geojson file with dot-names including continent, country, province, district levels
+    default_list = _load_locations()
+
+    #['World', 'Africa:Zambia', 'Africa:Kenya', 'Asia:Pakistan']
+
+    results = _extra_autocomplete(context, data_dict, 'location', default_list)
+
+    return results
+
+
+@logic.validate(logic.schema.default_autocomplete_schema)
 def publisher_autocomplete(context, data_dict):
+    # TODO: load the list of locations from a file
+    default_list = ['WHO', 'NOAA', 'WorldPop', 'WorldClim']
+
+    # TODO:
+    # - Only include datasets which a user has right to see
+    # - Add a predefined list of data sources
+    # - Consider capturing publishers a new group type
+    results = _extra_autocomplete(context, data_dict, 'publisher', default_list)
+
+    return results
+
+
+def _extra_autocomplete(context, data_dict, key, default_list=[]):
     model = context['model']
     session = context['session']
 
@@ -48,19 +57,31 @@ def publisher_autocomplete(context, data_dict):
 
     like_q = u'%' + q + u'%'
 
-    # TODO:
-    # - Only include datasets which a user has right to see
-    # - Add a predefined list of data sources
-    # - Consider capturing publishers a new group type
-
     query = (
         session
             .query(model.PackageExtra.value, _func.count(model.PackageExtra.value).label('total'))
-            .filter(_and_(model.PackageExtra.key == 'publisher', model.PackageExtra.state == 'active',))
+            .filter(_and_(model.PackageExtra.key == key, model.PackageExtra.state == 'active',))
             .filter(model.PackageExtra.value.ilike(like_q))
             .group_by(model.PackageExtra.value)
-             .order_by('total DESC')
-             .limit(limit))
+            .order_by('total DESC')
+            .limit(limit))
 
-    return [package_extra.value.lower() for package_extra in query]
+    results_1 = [package_extra.value for package_extra in query]
 
+    results_2 =  [v for v in default_list if q.lower() in v.lower()]
+
+    results = sorted(results_1 + results_2)
+
+    return results
+
+
+def _load_locations():
+    import os
+    idm_dir = os.path.dirname(__file__)
+    polis_path = os.path.join(idm_dir, r'../assets/countries-polis3.geojson')
+    with open(polis_path, 'r') as cf:
+        features = json.load(cf)['features']
+        countries = [c['properties']['name'] for c in features]
+        countries = sorted(countries)
+
+    return ['World'] + countries

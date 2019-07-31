@@ -10,12 +10,12 @@ from ckan.logic import get_action
 from ckan.views.api import _finish_ok, API_REST_DEFAULT_VERSION
 
 
+def location_autocomplete(ver=API_REST_DEFAULT_VERSION):
+    return _autocomplete(u'location_autocomplete')
+
+
 def publisher_autocomplete(ver=API_REST_DEFAULT_VERSION):
     return _autocomplete(u'publisher_autocomplete')
-
-
-def country_autocomplete(ver=API_REST_DEFAULT_VERSION):
-    return _autocomplete(u'country_autocomplete')
 
 
 def tag_autocomplete(ver=API_REST_DEFAULT_VERSION):

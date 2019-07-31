@@ -30,14 +30,6 @@ def get_diseases():
     return _get_vocabilary('disease', _create_diseases)
 
 
-def get_country_choices(field):
-    return _to_choices_helper_format(_get_countries())
-
-
-def _get_countries():
-    return ['All', 'Zambia', 'Kenya']
-
-
 def _to_choices_helper_format(list):
     choices = [{'value': str(v).lower(), 'label': v} for v in list]
 

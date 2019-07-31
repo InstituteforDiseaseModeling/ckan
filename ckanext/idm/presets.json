@@ -21,14 +21,13 @@
       }
     },
     {
-      "preset_name": "country_autocomplete",
+      "preset_name": "location_autocomplete",
       "values": {
         "validators": "not_empty unicode",
         "form_snippet": "tags.html",
         "form_attrs": {
           "data-module": "autocomplete",
-          "data-module-tags": "",
-          "data-module-source": "/idm/country/autocomplete?incomplete=?"
+          "data-module-source": "/idm/location/autocomplete?incomplete=?"
         }
       }
     },

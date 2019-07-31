@@ -12,18 +12,31 @@ from flask import Blueprint
 
 import ckanext.idm.logic.action as action
 import ckanext.idm.views.api as view
-import helpers as hlp
+import ckanext.idm.helpers as hlp
 
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 I18N_DIR = os.path.join(HERE, u'i18n')
 
 class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
+    p.implements(p.IFacets)
     p.implements(p.IBlueprint)
     p.implements(p.IActions)
     p.implements(p.ITranslation)
     p.implements(p.IConfigurer)
     p.implements(p.ITemplateHelpers, inherit=False)
+
+    p.IPackageController
+
+    # IFacets
+
+    def dataset_facets(self, facets_dict, package_type):
+        if 'license_id' in facets_dict.keys():
+            del facets_dict['license_id']
+
+        facets_dict['location'] = p.toolkit._('Location')
+
+        return facets_dict
 
     # IBlueprint
 
@@ -35,6 +48,7 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
         blueprint.template_folder = u'templates'
         # Add plugin url rules to Blueprint object
         rules = [
+            (u'/idm/location/autocomplete',  u'location_autocomplete',  view.location_autocomplete),
             (u'/idm/publisher/autocomplete', u'publisher_autocomplete', view.publisher_autocomplete),
             (u'/idm/tag/autocomplete', u'tag_autocomplete', view.tag_autocomplete),
         ]
@@ -47,7 +61,9 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
 
     def get_actions(self):
         return ({
-            u'publisher_autocomplete': action.publisher_autocomplete})
+            u'location_autocomplete':  action.location_autocomplete,
+            u'publisher_autocomplete': action.publisher_autocomplete
+        })
 
     # ITranslation
 
@@ -69,9 +85,6 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
         return {
             'get_diseases_choices': hlp.get_diseases_choices
             #'get_resource_types_choices': hlp.get_resource_types_choices
-            # 'get_topics_choices': hlp.get_topics_choices
-            , 'get_country_choices': hlp.get_country_choices
-            #, 'get_publisher_choices': hlp.get_publisher_choices
         }
 
 
