@@ -3,6 +3,8 @@
 
 import json
 import logging
+import os
+import zipfile
 
 import sqlalchemy
 
@@ -76,12 +78,14 @@ def _extra_autocomplete(context, data_dict, key, default_list=[]):
 
 
 def _load_locations():
-    import os
+    # TODO: Optimize loading of locations (import into db or load to some session object).
     idm_dir = os.path.dirname(__file__)
-    polis_path = os.path.join(idm_dir, r'../assets/countries-polis3.geojson')
-    with open(polis_path, 'r') as cf:
-        features = json.load(cf)['features']
-        countries = [c['properties']['name'] for c in features]
-        countries = sorted(countries)
+    locations_zip = os.path.join(idm_dir, r'../assets/geo/locations.zip')
+    with zipfile.ZipFile(locations_zip, 'r') as zf:
+        file_name = zf.namelist()[0]
+        with zf.open(file_name, 'r') as cf:
+            features = json.load(cf)['features']
+            countries = [c['properties']['path'] for c in features]
+            countries = sorted(countries)
 
     return ['World'] + countries
