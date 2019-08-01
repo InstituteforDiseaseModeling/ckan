@@ -139,7 +139,7 @@ dataset_fields:
 
 - field_name: license_id
   label: License
-  form_snippet: license.html
+  form_snippet: license_field.html
   help_text: License definitions and additional information can be found at http://opendefinition.org/
 
 
