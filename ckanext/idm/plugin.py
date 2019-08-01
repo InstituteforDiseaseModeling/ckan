@@ -26,8 +26,6 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
     p.implements(p.IConfigurer)
     p.implements(p.ITemplateHelpers, inherit=False)
 
-    p.IPackageController
-
     # IFacets
 
     def dataset_facets(self, facets_dict, package_type):
@@ -37,6 +35,13 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
         facets_dict['location'] = p.toolkit._('Location')
 
         return facets_dict
+
+    def group_facets(self, facets_dict, group_type, package_type):
+        return facets_dict
+
+    def organization_facets(self, facets_dict, organization_type, package_type):
+        return facets_dict
+
 
     # IBlueprint
 
