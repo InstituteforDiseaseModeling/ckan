@@ -75,13 +75,13 @@ dataset_fields:
 
 # Temporal
 
-- field_name: start_date
+- field_name: ext_startdate
   label: Start Date
   required: true
   preset: date
   form_placeholder: eg. 01/01/2001
 
-- field_name: end_date
+- field_name: ext_enddate
   label: End Date
   required: true
   preset: date

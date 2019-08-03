@@ -183,6 +183,8 @@ entry_points = {
         'scheming_datasets=ckanext.scheming.plugins:SchemingDatasetsPlugin',
         'scheming_groups=ckanext.scheming.plugins:SchemingGroupsPlugin',
         'scheming_organizations=ckanext.scheming.plugins:SchemingOrganizationsPlugin',
+        'datesearch=ckanext.datesearch.plugin:DateSearchPlugin'
+
     ],
     'ckan.system_plugins': [
         'domain_object_mods = ckan.model.modification:DomainObjectModificationExtension',

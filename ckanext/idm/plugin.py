@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 import os
+from collections import OrderedDict
 
 import ckan.plugins as p
 import ckan.plugins.toolkit as tk
@@ -32,9 +33,12 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
         if 'license_id' in facets_dict.keys():
             del facets_dict['license_id']
 
-        facets_dict['location'] = p.toolkit._('Location')
+        facets_dict_idm = OrderedDict()
+        facets_dict_idm['location'] = p.toolkit._('Location')
+        for key, value in facets_dict.items():
+            facets_dict_idm[key] = value
 
-        return facets_dict
+        return facets_dict_idm
 
     def group_facets(self, facets_dict, group_type, package_type):
         return facets_dict

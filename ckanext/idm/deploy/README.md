@@ -112,5 +112,11 @@ CentOS 7
 How to install on Windows 7:  
 https://github.com/ckan/ckan/wiki/How-to-Install-CKAN-2.5.2-on-Windows-7  
 Installing from docker-compose:  
-https://docs.ckan.org/en/latest/maintaining/installing/install-from-docker-compose.html
+https://docs.ckan.org/en/latest/maintaining/installing/install-from-docker-compose.html  
+
+Scheming
+https://github.com/ckan/ckanext-scheming
+Temporal search (modified and merged into IDM extension)
+https://github.com/EUDAT-B2FIND/ckanext-datesearch
+
 
