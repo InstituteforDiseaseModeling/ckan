@@ -30,20 +30,23 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
     # IFacets
 
     def dataset_facets(self, facets_dict, package_type):
-        facets_dict_idm = OrderedDict()
-        facets_dict_idm['location'] = p.toolkit._('Location')
-        facets_dict_idm['disease'] = p.toolkit._('Disease')
-        facets_dict_idm['publisher'] = p.toolkit._('Publisher')
-        facets_dict_idm['res_format'] = p.toolkit._('Formats')
-        facets_dict_idm['tags'] = p.toolkit._('Tags')
+        for key in facets_dict.keys():
+            del facets_dict[key]
 
-        return facets_dict_idm
+        #facets_dict_idm = OrderedDict()
+        facets_dict['location'] = p.toolkit._('Location')
+        facets_dict['disease'] = p.toolkit._('Disease')
+        facets_dict['publisher'] = p.toolkit._('Publisher')
+        facets_dict['res_format'] = p.toolkit._('Formats')
+        facets_dict['tags'] = p.toolkit._('Tags')
+
+        return facets_dict
 
     def group_facets(self, facets_dict, group_type, package_type):
-        return facets_dict
+        return self.dataset_facets(facets_dict, package_type)
 
     def organization_facets(self, facets_dict, organization_type, package_type):
-        return facets_dict
+        return self.dataset_facets(facets_dict, package_type)
 
 
     # IBlueprint
