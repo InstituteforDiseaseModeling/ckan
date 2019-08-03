@@ -30,13 +30,12 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
     # IFacets
 
     def dataset_facets(self, facets_dict, package_type):
-        if 'license_id' in facets_dict.keys():
-            del facets_dict['license_id']
-
         facets_dict_idm = OrderedDict()
         facets_dict_idm['location'] = p.toolkit._('Location')
-        for key, value in facets_dict.items():
-            facets_dict_idm[key] = value
+        facets_dict_idm['disease'] = p.toolkit._('Disease')
+        facets_dict_idm['publisher'] = p.toolkit._('Publisher')
+        facets_dict_idm['res_format'] = p.toolkit._('Formats')
+        facets_dict_idm['tags'] = p.toolkit._('Tags')
 
         return facets_dict_idm
 

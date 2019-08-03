@@ -21,8 +21,7 @@ dataset_fields:
   label: Description
   required: true
   form_snippet: markdown.html
-  form_placeholder: 'eg. Info about data properties, spatial or temporal gaps, quality,
-    provenance or usage restrictions. '
+  form_placeholder: 'eg. More info about data properties, provenance or usage restrictions.'
 
 - field_name: maintainer_email
   label: Maintainer
@@ -40,11 +39,26 @@ dataset_fields:
   preset: select
   choices:
   - value: data
-    label: Data
+    label: Raw Data
   - value: project
-    label: Project
+    label: Project Files
   - value: paper
-    label: Paper
+    label: Published Paper
+
+#- field_name: data_type
+#  label: Data Type
+#  preset: select
+#  choices:
+#  - value: raster
+#    label: Raster
+#  - value: shapes
+#    label: Shapefile
+#  - value: array
+#    label: Array
+#  - value: tabular
+#    label: Tabular
+#  - value: db
+#    label: Database
 
 - field_name: owner_org
   label: Research Group
@@ -73,6 +87,10 @@ dataset_fields:
   - value: bad
     label: Bad
 
+- field_name: quality_notes
+  label: Quality Issues
+  form_placeholder: 'e.g. inconsistent names, wrong coordinates, see temporal gaps, see attached resource.'
+
 # Temporal
 
 - field_name: ext_startdate
@@ -87,12 +105,24 @@ dataset_fields:
   preset: date
   form_placeholder: eg. 2018-12-31
 
+- field_name: temporal_gaps
+  label: Temporal Gaps
+  form_placeholder: 'eg. missing years 2011 and 2016.'
+
 # Spatial
 
 - field_name: location
   label: Location
   required: true
   preset: location_autocomplete
+
+- field_name: spatial_gaps
+  label: Spatial Gaps
+  form_placeholder: 'eg. missing area north from N12.'
+
+- field_name: spatial_resolution
+  label: Spatial Resolution
+  form_placeholder: 'eg. 0.25 degrees, 30'', 2.5'', 1km, 750m'
 
 # Provenance
 

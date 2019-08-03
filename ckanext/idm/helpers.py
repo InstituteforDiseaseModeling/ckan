@@ -31,7 +31,7 @@ def get_diseases():
 
 
 def _to_choices_helper_format(list):
-    choices = [{'value': str(v).lower(), 'label': v} for v in list]
+    choices = [{'value': str(v), 'label': v} for v in list]
 
     return choices
 
