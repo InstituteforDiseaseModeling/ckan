@@ -1,0 +1,12 @@
+{#% extends "../../ckan/templates/package/read_base.html" %#}
+{#{% ckan_extends %}#}
+
+{% block package_social %}
+
+     SPATIAL
+  {% set dataset_extent = c.pkg_dict['spatial'] if 'spatial' in c.pkg_dict else '' %}
+  {% if dataset_extent %}
+    {% snippet "spatial/snippets/dataset_map.html", extent=dataset_extent %}
+  {% endif %}
+
+{% endblock %}

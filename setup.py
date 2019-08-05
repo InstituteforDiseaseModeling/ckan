@@ -77,7 +77,8 @@ entry_points = {
         'jobs = ckan.lib.cli:JobsCommand',
         # IDM
         'scheming = ckanext.scheming.commands:SchemingCommand',
-
+        'spatial=ckanext.spatial.commands.spatial:Spatial',
+        'validation=ckanext.spatial.commands.validation:Validation',
     ],
     'console_scripts': [
         'ckan = ckan.cli.cli:ckan',
@@ -183,7 +184,9 @@ entry_points = {
         'scheming_datasets=ckanext.scheming.plugins:SchemingDatasetsPlugin',
         'scheming_groups=ckanext.scheming.plugins:SchemingGroupsPlugin',
         'scheming_organizations=ckanext.scheming.plugins:SchemingOrganizationsPlugin',
-        'datesearch=ckanext.datesearch.plugin:DateSearchPlugin'
+        'datesearch=ckanext.datesearch.plugin:DateSearchPlugin',
+        'spatial_metadata=ckanext.spatial.plugin:SpatialMetadata',
+        'spatial_query=ckanext.spatial.plugin:SpatialQuery',
 
     ],
     'ckan.system_plugins': [
@@ -215,6 +218,7 @@ entry_points = {
         'test_js_translations_plugin = ckan.tests.lib.test_i18n:TestJSTranslationsPlugin',
         'scheming_test_subclass=ckanext.scheming.tests.plugins:SchemingTestSubclass',
         'scheming_test_plugin=ckanext.scheming.tests.plugins:SchemingTestSchemaPlugin',
+        'test_spatial_plugin = ckanext.spatial.tests.test_plugin.plugin:TestSpatialPlugin',
     ],
     'babel.extractors': [
         'ckan = ckan.lib.extract:extract_ckan',

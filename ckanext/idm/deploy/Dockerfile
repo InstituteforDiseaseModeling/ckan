@@ -34,7 +34,8 @@ RUN useradd -r -u 900 -m -c "ckan account" ckan
 COPY requirement*.txt $CKAN_HOME/
 RUN pip install --no-cache-dir -r $CKAN_HOME/requirement-setuptools.txt && \
     pip install --no-cache-dir -r $CKAN_HOME/requirements.txt && \
-    pip install --no-cache-dir -r $CKAN_HOME/requirements-scheming.txt
+    pip install --no-cache-dir -r $CKAN_HOME/requirements-scheming.txt && \
+    pip install --no-cache-dir -r $CKAN_HOME/requirements-spatial.txt
 
 RUN mkdir -p $CKAN_CONFIG $CKAN_STORAGE_PATH && \
     ln -s /usr/local/bin/paster /usr/local/bin/ckan-paster

@@ -25,6 +25,8 @@ ini['app:main']['scheming.dataset_schemas'] = 'ckanext.idm:schema.yml'
 ini['app:main']['scheming.presets'] = 'ckanext.idm:presets.json'
 ini['app:main']['scheming.dataset_fallback'] = 'false'
 
+ini['app:main']['ckan.spatial.srid'] = '4326'
+
 with open(ini_file_name, 'w') as ini_file:
     ini.write(ini_file)
 

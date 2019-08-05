@@ -57,13 +57,15 @@ if [ ! -e "$CONFIG" ]; then
   SCHEMING_1="scheming.dataset_schemas = ckanext.idm:schema.yml"
   SCHEMING_2="scheming.presets = ckanext.idm:presets.json"
   SCHEMING_3="scheming.dataset_fallback = false"
+  SPATIAL="ckan.spatial.srid=4326"
 
   sed -i "/^ckan.plugins.*=/a ${SCHEMING_3}" "$CONFIG"
   sed -i "/^ckan.plugins.*=/a ${SCHEMING_2}" "$CONFIG"
   sed -i "/^ckan.plugins.*=/a ${SCHEMING_1}" "$CONFIG"
+  sed -i "/^ckan.plugins.*=/a ${SPATIAL}"    "$CONFIG"
 
   paster config-tool "$CONFIG" ckan.site_title="IDM Data Catalog"
-  paster config-tool "$CONFIG" ckan.site_logo='/images/idm-logo.png'
+  paster config-tool "$CONFIG" ckan.site_logo=/images/idm-logo.png
 fi
 
 # Get or create CKAN_SQLALCHEMY_URL
@@ -83,6 +85,7 @@ if [ -z "$CKAN_DATAPUSHER_URL" ]; then
     abort "ERROR: no CKAN_DATAPUSHER_URL specified in docker-compose.yml"
 fi
 
-ckan-paster --plugin=ckan db init -c "${CKAN_CONFIG}/production.ini"
+ckan-paster --plugin=ckan db init -c "$CONFIG"
+ckan-paster --plugin=ckan spatial initdb -c "$CONFIG"
 
 exec "$@"

@@ -120,6 +120,10 @@ dataset_fields:
   label: Spatial Gaps
   form_placeholder: 'eg. missing area north from N12.'
 
+- field_name: spatial
+  label: GeoJson
+  form_placeholder: 'eg. { "type": "Polygon", "coordinates": [ [ [50.8, -34.2],[50.8, 36.7], [-19.9, 36.7], [-19.9, -34.2], [50.8, -34.2] ] ] }'
+
 - field_name: spatial_resolution
   label: Spatial Resolution
   form_placeholder: 'eg. 0.25 degrees, 30'', 2.5'', 1km, 750m'

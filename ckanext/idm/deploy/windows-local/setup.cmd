@@ -23,6 +23,8 @@ pip install -r ..\..\..\..\requirements.txt
 pip install -r ..\..\..\..\requirements-scheming.txt
 pip install python-magic-bin==0.4.14 python-dotenv==0.10.3 configparser==3.7.4
 pip install --upgrade bleach
+pip install bin\Shapely-1.6.4.post2-cp27-cp27m-win_amd64.whl
+pip install -r ..\..\..\..\requirements-spatial.txt
 
 REM Creates config files
 IF NOT EXIST who.ini copy  ..\..\..\..\ckan\config\who.ini who.ini
@@ -31,7 +33,7 @@ IF NOT EXIST development.ini (
 
   python populate_ini.py ..\.env development.ini
   paster config-tool development.ini ckan.site_title="IDM Data Catalog"
-  paster config-tool development.ini ckan.site_logo='/images/idm-logo.png'
+  paster config-tool development.ini ckan.site_logo=/images/idm-logo.png
 )
 
 REM Navigate to the ckan parent dir.
@@ -43,6 +45,7 @@ pip install -e ckan
 REM Setting this env. variable allows using "paster" commands without explicitly specifying config file.
 SET CKAN_INI=%cd%\ckan\ckanext\idm\deploy\windows-local\development.ini
 paster --plugin=ckan db init
+paster --plugin=ckan spatial initdb
 
 pip uninstall ckan -y
 
