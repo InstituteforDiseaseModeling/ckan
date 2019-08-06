@@ -77,7 +77,7 @@ dataset_fields:
   form_placeholder: eg. economy, mental health, government
 
 - field_name: quality
-  label: Quality
+  label: Quality Rating
   preset: select
   choices:
   - value: great
@@ -107,7 +107,7 @@ dataset_fields:
 
 - field_name: temporal_gaps
   label: Temporal Gaps
-  form_placeholder: 'eg. missing years 2011 and 2016.'
+  form_placeholder: 'e.g. missing years 2011 and 2016.'
 
 # Spatial
 
@@ -118,15 +118,15 @@ dataset_fields:
 
 - field_name: spatial_gaps
   label: Spatial Gaps
-  form_placeholder: 'eg. missing area north from N12.'
+  form_placeholder: 'e.g. missing area north from N12.'
 
 - field_name: spatial
-  label: GeoJson
-  form_placeholder: 'eg. { "type": "Polygon", "coordinates": [ [ [50.8, -34.2],[50.8, 36.7], [-19.9, 36.7], [-19.9, -34.2], [50.8, -34.2] ] ] }'
+  label: Spatial Extent (GeoJson)
+  form_placeholder: 'e.g. { "type": "Polygon", "coordinates": [ [ [50.8, -34.2],[50.8, 36.7], [-19.9, 36.7], [-19.9, -34.2], [50.8, -34.2] ] ] }'
 
 - field_name: spatial_resolution
   label: Spatial Resolution
-  form_placeholder: 'eg. 0.25 degrees, 30'', 2.5'', 1km, 750m'
+  form_placeholder: 'e.g. 0.25 degrees, 30'', 2.5'', 1km, 750m'
 
 # Provenance
 
@@ -145,7 +145,7 @@ dataset_fields:
   label: Acquisition Date
   required: true
   preset: date
-  form_placeholder: eg. 2018-12-31
+  form_placeholder: e.g. 2018-12-31
 
 - field_name: version
   label: Version
@@ -173,6 +173,7 @@ dataset_fields:
 
 - field_name: license_id
   label: License
+  required: true
   form_snippet: license_field.html
   help_text: License definitions and additional information can be found at http://opendefinition.org/
 
@@ -186,7 +187,7 @@ resource_fields:
 - field_name: name
   label: Name
   required: true
-  form_placeholder: eg. weather files
+  form_placeholder: e.g. weather files
 
 - field_name: purpose
   label: Purpose

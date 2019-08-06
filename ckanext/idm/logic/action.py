@@ -37,7 +37,7 @@ def location_autocomplete(context, data_dict):
 
 @logic.validate(logic.schema.default_autocomplete_schema)
 def publisher_autocomplete(context, data_dict):
-    # TODO: load the list of locations from a file
+    # TODO: load the list of publishers from a file
     default_list = ['WHO', 'NOAA', 'WorldPop', 'WorldClim']
 
     # TODO:
@@ -72,7 +72,8 @@ def _extra_autocomplete(context, data_dict, key, default_list=[]):
 
     results_2 =  [v for v in default_list if q.lower() in v.lower()]
 
-    results = sorted(results_1 + results_2)
+    results = list(set((results_1 + results_2)))
+    results = sorted(results)
 
     return results
 

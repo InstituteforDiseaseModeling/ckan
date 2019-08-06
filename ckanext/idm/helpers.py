@@ -39,6 +39,7 @@ def _to_choices_helper_format(list):
 #     _create_tag_vocabilary('resource_type', (u'data', u'doc', u'paper', u'code'))
 #
 
+# TODO storie it in a file and support added/removed/updated scenarios.
 def _create_diseases():
     _create_tag_vocabilary('disease', (u'Any', u'Malaria', u'Cholera', u'Typhoid', u'Polio', u'TB', u'HIV', u'Measles', u'Ebola', u'Pneumonia', u'HAT'))
 
