@@ -6,7 +6,7 @@ class registerpage(basepage):
 
     def __init__(self, context):
         context.relative_url = u'/user/register'
-        super().__init__(context)
+        super(registerpage, self).__init__(context)
 
     locator_dictionary = {
         u'usernameField': (By.ID, u'field-username'),

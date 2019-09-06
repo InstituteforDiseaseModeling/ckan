@@ -3,7 +3,7 @@
 
 import ckan.model as model
 import ckan.logic.action.get as ag
-import ckan.views.api as va
+#import ckan.views.api as va
 
 from ckan.common import g, request
 from ckan.logic import get_action

@@ -19,8 +19,8 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - DS_RO_PASS=${POSTGRES_PASSWORD}
       - CKAN_TEST_RUN
-      - CKAN_TEST_1
-      - CKAN_TEST_2
+      - CKAN_TEST
+      - EXT_TEST
     networks:
       test-net:
         aliases:
