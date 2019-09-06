@@ -202,6 +202,10 @@ resource_fields:
     label: Document
   - value: paper
     label: Paper
+  - value: provenance
+    label: Provenance
+  - value: other
+    label: Other
 
 - field_name: description
   label: Description
