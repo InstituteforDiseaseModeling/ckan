@@ -150,7 +150,6 @@ dataset_fields:
 
 - field_name: version
   label: Version
-  required: true
   validators: ignore_missing unicode package_version_validator
   form_placeholder: '1.0'
 
