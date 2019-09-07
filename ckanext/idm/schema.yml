@@ -121,7 +121,7 @@ dataset_fields:
   form_placeholder: 'e.g. missing area north from N12.'
 
 - field_name: spatial
-  label: Spatial Extent (GeoJson)
+  label: Spatial Extent (GeoJson geometry)
   validators: remove_whitespace
   form_placeholder: 'e.g. { "type": "Polygon", "coordinates": [ [ [50.8, -34.2],[50.8, 36.7], [-19.9, 36.7], [-19.9, -34.2], [50.8, -34.2] ] ] }'
 
@@ -186,11 +186,11 @@ resource_fields:
 
 - field_name: name
   label: Name
-  required: true
+  validators: if_empty_same_as(url) unicode
   form_placeholder: e.g. weather files
 
-- field_name: purpose
-  label: Purpose
+- field_name: resource_type
+  label: Type
   required: true
   preset: select
   choices:
