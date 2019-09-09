@@ -12,6 +12,7 @@ from ckan.lib.plugins import DefaultTranslation
 from flask import Blueprint
 
 import ckanext.idm.logic.action as action
+import ckanext.idm.logic.validators as validators
 import ckanext.idm.views.api as view
 import ckanext.idm.helpers as hlp
 
@@ -26,6 +27,7 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
     p.implements(p.ITranslation)
     p.implements(p.IConfigurer)
     p.implements(p.ITemplateHelpers, inherit=False)
+    p.implements(p.IValidators)
 
     # IFacets
 
@@ -98,4 +100,11 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
             #'get_resource_types_choices': hlp.get_resource_types_choices
         }
 
+    # IValidator
+
+    def get_validators(self):
+        return {
+            u'reasonable_date': validators.reasonable_date,
+            u'temporal_range': validators.temporal_range,
+        }
 
