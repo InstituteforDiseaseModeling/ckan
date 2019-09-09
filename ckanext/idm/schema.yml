@@ -124,7 +124,7 @@ dataset_fields:
 
 - field_name: spatial
   label: Spatial Extent (GeoJson geometry)
-  validators: remove_whitespace
+  validators: ignore_missing remove_whitespace
   form_placeholder: 'e.g. { "type": "Polygon", "coordinates": [ [ [50.8, -34.2],[50.8, 36.7], [-19.9, 36.7], [-19.9, -34.2], [50.8, -34.2] ] ] }'
 
 - field_name: spatial_resolution
