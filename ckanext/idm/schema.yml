@@ -189,11 +189,11 @@ resource_fields:
 
 - field_name: name
   label: Name
-  validators: if_empty_same_as(url) unicode
+  required: true
   form_placeholder: e.g. weather files
 
-- field_name: resource_type
-  label: Type
+- field_name: purpose
+  label: Purpose
   required: true
   preset: select
   choices:
