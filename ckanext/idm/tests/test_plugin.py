@@ -59,25 +59,25 @@ class TestidmPlugins(helpers.FunctionalTestBase):
     ]
 
     expected_resource_types = [
-        u'Data',
-        u'Code',
-        u'Doc',
-        u'Paper',
-        u'Origin',
-        u'Other'
+        u'data',
+        u'code',
+        u'doc',
+        u'paper',
+        u'provenance',
+        u'other'
     ]
 
     basic_testdata = {
-                      u'license_id':u'License not specified',
-                      u'disease':u'Any',
-                      u'acquisition_date':u'2019/01/01',
-                      u'maintainer_email':u'fake@idm.org',
-                      u'ext_startdate':u'2019/01/01',
-                      u'ext_enddate':u'2019/01/02',
-                      u'location':u'Africa',
-                      u'purpose':u'paper',
-                      u'publisher':u'WTO',
-                      u'notes':u'this is a test'}
+                      u'license_id': u'License not specified',
+                      u'disease': u'Any',
+                      u'acquisition_date': u'2019/01/01',
+                      u'maintainer_email': u'fake@idm.org',
+                      u'ext_startdate': u'2019/01/01',
+                      u'ext_enddate': u'2019/01/02',
+                      u'location': u'Africa',
+                      u'purpose': u'paper',
+                      u'publisher': u'WTO',
+                      u'notes': u'this is a test'}
     @classmethod
     def _apply_config_changes(cls, cfg):
         cfg[u'ckan.plugins'] = u'idm scheming_datasets'
@@ -218,7 +218,7 @@ class TestidmPlugins(helpers.FunctionalTestBase):
                                              u'purpose': rt
                                          }]
                                          )
-            nt.assert_equals(u'data', result[u'resources'][0][u'resource_type'])
+            nt.assert_equals(rt, result[u'resources'][0]['purpose'])
             helpers.call_action(u'package_delete', id=result[u'id'])
 
     def test_get_dataset(self):
