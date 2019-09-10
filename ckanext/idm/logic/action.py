@@ -9,7 +9,8 @@ import zipfile
 import sqlalchemy
 
 import ckan.logic as logic
-import ckan.logic.schema
+
+from ckan.logic.action import  create
 
 log = logging.getLogger('ckan.logic')
 
@@ -22,6 +23,17 @@ _desc = sqlalchemy.desc
 _case = sqlalchemy.case
 _text = sqlalchemy.text
 
+
+def resource_create(context, data_dict):
+    fields = ['name', 'url', 'description']
+    has_data = any(len(data_dict[f]) > 0 for f in fields)
+
+    if has_data:
+        resource = create.resource_create(context, data_dict)
+    else:
+        resource = None
+
+    return resource
 
 @logic.validate(logic.schema.default_autocomplete_schema)
 def location_autocomplete(context, data_dict):

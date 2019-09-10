@@ -75,7 +75,8 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
     def get_actions(self):
         return ({
             u'location_autocomplete':  action.location_autocomplete,
-            u'publisher_autocomplete': action.publisher_autocomplete
+            u'publisher_autocomplete': action.publisher_autocomplete,
+            u'resource_create': action.resource_create,
         })
 
     # ITranslation
