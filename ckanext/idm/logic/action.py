@@ -11,6 +11,7 @@ import sqlalchemy
 import ckan.logic as logic
 
 from ckan.logic.action import  create
+from ckanext.idm.logic.locations import load_locations
 
 log = logging.getLogger('ckan.logic')
 
@@ -38,7 +39,7 @@ def resource_create(context, data_dict):
 @logic.validate(logic.schema.default_autocomplete_schema)
 def location_autocomplete(context, data_dict):
     # TODO: use geojson file with dot-names including continent, country, province, district levels
-    default_list = _load_locations()
+    default_list = load_locations()
 
     #['World', 'Africa:Zambia', 'Africa:Kenya', 'Asia:Pakistan']
 
@@ -89,16 +90,3 @@ def _extra_autocomplete(context, data_dict, key, default_list=[]):
 
     return results
 
-
-def _load_locations():
-    # TODO: Optimize loading of locations (import into db or load to some session object).
-    idm_dir = os.path.dirname(__file__)
-    locations_zip = os.path.join(idm_dir, r'../assets/geo/locations.zip')
-    with zipfile.ZipFile(locations_zip, 'r') as zf:
-        file_name = zf.namelist()[0]
-        with zf.open(file_name, 'r') as cf:
-            features = json.load(cf)['features']
-            countries = [c['properties']['path'] for c in features]
-            countries = sorted(countries)
-
-    return ['World'] + countries

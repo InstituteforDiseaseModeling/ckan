@@ -13,6 +13,7 @@ from flask import Blueprint
 
 import ckanext.idm.logic.action as action
 import ckanext.idm.logic.validators as validators
+import ckanext.idm.logic.converters as converters
 import ckanext.idm.views.api as view
 import ckanext.idm.helpers as hlp
 
@@ -107,5 +108,6 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
         return {
             u'reasonable_date': validators.reasonable_date,
             u'temporal_range': validators.temporal_range,
+            u'set_spatial_to_location_geometry': converters.set_spatial_to_location_geometry,
         }
 

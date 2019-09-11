@@ -118,14 +118,22 @@ dataset_fields:
   required: true
   preset: location_autocomplete
 
+- field_name: spatial
+  label: Extent
+  validators: ignore_missing remove_whitespace set_spatial_to_location_geometry
+  form_placeholder: 'e.g. { "type": "Polygon", "coordinates": [ [ [50.8, -34.2],[50.8, 36.7], [-19.9, 36.7], [-19.9, -34.2], [50.8, -34.2] ] ] }'
+
+- field_name: spatial_mode
+  label: Extent Mode
+  preset: multiple_checkbox
+  choices:
+  - value: manual
+    label: Location extent is set manually.
+  help_text: By default, if location is picked from the autocomplete list, the extent is set automatically when dataset is created/updated. .
+
 - field_name: spatial_gaps
   label: Spatial Gaps
   form_placeholder: 'e.g. missing area north from N12.'
-
-- field_name: spatial
-  label: Spatial Extent (GeoJson geometry)
-  validators: ignore_missing remove_whitespace
-  form_placeholder: 'e.g. { "type": "Polygon", "coordinates": [ [ [50.8, -34.2],[50.8, 36.7], [-19.9, 36.7], [-19.9, -34.2], [50.8, -34.2] ] ] }'
 
 - field_name: spatial_resolution
   label: Spatial Resolution
