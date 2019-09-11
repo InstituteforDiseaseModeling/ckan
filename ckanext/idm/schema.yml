@@ -96,14 +96,14 @@ dataset_fields:
 - field_name: ext_startdate
   label: Start Date
   required: true
-  validators: reasonable_date temporal_range
+  validators: not_empty reasonable_range_date temporal_range
   preset: date
   form_placeholder: eg. 01/01/2001
 
 - field_name: ext_enddate
   label: End Date
   required: true
-  validators: reasonable_date temporal_range
+  validators: not_empty reasonable_range_date temporal_range
   preset: date
   form_placeholder: eg. 2018-12-31
 
@@ -155,7 +155,7 @@ dataset_fields:
 - field_name: acquisition_date
   label: Acquisition Date
   required: true
-  validators: reasonable_date
+  validators: not_empty reasonable_acquisition_date
   preset: date
   form_placeholder: e.g. 2018-12-31
 

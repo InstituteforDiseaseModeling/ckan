@@ -106,7 +106,8 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
 
     def get_validators(self):
         return {
-            u'reasonable_date': validators.reasonable_date,
+            u'reasonable_range_date': validators.reasonable_range_date,
+            u'reasonable_acquisition_date': validators.reasonable_acquisition_date,
             u'temporal_range': validators.temporal_range,
             u'set_spatial_to_location_geometry': converters.set_spatial_to_location_geometry,
         }
