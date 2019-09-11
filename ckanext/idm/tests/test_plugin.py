@@ -1,6 +1,8 @@
+# encoding: utf-8
 """Tests for plugin.py."""
 import nose.tools as nt
 import ckanext.idm.helpers as idm_helper
+import ckan.logic as logic
 import ckan.model as model
 import ckan.plugins as plugins
 from ckan.common import config
@@ -278,3 +280,20 @@ class TestidmPlugins(helpers.FunctionalTestBase):
             u'publisher_autocomplete', context={u'ignore_auth': False}, q=u'Institute'
         )
         assert testdata[u'publisher'] in suggested_list
+
+    def test_start_end_date(self):
+        testdata = self.basic_testdata.copy()
+        testdata[u'name'] = sys._getframe().f_code.co_name
+        testdata[u'ext_startdate'] = u'2001/01/03'
+        testdata[u'ext_enddate'] = u'2001/01/02'
+        validated = False
+        try:
+            helpers.call_action(u'package_create',
+                                **testdata)
+        except logic.ValidationError as e:
+            assert e.error_dict[u'ext_startdate']
+            validated = True
+        assert validated
+
+
+
