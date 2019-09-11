@@ -199,13 +199,13 @@ Feature: Add datasets for editors
      When I can click "Add Data"
      Then I can set required "Type" <type>
      Examples:
-      | type  |
-      | Data  |
-      | Code  |
-      | Doc   |
-      | Paper |
-      | Origin|
-      | Other |
+      | type        |
+      | Data        |
+      | Code        |
+      | Doc         |
+      | Paper       |
+      | Provenance  |
+      | Other       |
 
   Scenario Outline: Topic
     #Topic must have preset values
