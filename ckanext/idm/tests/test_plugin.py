@@ -296,4 +296,17 @@ class TestidmPlugins(helpers.FunctionalTestBase):
         assert validated
 
 
+    def test_acquisition_date(self):
+        testdata = self.basic_testdata.copy()
+        testdata[u'name'] = sys._getframe().f_code.co_name
+        testdata[u'acquisition_date'] = u'1900/01/01'
+        validated = False
+        try:
+            helpers.call_action(u'package_create',
+                                **testdata)
+        except logic.ValidationError as e:
+            assert e.error_dict[u'acquisition_date']
+            validated = True
+        assert validated
+
 

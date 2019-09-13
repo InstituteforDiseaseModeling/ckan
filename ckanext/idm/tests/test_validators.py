@@ -22,22 +22,24 @@ class TestValidators(helpers.FunctionalTestBase):
 
     '''
     most set these in the config  
-    ckan.max_date=2020/12/31
-    ckan.min_date=1950/01/01
+    ckan.range_max_date=2020/12/31
+    ckan.range_min_date=1950/01/01
+    ckan.acquisition_max_date=2019/12/31
+    ckan.acquisition_min_date=2019/01/01
     '''
 
-    def test_reasonable_date_mindate(self):
-        v = get_validator(u'reasonable_date')
+    def test_reasonable_range_date_mindate(self):
+        v = get_validator(u'reasonable_range_date')
         assert_raises(Invalid, v, u'1949/12/31')
 
-    def test_reasonable_date_maxdate(self):
-        v = get_validator(u'reasonable_date')
+    def test_reasonable_range_date_maxdate(self):
+        v = get_validator(u'reasonable_range_date')
         assert_raises(Invalid, v, u'2021/01/01')
 
-    def test_reasonable_date_upperbound(self):
-        v = get_validator(u'reasonable_date')
+    def test_reasonable_range_date_upperbound(self):
+        v = get_validator(u'reasonable_range_date')
         assert_equals(u'2020/12/31', v(u'2020/12/31'))
 
-    def test_reasonable_date_lowerbound(self):
-        v = get_validator(u'reasonable_date')
+    def test_reasonable_range_date_lowerbound(self):
+        v = get_validator(u'reasonable_range_date')
         assert_equals(u'1950/01/01', v(u'1950/01/01'))
