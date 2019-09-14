@@ -49,24 +49,23 @@ done
 
 set_environment
 
-# If we don't already have a config file, bootstrap
-if [ ! -e "$CONFIG" ]; then
-  write_config
-  sed -i "/^ckan.plugins.*=/s/=.*/= ${CKAN_PLUGINS}/" "$CONFIG"
+rm -f /etc/ckan/production.ini
+write_config
+sed -i "/^ckan.plugins.*=/s/=.*/= ${CKAN_PLUGINS}/" "$CONFIG"
 
-  SCHEMING_1="scheming.dataset_schemas = ckanext.idm:schema.yml"
-  SCHEMING_2="scheming.presets = ckanext.idm:presets.json"
-  SCHEMING_3="scheming.dataset_fallback = false"
-  SPATIAL="ckan.spatial.srid=4326"
+SCHEMING_1="scheming.dataset_schemas = ckanext.idm:schema.yml"
+SCHEMING_2="scheming.presets = ckanext.idm:presets.json"
+SCHEMING_3="scheming.dataset_fallback = false"
+SPATIAL="ckan.spatial.srid=4326"
 
-  sed -i "/^ckan.plugins.*=/a ${SCHEMING_3}" "$CONFIG"
-  sed -i "/^ckan.plugins.*=/a ${SCHEMING_2}" "$CONFIG"
-  sed -i "/^ckan.plugins.*=/a ${SCHEMING_1}" "$CONFIG"
-  sed -i "/^ckan.plugins.*=/a ${SPATIAL}"    "$CONFIG"
+sed -i "/^ckan.plugins.*=/a ${SCHEMING_3}" "$CONFIG"
+sed -i "/^ckan.plugins.*=/a ${SCHEMING_2}" "$CONFIG"
+sed -i "/^ckan.plugins.*=/a ${SCHEMING_1}" "$CONFIG"
+sed -i "/^ckan.plugins.*=/a ${SPATIAL}"    "$CONFIG"
 
-  #TODO: refactor setting all config info
-  /bin/bash ckan-site_info.sh "$CONFIG"
-fi
+#TODO: refactor setting all config info
+/bin/bash ./ckanext/idm/deploy/ckan-site_info.sh "$CONFIG"
+
 
 # Get or create CKAN_SQLALCHEMY_URL
 if [ -z "$CKAN_SQLALCHEMY_URL" ]; then
