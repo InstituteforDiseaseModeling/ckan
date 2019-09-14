@@ -32,8 +32,8 @@ IF NOT EXIST development.ini (
   paster make-config --no-interactive ckan development.ini
 
   python populate_ini.py ..\.env development.ini
-  paster config-tool development.ini ckan.site_title="IDM Data Catalog"
-  paster config-tool development.ini ckan.site_logo=/images/idm-logo.png
+  REM TODO: refactor setting all config info
+  ..\ckan-site_info.sh development.ini
 )
 
 REM Navigate to the ckan parent dir.
