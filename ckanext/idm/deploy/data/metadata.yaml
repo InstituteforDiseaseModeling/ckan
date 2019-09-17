@@ -1,0 +1,88 @@
+research_groups:
+  amath:
+    title: Applied Math (AMath)
+    description: 'Global Development'
+    admin: Daniel Klein <dklein@idmod.org>
+    members: Atiye Alaeddini <aalaeddini@idmod.org>; Cliff Kerr <ckerr@idmod.org>
+  ds:
+    title: Data Services (DS)
+    description: 'Software'
+    admin: Christopher Lorton <clorton@idmod.org>
+    members: Dennis Harding <dharding@idmod.org>; Meikang Wu <mewu@idmod.org>; Mary Fisher <mafisher@idmod.org>
+  dda:
+    title: Data, Dynamics, and Analytics (DDA)
+    description: 'Global Development'
+    admin: Josh Proctor <jproctor@idmod.org>;
+    members: Albert Lee <allee@idmod.org>; Jessica Ribado <jribado@idmod.org>; Mollie Van Gordon <mvangordon@idmod.org>
+  econ:
+    title: Economy Finance (ECON)
+    description: 'Global Development'
+    admin: Brittany Hagedorn <bhagedorn@idmod.org>;
+    members: Enrique Saldarriaga <esaldarriaga@idmod.org>; Marita Zimmermann <mzimmermann@idmod.org>; Rui Han <rhan@idmod.org>; William Trouleau <wtrouleau@idmod.org>
+  measles:
+    title: Measles
+    description: 'Global Development'
+    admin: Kevin McCarthy <kmccarthy@idmod.org>;
+    members: Harrison Goldwyn <hgoldwyn@idmod.org>; Kurt Frey <kfrey@idmod.org>; Niket Thakkar <nthakkar@idmod.org>
+  stats:
+    title: Stats
+    description: 'Global Development'
+    admin: Hil Lyons <hlyons@idmod.org>;
+    members: Roy Burstein <rburstein@idmod.org>; Steve Kroiss <skroiss@idmod.org>
+  epi:
+    title: EPI
+    description: 'Global Health'
+    admin: Mike Famulare <mfamulare@idmod.org>
+    members: Assaf Oron <aoron@idmod.org>; Ben Althouse <balthouse@idmod.org>; Dennis Chao <dennisc@idmod.org>; Dina Mistry <dmistry@idmod.org>; Gregory Hart <ghart@idmod.org>; Jillian Gauld <jgauld@idmod.org>; Laura Skrip <lskrip@idmod.org>; Mike Famulare <mfamulare@idmod.org>; Navideh Noori <nnoori@idmod.org>; Rafael Nunez <rnunez@idmod.org>; Wesley Wong <wwong@idmod.org>
+  hivtb:
+    title: HIV/TB
+    description: 'Global Health'
+    admin: Anna Bershteyn <abershteyn@idmod.org>
+    members: Adam Akullian <aakullian@idmod.org>; Anna Bershteyn <abershteyn@idmod.org>; Bradley Wagner <bwagner@idmod.org>; Britta Jewell <bjewell@idmod.org>; Karyn Sutton <ksutton@idmod.org>; Stewart Chang <stchang@idmod.org>
+  malaria:
+    title: Malaria
+    description: 'Global Health'
+    admin: Caitlin Bever <cbever@idmod.org>
+    members: Amelia Bertozzi-Villa <abertozzivilla@idmod.org>; Andre Lin Ouédraogo <aouedraogo@idmod.org>; Jaline Gerardin <jgerardin@idmod.org>; Jon Russell <jorussell@idmod.org>; Josh Suresh <jsuresh@idmod.org>; Julie Zhang <juzhang@idmod.org>; Marlin Figgins <mfiggins@idmod.org>; Monique Ambrose <mambrose@idmod.org>; Prashanth Selvaraj <pselvaraj@idmod.org>
+  mnch:
+    title: MNCH
+    description: 'Global Health'
+    admin: Dennis Chao <dennisc@idmod.org>
+    members: Andre Lin Ouédraogo <aouedraogo@idmod.org>; Assaf Oron <aoron@idmod.org>; Dennis Chao <dennisc@idmod.org>; Dina Mistry <dmistry@idmod.org>; Julie Zhang <juzhang@idmod.org>; Navideh Noori <nnoori@idmod.org>
+topics:
+  births:
+    title: Births
+    description: ''
+  climate:
+    title: Climate
+    description: 'Climate in a narrow sense is usually defined as the \"average weather,\" or more rigorously, as the statistical description in terms of the mean and variability of relevant quantities over a period ranging from months to thousands or millions of years. The classical period is 30 years, as defined by the World Meteorological Organization (WMO). These quantities are most often surface variables such as temperature, precipitation, and wind. Climate in a wider sense is the state, including a statistical description, of the climate system.'
+  incidencedata:
+    title: Incidence Data
+    description: ''
+  mortality:
+    title: Mortality
+    description: ''
+  mics:
+    title: Multiple Indicator Cluster Surveys (MICS)
+    description: ''
+  population:
+    title: Population
+    description: "According to the United States Census Bureau the world's population was about 7.55 billion in 2019[8] and that the 7 billion number was surpassed on 12 March 2012. According to a separate estimate by the United Nations, Earth’s population exceeded seven billion in October 2011, a milestone that offers unprecedented challenges and opportunities to all of humanity, according to UNFPA, the United Nations Population Fund.[9]\r\n\r\nSix of the Earth's seven continents are permanently inhabited on a large scale. Asia is the most populous continent, with its 4.54 billion inhabitants accounting for 60% of the world population. The world's two most populated countries, China and India, together constitute about 36% of the world's population. Africa is the second most populated continent, with around 1.28 billion people, or 16% of the world's population. Europe's 742 million people make up 10% of the world's population as of 2018, while the Latin American and Caribbean regions are home to around 651 million (9%). Northern America, primarily consisting of the United States and Canada, has a population of around 363 million (5%), and Oceania, the least populated region, has about 41 million inhabitants (0.5%).[13] Though it is not permanently inhabited by any fixed population, Antarctica has a small, fluctuating international population based mainly in polar science stations. This population tends to rise in the summer months and decrease significantly in winter, as visiting researchers return to their home countries."
+  pccs:
+    title: Post Campaign Coverage Surveys (PCCS)
+    description: ''
+  rasters:
+    title: Rasters
+    description: 'Raster data (also known as grid data) represents the fourth type of feature: surfaces. Raster data is cell-based and this data category also includes aerial and satellite imagery. There are two types of raster data: continuous and discrete. An example of discrete raster data is population density.'
+  shapefiles:
+    title: Shapefiles
+    description: 'The shapefile format is a digital vector storage format for storing geometric location and associated attribute information. This format lacks the capacity to store topological information. The shapefile format was introduced with ArcView GIS version 2 in the early 1990s. It is now possible to read and write geographical datasets using the shapefile format with a wide variety of software.\r\n\r\nThe shapefile format is simple. It stores the data as primitive geometric shapes like points, lines, and polygons. These shapes, together with data attributes that are linked to each shape, create the representation of the geographic data.'
+  sias:
+    title: Supplemental immunisation Activity Campaigns (SIAs)
+    description: ''
+  surveillance:
+    title: Surveillance
+    description: 'Epidemiological surveillance is the systematic collection, analysis and dissemination of health data for the planning, implementation and evaluation of public health programmes. Established surveillance systems should be regularly reviewed on the basis of explicit criteria of usefulness, cost and quality; systems should be modified as a result of such review. Attributes of quality include: (i) sensitivity, (ii) specificity, (iii) representativeness, (iv) timeliness, (v) simplicity, (vi) flexibility and (vii) acceptability. To date, evaluation of surveillance systems has been limited in scope and content. The evaluation method proposed in this article offers an organized approach to the evaluation of epidemiological surveillance systems.'
+  vts:
+    title: Vertical Transmission Cohort Study (VTS)
+    description: ''
