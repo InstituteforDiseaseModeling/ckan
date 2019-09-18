@@ -5,13 +5,13 @@ import os
 from collections import OrderedDict
 
 import ckan.plugins as p
-import ckan.plugins.toolkit as tk
-import ckanext.idm.logic.action as action
 
 from ckan.lib.plugins import DefaultTranslation
 from flask import Blueprint
 
-import ckanext.idm.logic.action as action
+import ckanext.idm.logic.action.create as create
+import ckanext.idm.logic.action.get as get
+import ckanext.idm.logic.auth.create as auth_create
 import ckanext.idm.logic.validators as validators
 import ckanext.idm.logic.converters as converters
 import ckanext.idm.views.api as view
@@ -29,6 +29,7 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
     p.implements(p.IConfigurer)
     p.implements(p.ITemplateHelpers, inherit=False)
     p.implements(p.IValidators)
+    p.implements(p.IAuthFunctions)
 
     # IFacets
 
@@ -75,9 +76,10 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
 
     def get_actions(self):
         return ({
-            u'location_autocomplete':  action.location_autocomplete,
-            u'publisher_autocomplete': action.publisher_autocomplete,
-            u'resource_create': action.resource_create,
+            u'location_autocomplete':  get.location_autocomplete,
+            u'publisher_autocomplete': get.publisher_autocomplete,
+            u'resource_create': create.resource_create,
+            u'group_list_authz': get.group_list_authz,
         })
 
     # ITranslation
@@ -111,4 +113,9 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
             u'temporal_range': validators.temporal_range,
             u'set_spatial_to_location_geometry': converters.set_spatial_to_location_geometry,
         }
+
+    # IAuthFunctions
+
+    def get_auth_functions(self):
+        return {'member_create': auth_create.member_create}
 
