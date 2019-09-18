@@ -83,7 +83,7 @@ class basepage(object):
     def method_missing(self, elem):
         print(elem, u'Not found in ', self.url)
 
-    def fill_field(self, fieldname, fieldtext):
+    def fill_field(self, fieldname, fieldtext, cleartext=True):
         fieldname.location_once_scrolled_into_view
         if fieldname.tag_name == u'select':
             selected = False
@@ -107,5 +107,6 @@ class basepage(object):
                 fieldname.clear()
                 fieldname.send_keys(fieldtext)
             else:
-                fieldname.clear()
+                if cleartext:
+                    fieldname.clear()
                 fieldname.send_keys(fieldtext)

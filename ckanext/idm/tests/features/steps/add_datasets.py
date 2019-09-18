@@ -304,7 +304,7 @@ def step_impl(context, topic):
     context.topic = topic
     context.datasettopicpage = datasettopicpage(context)
     assert len(context.datasettopicpage.topicsOptions) > 1
-    context.datasettopicpage.fill_field(context.datasettopicpage.topicsInput, u" ")
+    context.datasettopicpage.fill_field(context.datasettopicpage.topicsInput, u" ", False)
     for option in context.datasettopicpage.topicsOptions:
         if topic in option.get_attribute(u'text'):
             foundTopic = True
@@ -317,7 +317,7 @@ def step_impl(context, topic):
 def step_impl(context, topic):
     context.topic = topic
     prefix = str(topic)[:1]
-    context.datasettopicpage.fill_field(context.datasettopicpage.topicsInput, prefix)
+    context.datasettopicpage.fill_field(context.datasettopicpage.topicsInput, prefix, False)
     assert context.datasettopicpage.check_autocomplete(topic)
     context.datasettopicpage.choose_autocomplete(topic)
     context.datasettopicpage.addButton.click()
