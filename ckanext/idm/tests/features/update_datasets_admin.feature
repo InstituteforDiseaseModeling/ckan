@@ -1,6 +1,6 @@
 @demo
 @UI
-Feature: Update dataset
+Feature: Update dataset by admin
   As an admin, I can change the dataset created by others
 
   Background:

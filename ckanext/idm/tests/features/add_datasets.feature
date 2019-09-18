@@ -1,5 +1,6 @@
 @demo
 @UI
+@pri1
 Feature: Add datasets for editors
   # Refer to https://wiki.idmod.org/display/SP/Phase+1%3A+Data+Catalog+Prototype
   Background:

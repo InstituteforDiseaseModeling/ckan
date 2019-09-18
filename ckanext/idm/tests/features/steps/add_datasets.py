@@ -85,23 +85,24 @@ def step_impl(context):
 
 @step(u'I have dataset info')
 def step_impl(context):
-    context.testtable = [
-        {u'fields': u'Title', u'values': u'test_addDataset' + datetime.datetime.now().strftime(u"%y%m%d_%H%M%S")},
-        {u'fields': u'Description', u'values': u'This is a test'},
-        {u'fields': u'Maintainer_email', u'values': u'test@idmod.org'},
-        {u'fields': u'Purpose', u'values': u'Raw Data'},
-        {u'fields': u'Research_Group', u'values': u'Test Automation'},
-        {u'fields': u'Disease', u'values': u'Any'},
-        {u'fields': u'Start_Date', u'values': u'2018-01-01'},
-        {u'fields': u'End_Date', u'values': u'2019-03-01'},
-        {u'fields': u'Location', u'values': u'World'},
-        {u'fields': u'Publisher', u'values': u'IDM'},
-        {u'fields': u'Acquisition_Date', u'values': u'2019-03-01'},
-        {u'fields': u'Version', u'values': u'1.0'},
-        {u'fields': u'Visibility', u'values': u'Public'},
-        {u'fields': u'Restricted', u'values': u'False'},
-        {u'fields': u'License', u'values': u'Creative Commons Attribution'}
-    ]
+    if not hasattr(context, 'testtable'):
+        context.testtable = [
+            {u'fields': u'Title', u'values': u'test_addDataset' + datetime.datetime.now().strftime(u"%y%m%d_%H%M%S")},
+            {u'fields': u'Description', u'values': u'This is a test'},
+            {u'fields': u'Maintainer_email', u'values': u'test@idmod.org'},
+            {u'fields': u'Purpose', u'values': u'Raw Data'},
+            {u'fields': u'Research_Group', u'values': u'Test Automation'},
+            {u'fields': u'Disease', u'values': u'Any'},
+            {u'fields': u'Start_Date', u'values': u'2018-01-01'},
+            {u'fields': u'End_Date', u'values': u'2019-03-01'},
+            {u'fields': u'Location', u'values': u'World'},
+            {u'fields': u'Publisher', u'values': u'IDM'},
+            {u'fields': u'Acquisition_Date', u'values': u'2019-03-01'},
+            {u'fields': u'Version', u'values': u'1.0'},
+            {u'fields': u'Visibility', u'values': u'Public'},
+            {u'fields': u'Restricted', u'values': u'False'},
+            {u'fields': u'License', u'values': u'Creative Commons Attribution'}
+        ]
 
 
 

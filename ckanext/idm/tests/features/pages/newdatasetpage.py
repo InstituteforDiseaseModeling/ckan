@@ -32,6 +32,7 @@ class newdatasetpage(basepage):
         u'spatialgapField': (By.ID, u'field-spatial_gaps'),
         u'spatialField': (By.ID, u'field-spatial'),
         u'spatialResField': (By.ID, u'field-spatial_resolution'),
+        u'spatialModeField': (By.ID, u'field-spatial_mode-manual'),
         u'publisherField': (By.ID, u'field-publisher'),
         u'urlField': (By.ID, u'field-url'),
         u'acquisitiondateField': (By.ID, u'field-acquisition_date'),
@@ -69,7 +70,12 @@ class newdatasetpage(basepage):
         optional_fields = {
             u'Tags': self.tagsField,
             u'Quality Issues': self.qualitynoteField,
-            u'Origin URL': self.urlField
+            u'Quality Rating': self.qualityField,
+            u'Origin URL': self.urlField,
+            u'Temporal Gaps': self.temporalgapField,
+            u'Spatial Gaps': self.spatialgapField,
+            u'Spatial Extent': self.spatialField,
+            u'spatial Mode': self.spatialModeField
         }
         if fieldname in optional_fields.keys():
             self.fill_field(optional_fields[fieldname],

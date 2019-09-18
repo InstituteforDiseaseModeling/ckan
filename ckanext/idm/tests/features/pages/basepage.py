@@ -97,8 +97,7 @@ class basepage(object):
                     fieldname.find_element_by_xpath(u'option[contains(text(),"{}")]'.format(fieldtext)).click()
                 except AttributeError:
                     raise Exception(u'selection not found: ', fieldtext)
-        elif fieldname.tag_name == u'input' or \
-            fieldname.tag_name == u'textarea':
+        elif fieldname.tag_name == u'input' or fieldname.tag_name == u'textarea':
             if fieldname.get_attribute(u'type') == u'checkbox':
                 if fieldname.is_selected() != eval(fieldtext):
                     fieldname.click()
@@ -108,4 +107,5 @@ class basepage(object):
                 fieldname.clear()
                 fieldname.send_keys(fieldtext)
             else:
+                fieldname.clear()
                 fieldname.send_keys(fieldtext)
