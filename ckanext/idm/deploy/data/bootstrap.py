@@ -88,7 +88,7 @@ def create_research_groups_and_users(act, rgroups, host_url):
         # Create the research group adding listed users as members.
         title = info['title'] if info and info.get('title') else name
         description = info['description'] if info and info.get('description') else ''
-        api_create_research_group(act, name, title, description, admin, members, host_url)
+        api_create_research_group(act, name, title, description, host_url, admin, members)
 
 
 def create_single_user(act, user_raw, all_members):
@@ -126,7 +126,7 @@ def api_create_user(act, username, full_name, email, password):
     return name
 
 
-def api_create_research_group(act, name, title, description, admin, members, host_url):
+def api_create_research_group(act, name, title, description, host_url, admin, members):
     """Create a research group by calling API via the common method."""
     image_url = '{}/images/rgroup-{}.png'.format(host_url, name)
 
@@ -147,16 +147,19 @@ def create_topics(act, topics, host_url):
     for name, info in topics.items():
         title = info['title'] if info and info.get('title') else name
         description = info['description'] if info and info.get('description') else ''
-        api_create_topic(act, name, title, description, host_url)
+        admin = info['admin']
+        api_create_topic(act, name, title, description, host_url, admin)
 
 
-def api_create_topic(act, name, title, description, host_url):
+def api_create_topic(act, name, title, description, host_url, admin):
     """Create a topic by calling API via the common method."""
     image_url = '{}/images/topic-{}.png'.format(host_url, name)
+    # Make all research group admins as topic admins.
+    admin_users = [{'name': admin, 'capacity': 'admin'}]
 
     # Topics (group) roles: admin - manage info, member - add data to the topic (all can see the groups and datasets)
     # TODO: Ensure all users can add datasets to topics. determine which users will be topic admins.
-    args_dict = {'name': name, 'title': title, 'description': description, 'image_url': image_url}
+    args_dict = {'name': name, 'title': title, 'description': description, 'image_url': image_url, 'users': admin_users}
 
     created_msg = 'Topic already exists: {}'.format(title)
     exists_msg = 'Created a new topic {}'.format(title)
