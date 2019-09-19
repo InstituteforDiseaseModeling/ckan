@@ -25,7 +25,8 @@ class TestidmPlugins(helpers.FunctionalTestBase):
         u'Pneumonia',
         u'Polio',
         u'TB',
-        u'Typhoid']
+        u'Typhoid'
+    ]
 
     expected_purposes = [
         u'data',
@@ -81,6 +82,7 @@ class TestidmPlugins(helpers.FunctionalTestBase):
                       u'purpose': u'paper',
                       u'publisher': u'WTO',
                       u'notes': u'this is a test'}
+
     @classmethod
     def _apply_config_changes(cls, cfg):
         cfg[u'ckan.plugins'] = u'idm scheming_datasets'
@@ -296,7 +298,6 @@ class TestidmPlugins(helpers.FunctionalTestBase):
             validated = True
         assert validated
 
-
     def test_acquisition_date(self):
         testdata = self.basic_testdata.copy()
         testdata[u'name'] = sys._getframe().f_code.co_name
@@ -309,5 +310,3 @@ class TestidmPlugins(helpers.FunctionalTestBase):
             assert e.error_dict[u'acquisition_date']
             validated = True
         assert validated
-
-

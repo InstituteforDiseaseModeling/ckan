@@ -26,14 +26,18 @@ class datasetpage(basepage):
         u'gotoReourceTab': (By.PARTIAL_LINK_TEXT, u'Go to resource'),
         u'editResourceTab': (By.PARTIAL_LINK_TEXT, u'Edit'),
         u'resourceItems': (By.CSS_SELECTOR, u'li.resource-item'),
-        u'topicLink': (By.XPATH, u'//div[@role="main"]//a[contains(text(),"Topics")]'),
-        u'manageLink': (By.XPATH, u'//a[contains(@href,"/dataset/edit/")]'),
+        u'topicLink': (By.XPATH,
+                       u'//div[@role="main"]//a[contains(text(),"Topics")]'),
+        u'manageLink': (By.XPATH,
+                        u'//a[contains(@href,"/dataset/edit/")]'),
         u'metadataRows': (By.XPATH, u'//table//tr'),
-        u'titleElem': (By.CSS_SELECTOR, u'div.module-content h1.heading'),
+        u'titleElem': (By.CSS_SELECTOR,
+                       u'div.module-content h1.heading'),
         u'descriptionElem': (By.CSS_SELECTOR, u'div.notes p'),
 
         # not found
-        u'notfoundElem': (By.XPATH, u'//div[contains(text(),"Dataset not found")]')
+        u'notfoundElem': (By.XPATH,
+                          u'//div[contains(text(),"Dataset not found")]')
     }
 
     def find_resource_by_title(self, title):
@@ -59,14 +63,18 @@ class datasetpage(basepage):
         else:
             for row in self.metadataRows:
                 key = row.find_element_by_tag_name(u'th').text
-                key = u'Maintainer email' if key == u'Maintainer'else key
-                key = u'Spatial Extent' if key == u'Extent' else key
+                key = u'Maintainer email' \
+                    if key == u'Maintainer'else key
+                key = u'Spatial Extent' \
+                    if key == u'Extent' else key
                 if key.strip() == field:
-                    print("Field: {}".format(key))
+                    print(u"Field: {}".format(key))
                     if key == u'Maintainer email':
                         actual_value = row.find_element_by_xpath(u'.//td/a').text
                     elif key == u'Restricted':
-                        actual_value = u'False' if row.find_element_by_tag_name(u'td').text.strip() == u'' else u'True'
+                        actual_value = u'False' \
+                            if row.find_element_by_tag_name(u'td').text.strip() == u'' \
+                            else u'True'
                     else:
                         actual_value = row.find_element_by_tag_name(u'td').text
                     print(u"Value: {}".format(actual_value))

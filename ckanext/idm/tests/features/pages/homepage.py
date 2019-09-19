@@ -20,5 +20,5 @@ class homepage(basepage):
         u'registerTab': (By.PARTIAL_LINK_TEXT, u'Register'),
         u'searchTextField': (By.ID, u'field-sitewide-search'),
         u'searchButton': (By.CSS_SELECTOR, u'button.btn-search'),
-        u'searchDatasetField' : (By.ID, u'field-giant-search')
+        u'searchDatasetField': (By.ID, u'field-giant-search')
     }

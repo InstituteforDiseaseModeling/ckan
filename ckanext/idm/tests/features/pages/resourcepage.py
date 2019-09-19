@@ -20,20 +20,27 @@ class resourcepage(basepage):
     def check_metadata(self, field, value):
         metadatafound = False
         if field == u'Name':
-            actual_value = self.driver.find_element_by_xpath(u'//h1[@class="page-heading"]').text
-            metadatafound = True if actual_value.strip() == value else False
+            actual_value = self.driver.find_element_by_xpath(
+                u'//h1[@class="page-heading"]').text
+            metadatafound = True \
+                if actual_value.strip() == value else False
         elif field == u'Description':
-            actual_value = self.driver.find_element_by_css_selector(u'div.notes p').text
-            metadatafound = True if actual_value.strip() == value else False
+            actual_value = \
+                self.driver.find_element_by_css_selector(
+                    u'div.notes p').text
+            metadatafound = True \
+                if actual_value.strip() == value else False
         for row in self.metadataRows:
             key = row.find_element_by_tag_name(u'th').text
             key = u'Type' if key == u'Purpose' else key
             if key.strip() == field:
                 print(u"Field: {}".format(key))
                 if key == u'License':
-                    actual_value = row.find_element_by_xpath(u'.//td/a').text
+                    actual_value = \
+                        row.find_element_by_xpath(u'.//td/a').text
                 else:
-                    actual_value = row.find_element_by_tag_name(u'td').text
+                    actual_value = \
+                        row.find_element_by_tag_name(u'td').text
                 print(u"Value: {}".format(actual_value))
                 if value.strip() == actual_value.strip():
                     metadatafound = True

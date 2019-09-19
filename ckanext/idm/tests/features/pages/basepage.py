@@ -96,16 +96,19 @@ class basepage(object):
                     break
             if not selected:
                 try:
-                    fieldname.find_element_by_xpath(u'option[contains(text(),"{}")]'.format(fieldtext)).click()
+                    fieldname.find_element_by_xpath(
+                        u'option[contains(text(),"{}")]'.format(fieldtext)).click()
                 except AttributeError:
                     raise Exception(u'selection not found: ', fieldtext)
-        elif fieldname.tag_name == u'input' or fieldname.tag_name == u'textarea':
+        elif fieldname.tag_name == u'input' or \
+            fieldname.tag_name == u'textarea':
             if fieldname.get_attribute(u'type') == u'checkbox':
                 if fieldname.is_selected() != eval(fieldtext):
                     fieldname.click()
             elif fieldname.get_attribute(u'type') == u'date':
                 if self.driver.capabilities[u'browserName'] == u'chrome':
-                    fieldtext = datetime.strptime(fieldtext, u"%Y-%m-%d").strftime(u"%m/%d/%Y")
+                    fieldtext = datetime.strptime(
+                        fieldtext, u"%Y-%m-%d").strftime(u"%m/%d/%Y")
                 fieldname.clear()
                 fieldname.send_keys(fieldtext)
             else:

@@ -14,7 +14,7 @@ from pages.editresourcepage import editresourcepage
 @step(u'I have a dataset created with {data_values} for {data_fields}')
 def step_impl(context, data_fields, data_values):
     context.testtable = [
-        {u'fields': u'Title', u'values': u'test_updateDataset' + " " + datetime.datetime.now().strftime(u"%y%m%d_%H%M%S")},
+        {u'fields': u'Title', u'values': u'test_updateDataset' + u" " + datetime.datetime.now().strftime(u"%y%m%d_%H%M%S")},
         {u'fields': u'Description', u'values': u'This is a test'},
         {u'fields': u'Maintainer_email', u'values': u'test@idmod.org'},
         {u'fields': u'Purpose', u'values': u'Raw Data'},
@@ -53,7 +53,7 @@ def step_impl(context):
 @step(u'I enter {new_values} in {data_fields} to update dataset and expect changes to be there')
 def step_impl(context, new_values, data_fields):
     if data_fields == u'Spatial Extent':
-        context.editdatasetpage.fill_optional('spatial Mode', 'True')
+        context.editdatasetpage.fill_optional(u'spatial Mode', u'True')
     if data_fields in [u'Quality Issues',
                        u'Quality Rating',
                        u'Spatial Gaps',
@@ -77,17 +77,17 @@ def step_impl(context):
     context.editdatasetpage.delete()
     context.datasetpage = datasetpage(context)
     context.datasetpage.visit()
-    context.datasetpage.check_metadata('State', 'deleted')
+    context.datasetpage.check_metadata(u'State', u'deleted')
 
 
 @step(u'I go the Edit Resource tab')
 def step_impl(context):
     context.editdatasetpage.editResourceLink.click()
     if context.editdatasetpage.resourceElems is list:
-        context.resourcename = context.editdatasetpage.resourceElems[0].get_attribute('href').split('/')[-1]
+        context.resourcename = context.editdatasetpage.resourceElems[0].get_attribute(u'href').split(u'/')[-1]
         context.editdatasetpage.resourceElems[0].click()
     else:
-        context.resourcename = context.editdatasetpage.resourceElems.get_attribute('href').split('/')[-2]
+        context.resourcename = context.editdatasetpage.resourceElems.get_attribute(u'href').split(u'/')[-2]
         context.editdatasetpage.resourceElems.click()
 
 
@@ -97,7 +97,7 @@ def step_impl(context):
     context.editresourcepage.delete()
     context.resourcepage = resourcepage(context)
     context.resourcepage.visit()
-    assert '404' in context.resourcepage.driver.title
+    assert u'404' in context.resourcepage.driver.title
 
 
 @step(u'I go the Add Resource tab')
@@ -110,7 +110,7 @@ def step_impl(context):
 @step(u'I add a new resource')
 def step_impl(context):
     context.added_resource_name = u'ThisIsNewlyAdded'
-    context.newresourcepage.fill_required('Name', context.added_resource_name)
+    context.newresourcepage.fill_required(u'Name', context.added_resource_name)
     context.newresourcepage.addButton.click()
 
 

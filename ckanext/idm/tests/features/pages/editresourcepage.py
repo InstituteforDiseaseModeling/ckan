@@ -11,7 +11,7 @@ class editresourcepage(newresourcepage):
     def __init__(self, context):
         datasetname = context.datasetname
         context.relative_url = u'/dataset/{}/resource/'.format(datasetname)
-        if hasattr(context, 'resourcename'):
+        if hasattr(context, u'resourcename'):
             context.relative_url = context.relative_url + context.resourcename
         super(editresourcepage, self).__init__(context)
 

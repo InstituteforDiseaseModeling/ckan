@@ -21,7 +21,7 @@ class TestValidators(helpers.FunctionalTestBase):
         plugins.load(u'idm')
 
     '''
-    most set these in the config  
+    most set these in the config
     ckan.range_max_date=2020/12/31
     ckan.range_min_date=1950/01/01
     ckan.acquisition_max_date=2019/12/31

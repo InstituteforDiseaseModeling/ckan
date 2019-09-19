@@ -15,7 +15,6 @@ from pages.dashboardpage import dashboardpage
 from pages.datasettopicpage import datasettopicpage
 
 
-
 @step(u'I am registered')
 def step_impl(context):
     try:
@@ -65,7 +64,7 @@ def step_impl(context):
                 added = True
         assert added, u'user not added to {}'.format(row[u'Research Group'])
 
-           
+
 @step(u'a list of pre-defined "Tags" has been loaded in the system')
 def step_impl(context):
     for row in context.table:
@@ -87,9 +86,10 @@ def step_impl(context):
 
 @step(u'I have dataset info')
 def step_impl(context):
-    if not hasattr(context, 'testtable'):
+    if not hasattr(context, u'testtable'):
         context.testtable = [
-            {u'fields': u'Title', u'values': u'test_addDataset' + datetime.datetime.now().strftime(u"%y%m%d_%H%M%S")},
+            {u'fields': u'Title', u'values':
+                u'test_addDataset' + datetime.datetime.now().strftime(u"%y%m%d_%H%M%S")},
             {u'fields': u'Description', u'values': u'This is a test'},
             {u'fields': u'Maintainer_email', u'values': u'test@idmod.org'},
             {u'fields': u'Purpose', u'values': u'Raw Data'},
@@ -105,7 +105,6 @@ def step_impl(context):
             {u'fields': u'Restricted', u'values': u'False'},
             {u'fields': u'License', u'values': u'Creative Commons Attribution'}
         ]
-
 
 
 @step(u'I click "Add Dataset"')
@@ -137,7 +136,8 @@ def step_impl(context):
     if context.table is not None:
         context.testtable = context.table
     for row in context.testtable:
-        context.newdatasetpage.fill_required(row[u"fields"].replace(u'_',u' '), row[u"values"])
+        context.newdatasetpage.fill_required(
+            row[u"fields"].replace(u'_', u' '), row[u"values"])
 
 
 @step(u'I must set required dataset fields')
@@ -306,22 +306,25 @@ def step_impl(context, topic):
     context.topic = topic
     context.datasettopicpage = datasettopicpage(context)
     assert len(context.datasettopicpage.topicsOptions) > 1
-    context.datasettopicpage.fill_field(context.datasettopicpage.topicsInput, u" ", False)
+    context.datasettopicpage.fill_field\
+        (context.datasettopicpage.topicsInput, u" ", False)
     for option in context.datasettopicpage.topicsOptions:
         if topic in option.get_attribute(u'text'):
             foundTopic = True
             break
     assert foundTopic
     context.datasettopicpage.choose_autocomplete(topic)
-            
+
 
 @step(u'I can select the pre-existing {topic} to auto-complete their topic field')
 def step_impl(context, topic):
     context.topic = topic
     prefix = str(topic)[:1]
-    context.datasettopicpage.fill_field(context.datasettopicpage.topicsInput, prefix, False)
+    context.datasettopicpage.fill_field(
+        context.datasettopicpage.topicsInput, prefix, False)
     assert context.datasettopicpage.check_autocomplete(topic)
     context.datasettopicpage.choose_autocomplete(topic)
     context.datasettopicpage.addButton.click()
     assert len(
-        context.datasettopicpage.driver.find_elements_by_xpath(u'//a//span[contains(text(),"{}")]'.format(topic))) == 1
+        context.datasettopicpage.driver.find_elements_by_xpath(
+            u'//a//span[contains(text(),"{}")]'.format(topic))) == 1
