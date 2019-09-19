@@ -23,7 +23,18 @@ def main(args):
     host_url = get_host_url(args.host)
     act = RemoteCKAN(host_url, apikey=args.api_key).action
 
-    # Load data from a file and separate research groups and topics.
+    # Fail safe, only run if DB is empty or unless "force" flag is used.
+    if not args.force:
+        try:
+            fail_safe_check(act, act.user_list, 'users')
+            fail_safe_check(act, act.organization_list, 'research groups')
+            fail_safe_check(act, act.group_list, 'topics')
+
+        except ValidationError as e:
+            print e.error_dict['message']
+            sys.exit(1)
+
+        # Load data from a file and separate research groups and topics.
     items = load_yaml(args.file)
     rgroups = items['research_groups'] if items and items.get('research_groups') else []
     topics = items['topics'] if items and items.get('research_groups') else []
@@ -31,6 +42,13 @@ def main(args):
     # Create users, research groups and topics.
     create_research_groups_and_users(act, rgroups, host_url)
     create_topics(act, topics, host_url)
+
+
+def fail_safe_check(act, func, label):
+    message_end = 'Data bootstraping works only on an empty database or if "--force" flag is used.'
+    cnt = len(func(all_fields=False))
+    if cnt > 0:
+        raise ValidationError('Fail-safe: Found {} existing {}. {}'.format(cnt, label, message_end))
 
 
 def get_host_url(host):
@@ -179,6 +197,7 @@ def parse_args():
     parser.add_argument('-c', '--config', default='/etc/ckan/production.ini')
     parser.add_argument('--host', default=None)
     parser.add_argument('--dryrun', action='store_true')
+    parser.add_argument('--force', action='store_true')
     return parser.parse_args()
 
 
