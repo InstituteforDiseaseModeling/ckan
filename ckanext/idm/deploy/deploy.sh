@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 export CKAN_SITE_URL=http://$HOSTNAME:5000
 

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys

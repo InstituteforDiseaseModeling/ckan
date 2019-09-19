@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 """This module sets the behave environment"""
 from behave import use_fixture
 from utilities import driver

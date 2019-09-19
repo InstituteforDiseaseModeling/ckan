@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 from selenium.webdriver.common.by import By
 from .basepage import basepage
 from.homepage import homepage

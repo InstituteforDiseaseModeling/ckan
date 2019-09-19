@@ -1,4 +1,5 @@
 # encoding: utf-8
+
 """Tests for plugin.py."""
 import nose.tools as nt
 import ckanext.idm.helpers as idm_helper

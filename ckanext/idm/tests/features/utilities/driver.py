@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 import os
 import uuid
 from selenium import webdriver

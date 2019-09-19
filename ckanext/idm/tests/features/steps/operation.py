@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 from behave import step
 from hamcrest import assert_that, equal_to
 from pyredis import Client

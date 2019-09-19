@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # This file is used as a starting point for debugging from IDE (for example from PyCharm).
 import re
 import sys

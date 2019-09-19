@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 from datetime import datetime
 from urllib.parse import urljoin
 from selenium import webdriver
