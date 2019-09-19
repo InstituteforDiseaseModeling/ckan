@@ -9,28 +9,28 @@ import zipfile
 
 def load_locations():
     features = _load()
-    countries = [c['properties']['path'] for c in features]
+    countries = [c[u'properties'][u'path'] for c in features]
     countries = sorted(countries)
 
-    return ['World'] + countries
+    return [u'World'] + countries
 
 
 def get_location_geometry(location):
     features = _load()
-    geos = [c['geometry'] for c in features if c['properties']['path'] == location]
-    geo = str(geos[0] if len(geos) > 0 else '')
-    geo = geo.replace('u\'', '"')
-    geo = geo.replace('\'', '"')
+    geos = [c[u'geometry'] for c in features if c[u'properties'][u'path'] == location]
+    geo = str(geos[0] if len(geos) > 0 else u'')
+    geo = geo.replace(u'u\'', u'"')
+    geo = geo.replace(u'\'', u'"')
 
     return geo
 
 
 def _load():
     idm_dir = os.path.dirname(__file__)
-    locations_zip = os.path.join(idm_dir, r'../assets/geo/locations.zip')
-    with zipfile.ZipFile(locations_zip, 'r') as zf:
+    locations_zip = os.path.join(idm_dir, ur'../assets/geo/locations.zip')
+    with zipfile.ZipFile(locations_zip, u'r') as zf:
         file_name = zf.namelist()[0]
-        with zf.open(file_name, 'r') as cf:
-            features = json.load(cf)['features']
+        with zf.open(file_name, u'r') as cf:
+            features = json.load(cf)[u'features']
 
     return features

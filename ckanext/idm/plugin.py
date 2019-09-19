@@ -38,11 +38,11 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
             del facets_dict[key]
 
         #facets_dict_idm = OrderedDict()
-        facets_dict['location'] = p.toolkit._('Location')
-        facets_dict['disease'] = p.toolkit._('Disease')
-        facets_dict['publisher'] = p.toolkit._('Publisher')
-        facets_dict['res_format'] = p.toolkit._('Formats')
-        facets_dict['tags'] = p.toolkit._('Tags')
+        facets_dict[u'location'] = p.toolkit._(u'Location')
+        facets_dict[u'disease'] = p.toolkit._(u'Disease')
+        facets_dict[u'publisher'] = p.toolkit._(u'Publisher')
+        facets_dict[u'res_format'] = p.toolkit._(u'Formats')
+        facets_dict[u'tags'] = p.toolkit._(u'Tags')
 
         return facets_dict
 
@@ -93,14 +93,14 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
     # IConfigurer
 
     def update_config(self, config):
-        p.toolkit.add_template_directory(config, 'templates')
-        p.toolkit.add_public_directory(config, 'public')
+        p.toolkit.add_template_directory(config, u'templates')
+        p.toolkit.add_public_directory(config, u'public')
 
     # ITemplateHelpers
 
     def get_helpers(self):
         return {
-            'get_diseases_choices': hlp.get_diseases_choices
+            u'get_diseases_choices': hlp.get_diseases_choices
             #'get_resource_types_choices': hlp.get_resource_types_choices
         }
 
@@ -117,5 +117,5 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
     # IAuthFunctions
 
     def get_auth_functions(self):
-        return {'member_create': auth_create.member_create}
+        return {u'member_create': auth_create.member_create}
 

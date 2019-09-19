@@ -8,12 +8,12 @@ from ckan.common import _
 
 def member_create(context, data_dict):
     group = logic_auth.get_group_object(context, data_dict)
-    user = context['user']
+    user = context[u'user']
 
     # User must be able to update the group to add a member to it
-    permission = 'update'
+    permission = u'update'
     # However if the user is member of group then they can add/remove datasets
-    if not group.is_organization and data_dict.get('object_type') == 'package':
+    if not group.is_organization and data_dict.get(u'object_type') == u'package':
         #permission = 'manage_group'
 
         # Allows any user to add any dataset to any topic.
@@ -23,8 +23,8 @@ def member_create(context, data_dict):
                                                                 user,
                                                                 permission)
     if not authorized:
-        return {'success': False,
-                'msg': _('User %s not authorized to edit group %s') %
+        return {u'success': False,
+                u'msg': _(u'User %s not authorized to edit group %s') %
                         (str(user), group.id)}
     else:
-        return {'success': True}
+        return {u'success': True}

@@ -21,7 +21,7 @@ def publisher_autocomplete(ver=API_REST_DEFAULT_VERSION):
 def tag_autocomplete(ver=API_REST_DEFAULT_VERSION):
     q = request.args.get(u'incomplete', u'')
     limit = request.args.get(u'limit', 10)
-    vocabulary_id = request.args.get(u'vocabulary_id', '')
+    vocabulary_id = request.args.get(u'vocabulary_id', u'')
     tag_names = []
 
     if q:
@@ -38,7 +38,7 @@ def tag_autocomplete(ver=API_REST_DEFAULT_VERSION):
             u'vocabulary_id': vocabulary_id
         }
 
-        ag._check_access('tag_list', context, data_dict)
+        ag._check_access(u'tag_list', context, data_dict)
         tag_names = get_action(u'tag_list')(context, data_dict)
 
     resultSet = {

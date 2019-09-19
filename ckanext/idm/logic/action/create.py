@@ -3,7 +3,7 @@ from ckan.logic.action import  create
 
 
 def resource_create(context, data_dict):
-    fields = ['name', 'url', 'description']
+    fields = [u'name', u'url', u'description']
     has_data = any(len(data_dict[f]) > 0 for f in fields)
 
     if has_data:

@@ -14,7 +14,7 @@ import ckan.lib.dictization.model_dictize as model_dictize
 
 from ckanext.idm.logic.locations import load_locations
 
-log = logging.getLogger('ckan.logic')
+log = logging.getLogger(u'ckan.logic')
 _check_access = logic.check_access
 _select = sqlalchemy.sql.select
 _aliased = sqlalchemy.orm.aliased
@@ -34,9 +34,9 @@ def location_autocomplete(context, data_dict):
     # TODO: use geojson file with dot-names including continent, country, province, district levels
     default_list = load_locations()
 
-    #['World', 'Africa:Zambia', 'Africa:Kenya', 'Asia:Pakistan']
+    #[u'World', u'Africa:Zambia', u'Africa:Kenya', u'Asia:Pakistan']
 
-    results = _extra_autocomplete(context, data_dict, 'location', default_list)
+    results = _extra_autocomplete(context, data_dict, u'location', default_list)
 
     return results
 
@@ -44,34 +44,34 @@ def location_autocomplete(context, data_dict):
 @logic.validate(logic.schema.default_autocomplete_schema)
 def publisher_autocomplete(context, data_dict):
     # TODO: load the list of publishers from a file
-    default_list = ['WHO', 'NOAA', 'WorldPop', 'WorldClim']
+    default_list = [u'WHO', u'NOAA', u'WorldPop', u'WorldClim']
 
     # TODO:
     # - Only include datasets which a user has right to see
     # - Add a predefined list of data sources
     # - Consider capturing publishers a new group type
-    results = _extra_autocomplete(context, data_dict, 'publisher', default_list)
+    results = _extra_autocomplete(context, data_dict, u'publisher', default_list)
 
     return results
 
 
 def _extra_autocomplete(context, data_dict, key, default_list=[]):
-    model = context['model']
-    session = context['session']
+    model = context[u'model']
+    session = context[u'session']
 
-    #_check_access('package_update', context, data_dict)
-    q = data_dict['q']
-    limit = data_dict.get('limit', 5)
+    #_check_access(u'package_update', context, data_dict)
+    q = data_dict[u'q']
+    limit = data_dict.get(u'limit', 5)
 
     like_q = u'%' + q + u'%'
 
     query = (
         session
-            .query(model.PackageExtra.value, _func.count(model.PackageExtra.value).label('total'))
-            .filter(_and_(model.PackageExtra.key == key, model.PackageExtra.state == 'active',))
+            .query(model.PackageExtra.value, _func.count(model.PackageExtra.value).label(u'total'))
+            .filter(_and_(model.PackageExtra.key == key, model.PackageExtra.state == u'active',))
             .filter(model.PackageExtra.value.ilike(like_q))
             .group_by(model.PackageExtra.value)
-            .order_by('total DESC')
+            .order_by(u'total DESC')
             .limit(limit))
 
     results_1 = [package_extra.value for package_extra in query]
@@ -101,15 +101,15 @@ def group_list_authz(context, data_dict):
     :rtype: list of dicts
 
     '''
-    model = context['model']
-    user = context['user']
-    available_only = data_dict.get('available_only', False)
-    # am_member = data_dict.get('am_member', False)
+    model = context[u'model']
+    user = context[u'user']
+    available_only = data_dict.get(u'available_only', False)
+    # am_member = data_dict.get(u'am_member', False)
 
-    _check_access('group_list_authz', context, data_dict)
+    _check_access(u'group_list_authz', context, data_dict)
 
     # sysadmin = authz.is_sysadmin(user)
-    roles = authz.get_roles_with_permission('manage_group')
+    roles = authz.get_roles_with_permission(u'manage_group')
     if not roles:
         return []
     user_id = authz.get_user_id_for_username(user, allow_none=True)
@@ -133,7 +133,7 @@ def group_list_authz(context, data_dict):
 
     q = model.Session.query(model.Group) \
         .filter(model.Group.is_organization == False) \
-        .filter(model.Group.state == 'active')
+        .filter(model.Group.state == u'active')
 
     # if not sysadmin or am_member:
     #     q = q.filter(model.Group.id.in_(group_ids))
@@ -141,7 +141,7 @@ def group_list_authz(context, data_dict):
     groups = q.all()
 
     if available_only:
-        package = context.get('package')
+        package = context.get(u'package')
         if package:
             groups = set(groups) - set(package.get_groups())
 
