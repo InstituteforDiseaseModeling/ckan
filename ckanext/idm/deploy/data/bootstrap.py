@@ -26,7 +26,7 @@ def main(args):
     # Fail safe, only run if DB is empty or unless "force" flag is used.
     if not args.force:
         try:
-            fail_safe_check(act, act.user_list, 'users')
+            fail_safe_check(act, act.user_list, 'users', 2)
             fail_safe_check(act, act.organization_list, 'research groups')
             fail_safe_check(act, act.group_list, 'topics')
 
@@ -44,10 +44,10 @@ def main(args):
     create_topics(act, topics, host_url)
 
 
-def fail_safe_check(act, func, label):
+def fail_safe_check(act, func, label, max_count=0):
     message_end = 'Data bootstraping works only on an empty database or if "--force" flag is used.'
     cnt = len(func(all_fields=False))
-    if cnt > 0:
+    if cnt > max_count:
         raise ValidationError('Fail-safe: Found {} existing {}. {}'.format(cnt, label, message_end))
 
 
