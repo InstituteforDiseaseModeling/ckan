@@ -26,10 +26,10 @@ dataset_fields:
 - field_name: maintainer_email
   label: Maintainer
   required: true
-  form_placeholder: alias@idmod.org
-  display_property: dc:contributor
+  preset: maintainer_autocomplete
+  display_property: dc:creator
   display_snippet: email.html
-  display_email_name_field: maintainer_email
+  display_email_name_field: maintainer
 
 # Categorization
 

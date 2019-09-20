@@ -21,6 +21,18 @@
       }
     },
     {
+      "preset_name": "maintainer_autocomplete",
+      "values": {
+        "validators": "not_empty remove_whitespace unicode set_maintainer",
+        "form_snippet": "tags.html",
+        "form_placeholder": "Pick username or enter email or contact (e.g. Name Lastname <alias@server.com>)",
+        "form_attrs": {
+          "data-module": "autocomplete",
+          "data-module-source": "/api/2/util/user/autocomplete?q=?"
+        }
+      }
+    },
+    {
       "preset_name": "location_autocomplete",
       "values": {
         "validators": "not_empty unicode",

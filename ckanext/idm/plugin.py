@@ -111,6 +111,7 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
             u'reasonable_acquisition_date': validators.reasonable_acquisition_date,
             u'temporal_range': validators.temporal_range,
             u'set_spatial_to_location_geometry': converters.set_spatial_to_location_geometry,
+            u'set_maintainer': converters.set_maintainer,
         }
 
     # IAuthFunctions
