@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 import argparse
+import os
 import socket
 import sys
 import yaml
@@ -16,10 +17,15 @@ from ckanapi import RemoteCKAN
 
 
 def main(args):
-    u"""Populate IDM CKAN instance with initial data."""
+    u"""
+    Populate IDM CKAN instance with initial data. Supported scenarios:
+    1. From a docker host (computer name used for both API and images url.)
+    2. From within CKAN container (computer name for API URL and env. CKAN_SITE_URL for images)
+    3. Against a remote CKAN server (CKAN URL must be given as an argument, to be used for both API and images url)
+    """
 
     # Construct CKAN url and initiate API object.
-    host_url = get_host_url(args.host)
+    host_url = get_host_url(external_url_first=False)
     act = RemoteCKAN(host_url, apikey=args.api_key).action
 
     # Fail safe, only run if DB is empty or unless "force" flag is used.
@@ -39,8 +45,8 @@ def main(args):
     topics = items[u'topics'] if items and items.get(u'research_groups') else []
 
     # Create users, research groups and topics.
-    create_research_groups_and_users(act, rgroups, host_url)
-    create_topics(act, topics, host_url)
+    create_research_groups_and_users(act, rgroups)
+    create_topics(act, topics)
 
 
 def fail_safe_check(act, func, label, max_count=0):
@@ -50,9 +56,14 @@ def fail_safe_check(act, func, label, max_count=0):
         raise ValidationError(u'Fail-safe: Found {} existing {}. {}'.format(cnt, label, message_end))
 
 
-def get_host_url(host):
-    host_name = host or u'{}:5000'.format(socket.gethostname())
-    host_url = u'http://{}'.format(host_name)
+def get_host_url(external_url_first=True):
+    """Determines CKAN URL."""
+    if args.ckan_url:
+        host_url = args.ckan_url
+    elif external_url_first and u'CKAN_SITE_URL' in os.environ:
+        host_url = os.environ[u'CKAN_SITE_URL']
+    else:
+        host_url = u'http://localhost:5000' #.format(socket.gethostname())
 
     return host_url
 
@@ -68,7 +79,7 @@ def load_yaml(file_path):
     return items
 
 
-def create_research_groups_and_users(act, rgroups, host_url):
+def create_research_groups_and_users(act, rgroups):
     u"""Iterate over research groups (RG), create each RG add listed member users."""
     for name, info in rgroups.items():
         members = []
@@ -87,7 +98,7 @@ def create_research_groups_and_users(act, rgroups, host_url):
         # Create the research group adding listed users as members.
         title = info[u'title'] if info and info.get(u'title') else name
         description = info[u'description'] if info and info.get(u'description') else u''
-        api_create_research_group(act, name, title, description, host_url, admin, members)
+        api_create_research_group(act, name, title, description, admin, members)
 
 
 def create_single_user(act, user_raw, all_members):
@@ -125,8 +136,9 @@ def api_create_user(act, username, full_name, email, password):
     return name
 
 
-def api_create_research_group(act, name, title, description, host_url, admin, members):
+def api_create_research_group(act, name, title, description, admin, members):
     u"""Create a research group by calling API via the common method."""
+    host_url = get_host_url()
     image_url = u'{}/images/rgroup-{}.png'.format(host_url, name)
 
     # Research Group (organization) roles: member - see all datasets, editor - edit datasets, admin - manage info
@@ -141,17 +153,18 @@ def api_create_research_group(act, name, title, description, host_url, admin, me
     _call_api(act.organization_create, args_dict, created_msg, exists_msg, error_msg)
 
 
-def create_topics(act, topics, host_url):
+def create_topics(act, topics):
     u"""Iterate over topics and create them."""
     for name, info in topics.items():
         title = info[u'title'] if info and info.get(u'title') else name
         description = info[u'description'] if info and info.get(u'description') else u''
         admin = info[u'admin']
-        api_create_topic(act, name, title, description, host_url, admin)
+        api_create_topic(act, name, title, description, admin)
 
 
-def api_create_topic(act, name, title, description, host_url, admin):
+def api_create_topic(act, name, title, description, admin):
     u"""Create a topic by calling API via the common method."""
+    host_url = get_host_url()
     image_url = u'{}/images/topic-{}.png'.format(host_url, name)
     # Make all research group admins as topic admins.
     admin_users = [{u'name': admin, u'capacity': u'admin'}]
@@ -191,13 +204,12 @@ def _call_api(func, args_dict, created_msg, exists_msg, err_msg):
     return ret
 
 def parse_args():
-    example = ur"python bootstrap.py 2f83d65d-e5e9-4e22-9c52-baaf898c2022 -c ..\windows-local\development.ini"
+    example = ur"python bootstrap.py 2f83d65d-e5e9-4e22-9c52-baaf898c2022"
     parser = argparse.ArgumentParser(example)
     parser.add_argument(u'api_key')
     parser.add_argument(u'-f', u'--file', default=u'metadata.yaml')
     parser.add_argument(u'-p', u'--password', default=u'Password123')
-    parser.add_argument(u'-c', u'--config', default=u'/etc/ckan/production.ini')
-    parser.add_argument(u'--host', default=None)
+    parser.add_argument(u'--url', dest='ckan_url', default=None)
     parser.add_argument(u'--dryrun', action=u'store_true')
     parser.add_argument(u'--force', action=u'store_true')
     return parser.parse_args()
