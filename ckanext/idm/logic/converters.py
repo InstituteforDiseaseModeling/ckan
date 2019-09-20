@@ -21,7 +21,7 @@ def set_maintainer(key, data, errors, context):
     value = data[key].strip()
     has_email = re.match(ur'[^@]+@[^@]+\.[^@]+', value)
     if has_email:
-        if u'<' in value and '>' in value:
+        if u'<' in value and u'>' in value:
             data[(u'maintainer',)], data[(u'maintainer_email',)] = parseaddr(value)
         else:
             email = value.replace(u' ', u'')
