@@ -19,21 +19,21 @@ def set_spatial_to_location_geometry(key, data, errors, context):
 
 def set_maintainer(key, data, errors, context):
     value = data[key].strip()
-    has_email = re.match(r'[^@]+@[^@]+\.[^@]+', value)
+    has_email = re.match(ur'[^@]+@[^@]+\.[^@]+', value)
     if has_email:
-        if '<' in value and '>' in value:
+        if u'<' in value and '>' in value:
             data[(u'maintainer',)], data[(u'maintainer_email',)] = parseaddr(value)
         else:
-            email = value.replace(' ', '')
-            if context.get('package') is None or context['package'].maintainer_email != email:
+            email = value.replace(u' ', u'')
+            if context.get(u'package') is None or context[u'package'].maintainer_email != email:
                 data[(u'maintainer',)] = email
             else:
-                data[(u'maintainer',)] = context['package'].maintainer
+                data[(u'maintainer',)] = context[u'package'].maintainer
     else:
         try:
-            user = logic.get_action('user_show')(context, {'id': value})
-            data[(u'maintainer_email',)] = user['email']
-            data[(u'maintainer',)] = user['fullname']
+            user = logic.get_action(u'user_show')(context, {u'id': value})
+            data[(u'maintainer_email',)] = user[u'email']
+            data[(u'maintainer',)] = user[u'fullname']
         except logic.NotFound as e:
             raise Invalid(_(u'Maintainer is wrong'.format()))
 
