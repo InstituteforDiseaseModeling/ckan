@@ -7,7 +7,6 @@ import sys
 import yaml
 
 from string import punctuation
-from ckan.logic import ValidationError, NotAuthorized
 from ckanapi import RemoteCKAN
 
 # Before this script can run there has to be at least one sysadmin user whose API key is used for loading data.
@@ -25,7 +24,7 @@ def main(args):
     """
 
     # Construct CKAN url and initiate API object.
-    host_url = get_host_url(external_url_first=False)
+    host_url = args.ckan_url or u'http://localhost:5000'
     act = RemoteCKAN(host_url, apikey=args.api_key).action
 
     # Fail safe, only run if DB is empty or unless "force" flag is used.
@@ -35,8 +34,8 @@ def main(args):
             fail_safe_check(act, act.organization_list, u'research groups')
             fail_safe_check(act, act.group_list, u'topics')
 
-        except ValidationError as e:
-            print e.error_dict[u'message']
+        except ImportError as e:
+            print e.message
             sys.exit(1)
 
         # Load data from a file and separate research groups and topics.
@@ -53,17 +52,17 @@ def fail_safe_check(act, func, label, max_count=0):
     message_end = u'Data bootstraping works only on an empty database or if "--force" flag is used.'
     cnt = len(func(all_fields=False))
     if cnt > max_count:
-        raise ValidationError(u'Fail-safe: Found {} existing {}. {}'.format(cnt, label, message_end))
+        raise ImportError(u'Fail-safe: Found {} existing {}. {}'.format(cnt, label, message_end))
 
 
-def get_host_url(external_url_first=True):
-    """Determines CKAN URL."""
+def get_image_url_prefix():
+    """Determines image URL prefix."""
     if args.ckan_url:
         host_url = args.ckan_url
-    elif external_url_first and u'CKAN_SITE_URL' in os.environ:
+    elif u'CKAN_SITE_URL' in os.environ:
         host_url = os.environ[u'CKAN_SITE_URL']
     else:
-        host_url = u'http://localhost:5000' #.format(socket.gethostname())
+        host_url = u'http://{}:5000'.format(socket.gethostname())
 
     return host_url
 
@@ -138,7 +137,7 @@ def api_create_user(act, username, full_name, email, password):
 
 def api_create_research_group(act, name, title, description, admin, members):
     u"""Create a research group by calling API via the common method."""
-    host_url = get_host_url()
+    host_url = get_image_url_prefix()
     image_url = u'{}/images/rgroup-{}.png'.format(host_url, name)
 
     # Research Group (organization) roles: member - see all datasets, editor - edit datasets, admin - manage info
@@ -164,7 +163,7 @@ def create_topics(act, topics):
 
 def api_create_topic(act, name, title, description, admin):
     u"""Create a topic by calling API via the common method."""
-    host_url = get_host_url()
+    host_url = get_image_url_prefix()
     image_url = u'{}/images/topic-{}.png'.format(host_url, name)
     # Make all research group admins as topic admins.
     admin_users = [{u'name': admin, u'capacity': u'admin'}]
@@ -187,16 +186,15 @@ def _call_api(func, args_dict, created_msg, exists_msg, err_msg):
     if args and hasattr(args, u'dryrun') and not args.dryrun:
         try:
             ret = func(**args_dict)
-        except ValidationError as e:
-            if e.error_dict and e.error_dict.get(u'name') and err_msg in e.error_dict[u'name'][0]:
+        except Exception as e:
+            ok = False
+            if hasattr(e, u'error_dict') and e.error_dict and e.error_dict.get(u'name') and err_msg in e.error_dict[u'name'][0]:
                 print created_msg
-                ok = False
+            elif u'not authorized' in str(e):
+                print u"NotAuthorized: Make sure api key is valid and the user is a sysadmin."
+                sys.exit(1)
             else:
                 raise e
-        except NotAuthorized as e:
-            ok = False
-            print u"NotAuthorized: Make sure api key is valid and the user is a sysadmin."
-            sys.exit(1)
 
     if ok:
         print exists_msg
