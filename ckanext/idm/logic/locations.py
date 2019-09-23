@@ -5,6 +5,8 @@ import os
 import zipfile
 
 # TODO: Optimize loading of locations (import into db or load to some session object).
+WORLD = u'World'
+WORLD_GEOMETRY = u'{ "type": "Polygon", "coordinates": [ [ [ -180, -90 ], [ -180, 90 ], [ 180, 90 ], [ 180, -90 ], [ -180, -90 ] ] ] }'
 
 
 def load_locations():
@@ -16,6 +18,9 @@ def load_locations():
 
 
 def get_location_geometry(location):
+    if location.lower() == WORLD.lower():
+        return WORLD_GEOMETRY
+
     features = _load()
     geos = [c[u'geometry'] for c in features if c[u'properties'][u'path'] == location]
     geo = str(geos[0] if len(geos) > 0 else u'')
