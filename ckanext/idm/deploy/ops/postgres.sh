@@ -1,29 +1,71 @@
 #!/usr/bin/env bash
 
-TIME_STAMP=$(date +'%Y%m%d-%I%M')
-LABEL="$HOSTNAME"_"$TIME_STAMP"
+COMMAND=$1
+IN_TAR=$2
+CKAN_ENV=${3:-prod}
+
+LABEL=_"$HOSTNAME"_"$(date +'%Y%m%d-%I%M')"
 BACKUP_DIR=/mnt/ActiveDevelopmentProjects/ckan/backup/$HOSTNAME
 
-case  $1  in
-      backup)
-            #https://docs.ckan.org/en/2.8/maintaining/database-management.html
-            #docker exec db pg_dump --format=custom -d ckan_default > ckan.dump
+# Ensure working dir
+my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd $my_dir
 
-            docker exec db pg_dumpall -c --if-exists -U ckan -w > /tmp/postgres_"$LABEL".sql
-            tar -cvzf "$BACKUP_DIR"/postgres_"$LABEL".tar.gz -C /tmp postgres_"$LABEL".sql
-            rm /tmp/postgres_"$LABEL".sql
+function tar_pg {
+  dst_dir=$1
+  label=$2
+
+  mkdir -p $dst_dir
+  tar_path="$dst_dir"/postgres"$label".tar.gz
+  temp_dir=$(mktemp -d)
+  sql_file=postgres"$label".sql
+
+  echo Step 1: Dump all databases into "$tar_path"
+  docker exec db pg_dumpall -c --if-exists -U ckan -w > "$temp_dir"/"$sql_file"
+
+  echo Step 2: Tar database dumps
+  tar -cvzf "$tar_path" -C "$temp_dir" "$sql_file"
+  rm -fR "$temp_dir"
+}
+
+function restore_pg {
+  tar_path="$1"
+
+  read -p "Are you sure?"
+  echo
+
+  if [[ $REPLY =~ delete-all-data ]]
+  then
+    sql_file=postgres.sql
+    temp_dir=$(mktemp -d)
+    sql_path="$temp_dir"/"$sql_file"
+
+    echo Step 1: Extract backup tar into "$sql_path"
+    tar -xOzf "$tar_path" > "$sql_path"
+
+    echo Step 2: Apply sql dump to db container
+    docker cp /"$sql_path" db:/tmp/"$sql_file"
+    docker exec db psql -U ckan -w -f /tmp/"$sql_file"
+    docker exec db rm /tmp/"$sql_file"
+    rm "$sql_path"
+
+    sleep 10
+    echo Step 3: Reindex Solr
+    docker exec ckan paster search-index rebuild -c /etc/ckan/production.ini
+  else
+    echo Incorrect confirmation phrase...exiting.
+    exit 1
+  fi
+}
+
+case $COMMAND  in
+      backup)
+            echo "Backup postgres dumps"
+            tar_pg "$BACKUP_DIR" "$LABEL"
             ;;
       restore)
-            #https://docs.ckan.org/en/2.8/maintaining/database-management.html
-            #docker exec ckan paster db clean -c /etc/ckan/default/production.ini
-            #docker exec db pg_restore --clean --if-exists -d ckan_default < ckan.dump
-
-            file_name="$(basename -- $2)"
-            tar -xzf $2 > /tmp/"$file_name"
-            docker cp /tmp/"$file_name" db:/tmp/"$file_name"
-            docker exec db psql -U ckan -w -f /tmp/"$file_name"
-            docker exec db rm /tmp/"$file_name"
-            rm /tmp/"$file_name"
+            echo "Restore postgres dump tar"
+            restore_pg "$IN_TAR"
             ;;
       *)
 esac

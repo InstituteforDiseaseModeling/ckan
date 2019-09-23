@@ -33,25 +33,43 @@ function deploy_prod {
   echo "Deploying PROD environment"
   docker-compose build
   docker-compose down
-  docker-compose up -d
-  sleep 10
-  docker-compose up -d ckan
-  docker-compose logs
-  sleep 10
+  prod_up
 }
 
 function deploy_stage {
   echo "Deploying STAGE environment"
   docker-compose -f docker-compose.yml -f docker-local.yml build
   docker-compose -f docker-compose.yml -f docker-local.yml down
+  stage_up
+}
+
+
+function prod_up {
+  docker-compose up -d
+  sleep 10
+  docker-compose up -d ckan
+  docker exec ckan paster search-index rebuild -c /etc/ckan/production.ini
+  docker-compose logs
+  sleep 10
+}
+
+function stage_up {
   docker-compose -f docker-compose.yml -f docker-local.yml up -d
   sleep 10
   docker-compose -f docker-compose.yml -f docker-local.yml up -d ckan
+  docker exec ckan paster search-index rebuild -c /etc/ckan/production.ini
   docker-compose -f docker-compose.yml -f docker-local.yml logs
   sleep 10
 }
 
+
 case  $1  in
+      stage-up)
+          stage_up
+          ;;
+      prod-up)
+          prod_up
+          ;;
       stage)
           deploy_stage
           ;;
