@@ -30,6 +30,7 @@ dataset_fields:
   display_property: dc:creator
   display_snippet: email.html
   display_email_name_field: maintainer
+  help_text: Enter or pick a username, enter an email or copy-paste a contact from an email (e.g. First Last <alias@server.org>).
 
 # Categorization
 
@@ -129,7 +130,7 @@ dataset_fields:
   choices:
   - value: manual
     label: Location extent is set manually.
-  help_text: By default, if location is picked from the autocomplete list, the extent is set automatically when dataset is created/updated. .
+  help_text: By default, if location is picked from the autocomplete list, the extent is set automatically when dataset is created/updated.
 
 - field_name: spatial_gaps
   label: Spatial Gaps

@@ -35,7 +35,7 @@ def set_maintainer(key, data, errors, context):
             data[(u'maintainer_email',)] = user[u'email']
             data[(u'maintainer',)] = user[u'fullname']
         except logic.NotFound as e:
-            raise Invalid(_(u'Maintainer is wrong'.format()))
+            raise Invalid(_(u'Enter a username, an email or a contact (e.g. First Last <alias@server.org>).'))
 
     return data[key]
 
