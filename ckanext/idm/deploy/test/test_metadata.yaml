@@ -3,7 +3,7 @@ research_groups:
     title: Test Automation
     description: 'test automation use'
     admin: Test Admin <testadmin@idmod.org>
-    members: Test User <testuser@idmod.org> Test User2 <testuser2@idmod.org> Test User3 <testuser3@idmod.org>
+    members: Test User <testuser@idmod.org>; Test User2 <testuser2@idmod.org>; Test User3 <testuser3@idmod.org>
 
 topics:
   BDD:
