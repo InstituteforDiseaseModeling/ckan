@@ -8,4 +8,5 @@ chmod +x deploy.sh
 now=$(date +"%m_%d_%Y")
 ./deploy.sh prod 2>&1 | tee -a /home/mewu/ckan/deploy_$now.log
 cd test
+chmod +x run-test-bootstrap.sh
 ./run-test-bootstrap.sh

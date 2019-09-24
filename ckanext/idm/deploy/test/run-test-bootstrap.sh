@@ -14,6 +14,7 @@ docker cp ckan:/home/ckan/src/ckan/ckanext/idm/deploy/data/apikey.txt ./apikey.t
 apikey=$(<apikey.txt)
 echo "$apikey"
 
-python ../data/bootstrap.py $apikey --force
-python ../data/bootstrap.py $apikey -f test_metadata.yml -p testPassword --force
+cd ../data/
+python bootstrap.py $apikey --force
+python bootstrap.py $apikey -f ../test/test_metadata.yml -p testPassword --force
 
