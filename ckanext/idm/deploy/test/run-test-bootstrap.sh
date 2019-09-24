@@ -16,5 +16,5 @@ echo "$apikey"
 
 cd ../data/
 python bootstrap.py $apikey --force
-python bootstrap.py $apikey -f ../test/test_metadata.yml -p testPassword --force
+python bootstrap.py $apikey -f ../test/test_metadata.yaml -p testPassword --force
 
