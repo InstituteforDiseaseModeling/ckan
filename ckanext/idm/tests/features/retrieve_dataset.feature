@@ -7,7 +7,6 @@ Feature: Retrieve dataset
 
   Background:
     Given I am logged in
-    And I am added to the research group
 
   @retrieveDataset
   Scenario: retrieve the dataset url
@@ -82,17 +81,17 @@ Feature: Retrieve dataset
     | Type        |
     | Format      |
 
-
+  @pri1
   Scenario: Download dataset
     Given a dataset was previously created with resource uploaded
-    When I am on dataset page (tag:retrieveDataset)
+    When I am on resource page
     Then I can Click download and save a copy successfully
 
 
   Scenario Outline: Preview dataset
     Given a dataset was previously created with resource uploaded
     And the resource was in the following <format>
-    When I am on dataset page (tag:retrieveDataset)
+    When I am on dataset page
     Then I can preview the resource
 
     Examples:
@@ -101,7 +100,7 @@ Feature: Retrieve dataset
       | txt    |
       | png    |
 
-
+  @pri1
   Scenario Outline: Find Dataset by filters
     Given the dataset is created with metadata <filter>=<value>
     When I click Dataset
@@ -110,7 +109,7 @@ Feature: Retrieve dataset
     Examples:
       | filter     | value        |
       | Location   | Asia:Taiwan  |
-      | Disease    | Any          |
+      | Disease    | HIV          |
       | Publisher  | SecretOrg    |
       | Formats    | json         |
       | Tags       | UniqueTag    |

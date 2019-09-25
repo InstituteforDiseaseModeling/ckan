@@ -2,6 +2,7 @@
 
 from selenium.webdriver.common.by import By
 from .basepage import basepage
+import requests
 
 
 class resourcepage(basepage):
@@ -9,7 +10,7 @@ class resourcepage(basepage):
     def __init__(self, context):
         context.relative_url = u'dataset/' + \
                                context.datasetname + \
-                               u'/resource' + \
+                               u'/resource/' + \
                                context.resourcename
         super(resourcepage, self).__init__(context)
 
@@ -48,3 +49,7 @@ class resourcepage(basepage):
         if not metadatafound:
             raise Exception(u'value "{}" does not match {}:'.format(field, value))
 
+    def check_download_resource(self, filename):
+        downloadlink = self.driver.find_element_by_xpath(u'//a[contains(@href,"{}")]'.format(filename)).get_attribute(u"href")
+        ret = request = requests.get(downloadlink)
+        assert ret.status_code == 200

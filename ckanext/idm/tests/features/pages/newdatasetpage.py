@@ -86,7 +86,8 @@ class newdatasetpage(basepage):
             raise Exception(u'field not in the optional list:', fieldname)
 
     def fill_field(self, fieldname, fieldtext, handler=None, autocomplete=False):
-        if handler in [u'Research Group', u'Location', u'Publisher', u'License', u'Tags']:
+        handler = u'Maintainer' if handler == u'Maintainer email' else handler
+        if handler in [u'Research Group', u'Location', u'Publisher', u'License', u'Tags', u'Maintainer']:
             if not autocomplete:
                 self.driver.find_element_by_xpath(
                     u'//div//label[contains(text(),"{}")]/following-sibling::input'.format(handler))\

@@ -8,10 +8,11 @@ Feature: Update dataset
  Background:
     Given I am logged in
 
+ @pri1
  Scenario: Change Topic Association
-   Given the dataset is created and associated with a topic
-   When I am on dataset page
-   And I can change the topic association from the topic tab
+   Given the dataset is created and associated with a topic Mortality
+   When I click on the Topic tab on dataset page
+   And I can change the topic association to Births from the topic tab
 
  @pri1
  Scenario Outline: Update dataset metadata

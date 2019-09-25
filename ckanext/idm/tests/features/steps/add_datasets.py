@@ -266,7 +266,11 @@ def step_impl(context):
 @step(u'I can click "Finish"')
 def step_impl(context):
     context.newresourcepage.finishButton.click()
-
+    context.datasetpage = datasetpage(context)
+    if context.datasetpage.resourceItems is list:
+        context.resourcename = context.datasetpage.resourceItems [0].get_attribute(u"data-id")
+    else:
+        context.resourcename = context.datasetpage.resourceItems.get_attribute(u"data-id")
 
 @step(u'I can click "Upload" and select a local file')
 def step_impl(context):
@@ -289,6 +293,21 @@ def step_impl(context):
         Given I have filled in all required fields(tag:allRequiredFields)
         When I can click "Add Data"
         And I can click "Link"
+        And I must set required resource fields
+        And I can click "Finish"
+        ''')
+
+
+@step(u'a dataset was previously created with resource uploaded')
+def step_impl(context):
+    context.resourcetable = [
+        {u'fields': u'Name', u'values': u'test data'},
+        {u'fields': u'Type', u'values': u'Data'}]
+    context.testfile = u'testfiles/test.png'
+    context.execute_steps(u'''
+        Given I have filled in all required fields(tag:allRequiredFields)
+        When I can click "Add Data"
+        And I can click "Upload" and select a local file
         And I must set required resource fields
         And I can click "Finish"
         ''')

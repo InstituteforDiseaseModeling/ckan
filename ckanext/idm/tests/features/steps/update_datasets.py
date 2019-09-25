@@ -9,6 +9,7 @@ from pages.editdatasetpage import editdatasetpage
 from pages.resourcepage import resourcepage
 from pages.newresourcepage import newresourcepage
 from pages.editresourcepage import editresourcepage
+from pages.datasettopicpage import datasettopicpage
 
 
 @step(u'I have a dataset created with {data_values} for {data_fields}')
@@ -136,3 +137,24 @@ def step_impl(context):
 def step_impl(context, new_value, field):
     context.resourcepage = resourcepage(context)
     context.resourcepage.check_metadata(field, new_value)
+
+
+@step(u'the dataset is created and associated with a topic Mortality')
+def step_impl(context):
+    context.topic = u'Mortality'
+    context.execute_steps(u'''
+       Given I have created a dataset with resource (tag:addDataRequiredFields)
+       When I click on the Topic tab on dataset page
+       ''')
+    context.datasettopicpage = datasettopicpage(context)
+    context.datasettopicpage.associate_topic(context.topic)
+
+
+@step(u'I can change the topic association to Births from the topic tab')
+def step_impl(context):
+    context.datasettopicpage = datasettopicpage(context)
+    context.datasettopicpage.remove_topic(context.topic)
+    context.datasettopicpage.associate_topic(u"Births")
+    assert len(
+        context.datasettopicpage.driver.find_elements_by_xpath(
+            u'//a//span[contains(text(),"Births")]')) == 1
