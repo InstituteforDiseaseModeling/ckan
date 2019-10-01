@@ -43,11 +43,13 @@ def main(args):
         # Load data from a file and separate research groups and topics.
     items = hlp.load_yaml(args.file)
     rgroups = items[u'research_groups'] if items and items.get(u'research_groups') else []
-    topics = items[u'topics'] if items and items.get(u'research_groups') else []
+    topics = items[u'topics'] if items and items.get(u'topics') else []
+    tags = items[u'tags'] if items and items.get(u'tags') else []
 
     # Create users, research groups and topics.
     create_research_groups_and_users(act, rgroups)
     create_topics(act, topics)
+    create_tag_vocabularies(act, tags)
 
 
 def fail_safe_check(act, func, label, max_count=0):
@@ -163,6 +165,29 @@ def create_topics(act, topics):
         description = info[u'description'] if info and info.get(u'description') else u''
         admin = info[u'admin']
         api_create_topic(act, name, title, description, admin)
+
+
+def create_tag_vocabularies(act, tags):
+    u"""Iterate over tag vocabularies and create them with tags."""
+    for vocabulary_id, tags in tags.items():
+        api_create_tag_vocabulary(act, vocabulary_id, tags)
+
+
+def api_create_tag_vocabulary(act, vocabulary_id, tags):
+    # , u'vocabulary_id': vocabulary_id
+    tags_dicts = [{u'name': t} for t in tags]
+    args_dict = {u'name': vocabulary_id, u'tags': tags_dicts}
+
+    success_msg = u'Created a new tag vocabulary {}'.format(vocabulary_id)
+    errors_to_skip = [
+        {
+            u'error': u'That vocabulary name is already in use',
+            u'message': u'Vocabulary already exists: {}'.format(vocabulary_id)
+        }
+    ]
+
+    if not args.dryrun:
+        hlp.call_api(act.vocabulary_create, args_dict, success_msg, errors_to_skip)
 
 
 def api_create_topic(act, name, title, description, admin):

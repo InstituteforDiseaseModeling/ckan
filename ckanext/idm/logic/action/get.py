@@ -2,10 +2,7 @@
 
 '''API functions for searching for and getting data from CKAN.'''
 
-import json
 import logging
-import os
-import zipfile
 
 import sqlalchemy
 
@@ -28,8 +25,6 @@ _text = sqlalchemy.text
 
 
 
-
-
 @logic.validate(logic.schema.default_autocomplete_schema)
 def location_autocomplete(context, data_dict):
     # TODO: use geojson file with dot-names including continent, country, province, district levels
@@ -44,16 +39,17 @@ def location_autocomplete(context, data_dict):
 
 @logic.validate(logic.schema.default_autocomplete_schema)
 def publisher_autocomplete(context, data_dict):
-    # TODO: load the list of publishers from a file
-    default_list = [u'WHO', u'NOAA', u'WorldPop', u'WorldClim', u'DHS', u'UNICEF', u'CDC', ]
+    # TODO: Load the list of publishers from a file
+    default_list = get_default_publishers()
 
-    # TODO:
-    # - Only include datasets which a user has right to see
-    # - Add a predefined list of data sources
-    # - Consider capturing publishers a new group type
+    # TODO: Consider capturing publishers a new group type
     results = _extra_autocomplete(context, data_dict, u'publisher', default_list)
 
     return results
+
+
+def get_default_publishers():
+    return [u'WHO', u'NOAA', u'WorldPop', u'WorldClim', u'DHS', u'UNICEF', u'CDC']
 
 
 def _extra_autocomplete(context, data_dict, key, default_list=[]):

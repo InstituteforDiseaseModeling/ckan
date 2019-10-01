@@ -14,7 +14,7 @@ def load_yaml(file_path):
     return data
 
 
-def call_api(func, args_dict, success_msg='', errors_to_skip=None):
+def call_api(func, args_dict={}, success_msg='', errors_to_skip=[]):
     u"""The common API call method handling exceptions used to detect existing data."""
     ok = True
     ret = None
@@ -33,13 +33,13 @@ def call_api(func, args_dict, success_msg='', errors_to_skip=None):
                 has_name_in_err_dict = hasattr(e, u'error_dict') and e.error_dict and e.error_dict.get(u'name')
                 if has_name_in_err_dict and err in e.error_dict[u'name'][0] or err in str(e):
                     error_processed = True
-                    print '{}: {}'.format(err_info[u'message'], str(e))
+                    print '{}: {}'.format(err_info[u'message'], str(e).strip())
                     break
 
         if not error_processed:
             raise e
 
-    if ok:
+    if ok and success_msg:
         print success_msg
 
     return ret

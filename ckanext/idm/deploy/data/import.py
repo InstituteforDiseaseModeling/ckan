@@ -7,9 +7,6 @@ import re
 import unicodecsv as csv
 
 from ckanapi import RemoteCKAN
-# NOTE: the dependency on idm ckan extension means this script cannot run outside of a ckan container (or local setup)
-from ckanext.idm.logic.locations import load_locations
-
 
 import helpers as hlp
 
@@ -238,12 +235,20 @@ def prep_dataset_args(rgh, ds_dict, ds_defaults_map, error_msgs):
     ds_dict[u'name'] = construct_name(ds_dict)
 
     # Parse years range from 'title' or 'notes' fields
-    ds_dict['ext_startdate'], ds_dict['ext_enddate'] = parse_start_end_dates(ds_dict)
+    ds_dict['ext_startdate'], ds_dict['ext_enddate'] = parse_start_end_dates(ds_dict, ds_defaults_map)
 
     # Parse location from 'title' or 'notes' fields
-    ds_dict['location'] = parse_location(ds_dict, ds_defaults_map)
+    ds_dict['location'] = parse_location(rgh.act, ds_dict, ds_defaults_map)
 
-    # TODO: parse: publisher, disease tags, url
+    # TODO: parse: tags, url
+
+    # Parse publisher from 'title' or 'notes' fields
+    publishers = hlp.call_api(rgh.act.publisher_autocomplete, {u'q': ''})
+    ds_dict['publisher'] = guess_field(ds_dict, ds_defaults_map, 'publisher', publishers)
+
+    # Parse disease from 'title' or 'notes' fields
+    diseases = [d for d in hlp.call_api(rgh.act.tag_list, {u'vocabulary_id': u'disease'}) if d != 'Any']
+    ds_dict[u'disease'] = guess_field(ds_dict, ds_defaults_map, u'disease', diseases)
 
 
 def construct_name(ds_dict):
@@ -256,9 +261,10 @@ def construct_name(ds_dict):
     return name
 
 
-def parse_location(ds_dict, ds_defaults_map):
+def parse_location(act, ds_dict, ds_defaults_map):
     # Sort locations in reverse order in respect to level, to examine
-    locations_split = [loc.split(':') for loc in load_locations()]
+    all_locations = hlp.call_api(act.location_autocomplete, {u'q': ''})
+    locations_split = [loc.split(':') for loc in all_locations]
     locations_and_levels = [(len(loc), loc) for loc in locations_split]
     locations = sorted(locations_and_levels, key=lambda v: v[0], reverse=True)
 
@@ -297,10 +303,10 @@ def prep_resource_args(rgh, rs_dict, rs_defaults_map, error_msgs):
     pass
 
 
-def parse_start_end_dates(ds_dict):
+def parse_start_end_dates(ds_dict, ds_defaults_map):
     start_date, end_date = None, None
     for f in ['title', 'notes']:
-        if ds_dict['ext_startdate'] == '1900-01-01' and ds_dict['ext_enddate'] == '1900-01-01':
+        if all([ds_dict[field] == ds_defaults_map[field] for field in ['ext_startdate', 'ext_enddate']]):
             start_date, end_date = _parse_years_range(ds_dict[f])
             if start_date and end_date:
                 break
@@ -327,6 +333,27 @@ def _parse_years_range(value):
     return start_date, end_date
 
 
+def guess_field(ds_dict, ds_defaults_map, target_field, possible_values, source_fields=['title', 'notes']):
+    if not ds_dict[target_field] or ds_dict[target_field] == ds_defaults_map[target_field]:
+        target_field_value = None
+        for f in source_fields:
+            if target_field_value:
+                break
+
+            for value in possible_values:
+                if target_field_value:
+                    break
+
+                if value.lower() in ds_dict[f].lower():
+                    target_field_value = value
+                    break
+
+        if target_field_value:
+            ds_dict[target_field] = target_field_value
+
+    return target_field_value or ds_dict[target_field]
+
+
 def _parse_url(value):
     url_maybe = ''
     if value:
@@ -334,7 +361,7 @@ def _parse_url(value):
         if url_maybe:
             url_maybe = url_maybe.group("url")
 
-    return  url_maybe
+    return url_maybe
 
 
 def _validate_args_dict_value(error_msgs, field, item, key=None):

@@ -98,3 +98,16 @@ topics:
     title: Vertical Transmission Cohort Study (VTS)
     description: ''
     admin: kmccarthy
+tags:
+  disease:
+    - Any
+    - Cholera
+    - Ebola
+    - HAT
+    - HIV
+    - Polio
+    - TB
+    - Typhoid
+    - Malaria
+    - Measles
+    - Pneumonia
