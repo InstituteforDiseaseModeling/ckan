@@ -1,0 +1,102 @@
+ELT Group,Group,Researcher,Raw Dataset Description,Current Dataset Location,Expected Dataset Location,Current Dataset Permissions,Expected Dataset Permissions,Code Repository,Notes,Forum,Date
+gdr,amath,dklein,Nigeria DHIS2 ,,,,,,,Gates Review,1/9/2019
+ghr,dda,kgustafson,Sierra Leone Ebola cases + genetics,,,,,,Current stakeholder?,Gates Review,5/24/2017
+gdr,dda,jproctor,CHAMPS data,JLP owned dropbox project folder with csv,JLP idmod dropbox folder,None,,,,Gates Review,9/6/2017
+gdr,dda,jproctor,"MCPR, method mix by country",JLP owned dropbox project folder with Laina,JLP idmod dropbox folder,None,,,,Gates Review,9/6/2017
+gdr,dda,jproctor,Nigeria measles cases,With Kevin's team and shared IDM drive,With Kevin's team and shared IDM drive,"Can not give data out, but can show results",,,Current stakeholder?,Gates Review,9/6/2017
+gdr,dda,jproctor,"Bandundu, DRC HAT cases (2003-2008)",In dropbox project folder owned by Cody and Caitlin,In dropbox project folder owned by Cody and Caitlin,Unknown to me; need to discuss with Caitlin,,,Current stakeholder?,Gates Review,9/6/2017
+gdr,dda,jproctor,Bangladesh cholera cases (2010-2016),"Unknown, owned by Dennis Chao","Unknown, owned by Dennis Chao","Can not give data out, but can show results",,,Current stakeholder?,Gates Review,9/6/2017
+gdr,dda,jproctor,Africa Centre spatial incidence,I don't believe this was in my slides,I don't believe this was in my slides,,,,Current stakeholder?,Gates Review,9/6/2017
+gdr,dda,lmercer,"DHS + MCPR, unmet need by country, parity, age, method","Q:\lmercer\MixedMethodSurveys\DHS\Data; HL: Not exhaustive, check with JP",,"Need to apply to DHS for surveys, but approval is almost automatic",,,,Gates Review,1/17/2018
+gdr,dda,lmercer,"Nigeria DHS, MICS, PMA2020, NNHS mCPR estimates",\Dropbox (IDM)\IDM-UW,,Somewhat informal; BMGF endpoint so can't share with consideration,,,,Gates Review,9/17/2018
+gdr,dda,jproctor,Senegal DHS surveys,Senegal surveys exist on Q drive; processed data exists in dropbox project folder,Senegal surveys exist on Q drive; processed data exists in dropbox project folder,Need to apply to DHS for surveys.,,,,Gates Review,9/17/2018
+gdr,econ,ghagedorn,GPEI costs,,,,,,,Gates Review,5/23/2018
+gdr,econ,mzimmermann,Nigeria measles costs,,,,,,,Gates Review,5/23/2018
+ghr,epi,dchao,Matlab cholera cases (1997-2001),,,,,,,Gates Review,1/11/2017
+ghr,epi,dchao,Haiti cholera cases (2011-2017),,,,,,,Gates Review,1/11/2017
+ghr,epi,jgauld,Santiago typhoid cases (1975-2014),,,,,,,Gates Review,1/11/2017
+ghr,epi,hhu,WHO Ebola case data,Q:/ and Dropbox?,,"hhu, Ben's group, ewenger",No publication or presentation outside of IDM/BMGF,,Current stakeholder?,Gates Review,5/24/2017
+ghr,epi,bwagner,Israel pneumo carriage (1997-2008),Dropbox (IDM)/hhu/Home/data/Israel,,"hhu, Ben's group, ewenger",Can publish (actively encouraged),,Current stakeholder?,Gates Review,5/24/2017
+ghr,epi,balthouse,WHO Ebola contact data,,,,,,Current stakeholder?,Gates Review,5/24/2017
+ghr,epi,jgauld,"Kathmandu, Blantyre, Kibera typhoid cases, locations, genetics",,,,,,,Gates Review,9/6/2017
+ghr,epi,balthouse,Pakistan PCV rollout,,,,Can publish (actively encouraged),,,Gates Review,9/6/2017
+ghr,epi,balthouse,Pneumo carriage Navajo,Dropbox (IDM)/hhu/Home/data/Navajo/data,,"hhu, Ben's group, ewenger",Can publish,,,Gates Review,-/-/2017
+ghr,epi,balthouse,Pneumo carriage Boston,,,,Can publish,,,Gates Review,-/-/2016
+ghr,epi,jgauld,Blantyre typhoid cases,,,,,,,Gates Review,5/23/2018
+ghr,epi,balthouse,Israel pneumo strain carriage (1997-2015),Can publish (actively encouraged),,,,,,Gates Review,9/17/2018
+ghr,epi,balthouse,Vietnam PCV baseline prevalence,,,,,,,Gates Review,9/17/2018
+ghr,epi,balthouse,Vietnam hospital cases by pathogen (2007-2012),"Can publish, working on getting 2012-2018 data",,,,,,Gates Review,9/17/2018
+ghr,epi,balthouse,"WA, MD, FL, CT hospitalization records (2004-2015)","Have to add to HCUP agreement, Althouse as PI",,,,,,Gates Review,9/17/2018
+ghr,epi,balthouse,RSV trends (Google),Google data,,,,,,Gates Review,9/17/2018
+ghr,hiv,bjewell,"SEARCH mobility, prevalence data",Britta's non-IDM Dropbox account except for map which is pins on Google Maps,,bjewell,Not to be shared outside of SEARCH staff,,,Gates Review,5/24/2017
+ghr,hiv,aakullian,"Africa Centre incidence, ART data",aakullian Dropbox,,"aakullian, abershteyn","aakullian, abershteyn (requires AHRI training in uMkhanyakude)",,,Gates Review,5/24/2017
+ghr,hiv,bjewell,"SEARCH viral suppression, barriers to uptake at baseline",https://www.ncbi.nlm.nih.gov/pubmed/27989576,,Public,Public,,,Gates Review,1/17/2018
+gdr,hiv,abershteyn,"Botswana incidence, suppression by cluster, year",https://www.youtube.com/watch?v=jEiUTU7wqbA   (see 1hr 14m),,Public,Public,,,Gates Review,9/17/2018
+ghr,hiv,bjewell,"SEARCH viral suppression, incidence, TB, mortality (year-3)",https://www.youtube.com/watch?v=jEiUTU7wqbA   (see 1hr 26m),,Public,Public,,,Gates Review,9/17/2018
+ghr,hiv,bjewell,"Siaya, Kenya incidence (2011-2016)",https://www.ncbi.nlm.nih.gov/pubmed/29650451,,Public,Public,,,Gates Review,9/17/2018
+ghr,hiv,aakullian,"Swaziland incidence, suppression by age/gender (PHIA: 2010-2015)",https://phia.icap.columbia.edu/wp-content/uploads/2017/11/Swaziland_new.v8.pdf,,Public,Public,,,Gates Review,9/17/2018
+ghr,hiv,aakullian,"AHRI incidence, prevalence, ART by age, gender, year",aakullian Dropbox,,"aakullian, abershteyn","aakullian, abershteyn (requires AHRI training in uMkhanyakude)",,,Gates Review,1/9/2019
+ghr,hiv,jmiller,,N/A (model only),,,,,,Gates Review,1/9/2019
+ghr,malaria,abertozzivilla,Karen VMW cases and MDA surveys,Dropbox (IDM)\Malaria Team Folder\data\Myanmar\METF,,Dropbox:Malaria Group,malaria,,,Gates Review,1/11/2017
+ghr,malaria,abertozzivilla,Karen VMW cases and MDA surveys,Dropbox (IDM)\Malaria Team Folder\data\Myanmar\METF,,Dropbox:Malaria Group,malaria,,,Gates Review,9/6/2017
+ghr,malaria,abertozzivilla,MAP environmental-covariate + mosquito-abundance layers,Dropbox (IDM)\Malaria Team Folder\projects\map_intervention_impact\seasonal_classification\africa\rasters,,Dropbox:Malaria Group,malaria,,,Gates Review,9/17/2018
+ghr,malaria,aouedraogo,"Kaya, Ziniare SMC records (2015-2016)",Dropbox (IDM)\Malaria Team Folder\projects\burkina_spatial_smc,,Dropbox:Malaria Group,,,,Gates Review,1/11/2017
+ghr,malaria,aouedraogo,"Burkina population (HRSL), DHIS2 cases",Dropbox (IDM)\Malaria Team Folder\projects\burkina_spatial_smc,,Dropbox:Malaria Group,,,,Gates Review,1/17/2018
+ghr,malaria,cbever,"Zambia rounds, routine, intervention data",Dropbox (IDM)\Malaria Team Folder\data\Zambia\MACEPA\rounds_data,,Dropbox:Malaria Group + jproctor + mvangordon,,,,Gates Review,5/24/2017
+ghr,malaria,cbever,"Zambia rounds, routine, intervention data",Dropbox (IDM)\Malaria Team Folder\data\Zambia\MACEPA\rounds_data,,Dropbox:Malaria Group + jproctor + mvangordon,,,,Gates Review,9/6/2017
+ghr,malaria,cbever,"Zambia rounds, routine, intervention data",Dropbox (IDM)\Malaria Team Folder\data\Zambia\MACEPA\rounds_data,,Dropbox:Malaria Group + jproctor + mvangordon,,,,Gates Review,1/17/2018
+ghr,malaria,cbever,"Zambia rounds, routine, intervention data",Dropbox (IDM)\Malaria Team Folder\data\Zambia\MACEPA\rounds_data,,Dropbox:Malaria Group + jproctor + mvangordon,,,,Gates Review,5/23/2018
+ghr,malaria,cbever,"Nanoro RTS,S cases",Dropbox (IDM)\Malaria Team Folder\data\Burkina\RTS'S\Data Mal55 2,,Dropbox:Malaria Group + dchao + nnoori + mvangordon,,,,Gates Review,1/9/2019
+ghr,malaria,ewenger,Pf3k released sequences,Dropbox (IDM)/Malaria Team Folder/data/Genetics/Pf3k,,Dropbox:Malaria Group,IDM-All (with Pf3k attribution),,HDF5 file of read depths from Alistair Miles,Gates Review,5/24/2017
+ghr,malaria,ewenger,Thies barcodes + metadata,Dropbox (IDM)/Malaria Team Folder/data/Genetics/Harvard_barcodes,,Dropbox:Malaria Group,"malaria, dda-genetics, epi-genetics",,,Gates Review,9/6/2017
+ghr,malaria,ewenger,Kilifi locations + genetics,Dropbox (IDM)/Malaria Team Folder/data/Genetics/Omedo,,Dropbox:Malaria Group,"public (published supplement, secondary analysis actively encouraged)",,,Gates Review,9/6/2017
+ghr,malaria,ewenger,Rachuonyo locations + serology + genetics,Dropbox (IDM)/Malaria Team Folder/data/Kenya/Rachuonyo,,Dropbox:Malaria Group,"malaria, Gillian Stresman",,,Gates Review,9/6/2017
+ghr,malaria,hhu,"GEMS, MAL-ED incidence by pathogen",,,,,,Current stakeholder?,Gates Review,9/17/2018
+ghr,malaria,jgerardin,Mozambique MAP improved estimates,Dropbox (IDM)\Malaria Team Folder\projects\mz_magude\incidence_calibration\transmission_population_comparison,,Dropbox:Malaria Group,,,Current stakeholder?,Gates Review,5/23/2018
+ghr,malaria,jgerardin,"Nanoro RTS,S cases + DSS deaths + DHIS cases",Dropbox (IDM)\Malaria Team Folder\data\Burkina\Nanoro,,Dropbox:Malaria Group,,,,Gates Review,9/17/2018
+ghr,malaria,jgerardin,"INDIE trial locations, surveys, cases",Dropbox (IDM)\Malaria Team Folder\data\Burkina\INDIE,,Dropbox:Malaria Group,malaria,,,Gates Review,1/9/2019
+ghr,malaria,jgerardin,ATSB Mali trial data,Dropbox (IDM)\Malaria Team Folder\data\Novel VC\ATSB,,Dropbox:Malaria Group,malaria,,,Gates Review,1/9/2019
+ghr,malaria,jrussell,"Uganda ICEMR routine, case data",Dropbox (IDM)\Malaria Team Folder\data\Uganda\PRISM,,Dropbox:Malaria Group,,,,Gates Review,5/24/2017
+ghr,malaria,jrussell,"Uganda ICEMR routine, case data",Dropbox (IDM)\Malaria Team Folder\data\Uganda\PRISM,,Dropbox:Malaria Group,,,,Gates Review,1/17/2018
+ghr,malaria,jrussell,Malariatherapy density measurements,Dropbox (IDM)\Malaria Team Folder\data\Malariatherapy,,Dropbox:Malaria Group,,,,Gates Review,9/17/2018
+ghr,malaria,jsuresh,"Magude ento, survey, routine, reactive data",Dropbox (IDM)\Malaria Team Folder\data\Mozambique\Magude,,Dropbox:Malaria Group,,,,Gates Review,5/23/2018
+ghr,malaria,mnikolov,Haiti malaria cases,Dropbox (IDM)/Malaria Team Folder/data/Haiti,,Dropbox:Malaria Group,"malaria, dchao",,Current stakeholder?,Gates Review,1/11/2017
+ghr,malaria,mnikolov,Nigeria population raster (HRSL),Dropbox (IDM)/Malaria Team Folder/data/Nigeria,,Dropbox:Malaria Group,public (with HRSL attribution),,Current stakeholder?,Gates Review,1/17/2018
+ghr,malaria,pselvaraj,"Garki entomology, parasitology",https://github.com/InstituteforDiseaseModeling/malaria-ng-garki/tree/master/SitesAnalyzers/study_sites/inputs/GarkiDB_data,,IDM,public (from ND database),,,Gates Review,9/6/2017
+ghr,malaria,pselvaraj,"Garki entomology, parasitology",https://github.com/InstituteforDiseaseModeling/malaria-ng-garki/tree/master/SitesAnalyzers/study_sites/inputs/GarkiDB_data,,IDM,public (from ND database),,,Gates Review,1/17/2018
+ghr,malaria,pselveraj,INDIE household locations,Dropbox (IDM)\Malaria Team Folder\data\Burkina\INDIE,,Dropbox:Malaria Group,,,,Gates Review,9/17/2018
+gdr,measles,kmccarthy,Nigeria non-measles febrile rash cases,"Multiple Dropbox locations, multiple ""iterations"" of dataset","Single Dropbox location, or other easily accessible, protected, and backed-up solution",Access to Dropbox (IDM)\Measles\,IDM Measles team,,,Gates Review,5/24/2017
+gdr,measles,kfrey,Nigeria measles cases,"Multiple Dropbox locations, multiple ""iterations"" of dataset","Single Dropbox location, or other easily accessible, protected, and backed-up solution",Access to Dropbox (IDM)\Measles\,IDM Measles team,,,Gates Review,1/17/2018
+gdr,measles,nthakkar,Pakistan measles cases,Raw: Dropbox (IDM)\Pakistan Measles data.  Cleaned: ?,"Single Dropbox location, or other easily accessible, protected, and backed-up solution",Access to Dropbox (IDM)\Measles\,IDM Measles team,,,Gates Review,1/17/2018
+gdr,measles,nthakkar,Iceland measles cases,Dropbox (IDM)\Measles\Iceland,"Single Dropbox location, or other easily accessible, protected, and backed-up solution",Access to Dropbox (IDM)\Measles\,IDM Measles team,,,Gates Review,5/23/2018
+gdr,measles,nthakkar,"Nigeria measles cases, population, demographics","Multiple Dropbox locations, shared measles machine","Single Dropbox location, or other easily accessible, protected, and backed-up solution",Access to Dropbox (IDM)\Measles\,IDM Measles team,,,Gates Review,9/17/2018
+gdr,measles,nthakkar,Nigeria and Pakistan admin2 case reporting,"Contained above in ""Nigeria measles cases"" and ""Pakistan measles cases""","Single Dropbox location, or other easily accessible, protected, and backed-up solution",Access to Dropbox (IDM)\Measles\,IDM Measles team,,,Gates Review,1/9/2019
+gdr,measles,nthakkar,DHS MCV coverage estimates,Niket?,"Single Dropbox location, or other easily accessible, protected, and backed-up solution",Access to Dropbox (IDM)\Measles\,"IDM Measles team, Vaccine Delivery team, Tracy Dong",,,Gates Review,1/9/2019
+gdr,measles,kfrey,,,,,,,,Gates Review,1/9/2019
+ghr,mnch,hhu,IHME under-5 mortality,"IHME on IHME website, plus more detailed copies dchao",,"Public + some details only dchao, aoron",,,Current stakeholder?,Gates Review,1/17/2018
+ghr,mnch,aoron,"IHME under-5 mortality, InDepth mortality, MORDOR case data. IHME as above",Q:/MORDOR (limited access). InDepth data on InDepth website,,"Mordor: aoron,nnoori,dchao. InDepth data are public after signing up",,,,Gates Review,5/23/2018
+ghr,mnch,aoron,"MORDOR location data, IHME future projections",Q:/MORDOR (limited access); IHME projections on aoron OneDrive,,"Mordor: aoron,nnoori,dchao ",,,,Gates Review,9/17/2018
+ghr,mnch,dchao,GEMS bacterial and viral diarrhea,,,,,,,Gates Review,1/9/2019
+ghr,mnch,aouedraogo,Nanoro DSS deaths and VA,"Dropbox Nanoro folder (under malaria?), plus local staging copies",,,,,,Gates Review,1/9/2019
+gdr,polio,lmercer,Nigeria OPV campaign info,\Dropbox (IDM)\Laina_CountryProjects\Nigeria\Immunity,,"WHO HQ data sharing agreement for POLIS data, informal for Nigeria (programmatic use, publication harder)",,,,Gates Review,1/11/2017
+gdr,polio,skroiss,Sabin detection in AFP + ES,"Q:\Data\Polis; HL: this is for POLIS data (pulled weekly), country data a little spottier in various Dropbox + Personal OneDrive",,"WHO HQ data sharing agreement for POLIS data, informal for country genetics; programmatic use only, pub a little harder",,,,Gates Review,1/11/2017
+gdr,polio,hlyons,Pakistan AFP + ES data,"Q:\Data\Polis; HL: this is for POLIS data (pulled weekly), country data a little spottier in various Dropbox + Personal OneDrive",,"WHO HQ data sharing agreement for POLIS data, informal for country genetics; programmatic use only, pub a little harder",,,,Gates Review,5/24/2017
+gdr,polio,mfamulare,"Pakistan, Nigeria ES genetics",,,,,,,Gates Review,5/24/2017
+gdr,polio,lmercer,"Syria AFP, campaign data","Dropbox (IDM)\LakeChad\Data; ""Dropbox (IDM)\lake chad lcb repository"" (WHO owned)",,"Unless it is POLIS data, country data was provided by Lake Chad task force for programmatic use only",,,,Gates Review,9/6/2017
+gdr,polio,kmccarthy,"Lake Chad population, accessibility",,,,,,,Gates Review,9/6/2017
+gdr,polio,mfamulare,AFRO AFP cases (2003-2017),,,,,,,Gates Review,9/6/2017
+gdr,polio,hlyons,Pakistan AFP + ES data,"Q:\Data\Polis; HL: this is for POLIS data (pulled weekly), country data a little spottier in various Dropbox + Personal OneDrive",Country/RRL data/WHO reports can be put in a dropbox (some are email),"WHO HQ data sharing agreement for POLIS data, informal for country genetics; programmatic use only, pub a little harder",,,,Gates Review,1/17/2018
+gdr,polio,hlyons,Karachi ES catchment polygons (Novel-T),"maps.novel-t.ch for current data however historical data may not be recoverable, likely on personal Dropbox or OneDrive",,Unclear,,,,Gates Review,1/17/2018
+gdr,polio,lmercer,"Syria AFP, campaign data",Dropbox (IDM)\Syria,,"Provided by EMRO, programmatic use only",,,,Gates Review,1/17/2018
+gdr,polio,lmercer,"AFRO, EMRO AFP + ES cases","Q:\Data\Polis; HL: this is for POLIS data (pulled weekly), country data a little spottier in various Dropbox + Personal OneDrive",,"WHO HQ data sharing agreement for POLIS data, informal for country genetics; programmatic use only, pub a little harder",,,,Gates Review,5/23/2018
+gdr,polio,hlyons,"Afghanistan, Pakistan AFP + ES cases, genetic clusters, accessibility","Q:\Data\Polis; HL: this is for POLIS data (pulled weekly), country data a little spottier in various Dropbox + Personal OneDrive",Country/RRL data/WHO reports can be put in a dropbox (some are email),"WHO HQ data sharing agreement for POLIS data, informal for country genetics; programmatic use only, pub a little harder",,,,Gates Review,5/23/2018
+gdr,polio,skroiss,"Afghanistan, Pakistan genetic links",country data a little spottier in various Dropbox + Personal OneDrive,Country/RRL data/WHO reports can be put in a dropbox (some are email),"Informal for country/RRL genetics; programmatic use only, pub a little harder",,,,Gates Review,5/23/2018
+gdr,polio,mfamulare,"Afghanistan, Pakistan genetic sequences",,,,,,,Gates Review,9/17/2018
+ghr,tb,abershteyn,Nigeria TB prevalence surveys,Public (http://www.who.int/tb/publications/NigeriaReport_WEB_NEW.pdf),,Public,"Public (however, microdata that we have received is private/confidential)",,Current stakeholder?,Gates Review,5/24/2017
+ghr,tb,abershteyn,Hong Kong TB cases (1979-1998),Public (https://doi.org/10.1017/S0950268807008552),,Public,Public,,Current stakeholder?,Gates Review,9/6/2017
+ghr,tb,abershteyn,T-cell dynamics in active cases,Public (https://doi.org/10.1371/journal.pone.0044728),,Public,Public,,Current stakeholder?,Gates Review,9/6/2017
+ghr,tb,bwagner,South Africa TB incidence estimates (WHO),"Current -  https://www.who.int/tb/country/data/download/en/ .  Previous - Dropbox (IDM)\IDM TB team working folder\GTB ""Year""",,"All, historical - HIV/TB team",Public for everything,,As per WHO policy current estimates supersede previous (but we keep copies),Gates Review,1/17/2018
+ghr,tb,bwagner,"LAM, CRP sensitivity and specificity",Literature (meta-analysis for CRP),,Public (and open access),Public   ,,,Gates Review,5/23/2018
+ghr,tb,schang,Nutrition relative risk data,Public (https://doi.org/10.1093/cid/cix476),,Public,Public,,,Gates Review,5/23/2018
+ghr,tb,schang,country-level TB risk factors,Public (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2739916/; https://www.who.int/vmnis/vitamina/data/en/),,Public,Public,,,Gates Review,1/9/2019
+ghr,epi,jgauld,Kibera Typhoid,idmppfil02\ActiveResearchProjects\KiberaTyphoid,,IDM- Dropbox not permitted,,idmppfil02\ActiveResearchProjects\KiberaTyphoid,,Gates Review,2019

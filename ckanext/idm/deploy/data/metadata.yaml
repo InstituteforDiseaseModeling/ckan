@@ -4,8 +4,8 @@ research_groups:
     description: 'Global Development'
     admin: Daniel Klein <dklein@idmod.org>
     members: Atiye Alaeddini <aalaeddini@idmod.org>; Cliff Kerr <ckerr@idmod.org>
-  ds:
-    title: Data Services (DS)
+  data_services:
+    title: Data Services
     description: 'Software'
     admin: Christopher Lorton <clorton@idmod.org>
     members: Dennis Harding <dharding@idmod.org>; Meikang Wu <mewu@idmod.org>; Mary Fisher <mafisher@idmod.org>

@@ -36,6 +36,7 @@ IF "%command%"=="up-backend"      CALL :UP_BACKEND
 IF "%command%"=="up-ckan"         CALL :UP_CKAN
 IF "%command%"=="logs"            CALL :LOGS %2
 IF "%command%"=="backup"          CALL :BACKUP_VOLUMES
+IF "%command%"=="boot"          CALL :BOOTSTRAP
 
 GOTO :END
 
@@ -100,6 +101,11 @@ docker cp ckan:/var/lib/ckan/webassets %bk_dir%\ckan\webassets
 docker cp db:/var/lib/postgresql/data %bk_dir%\db
 docker cp solr:/opt/solr/server/solr/ckan/data %bk_dir%\solr
 EXIT /B
+
+:BOOTSTRAP
+docker exec ckan /home/ckan/src/ckan/ckanext/idm/deploy/data/bootstrap.sh
+EXIT /B
+
 
 :END
 popd

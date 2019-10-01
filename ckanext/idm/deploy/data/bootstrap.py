@@ -9,6 +9,8 @@ import yaml
 from string import punctuation
 from ckanapi import RemoteCKAN
 
+import helpers as hlp
+
 # Before this script can run there has to be at least one sysadmin user whose API key is used for loading data.
 #
 # paster user add dlukacevic email=dlukacevic@idmod.org fullname="Dejan Lukacevic" -c /etc/ckan/production.ini
@@ -30,16 +32,16 @@ def main(args):
     # Fail safe, only run if DB is empty or unless "force" flag is used.
     if not args.force:
         try:
-            fail_safe_check(act, act.user_list, u'users', 2)
-            fail_safe_check(act, act.organization_list, u'research groups')
-            fail_safe_check(act, act.group_list, u'topics')
+            hlp.fail_safe_check(args.force, act.user_list, u'users', max_count=2)
+            hlp.fail_safe_check(args.force, act.organization_list, u'research groups')
+            hlp.fail_safe_check(args.force, act.group_list, u'topics')
 
         except ImportError as e:
             print e.message
             sys.exit(1)
 
         # Load data from a file and separate research groups and topics.
-    items = load_yaml(args.file)
+    items = hlp.load_yaml(args.file)
     rgroups = items[u'research_groups'] if items and items.get(u'research_groups') else []
     topics = items[u'topics'] if items and items.get(u'research_groups') else []
 
@@ -52,7 +54,7 @@ def fail_safe_check(act, func, label, max_count=0):
     message_end = u'Data bootstraping works only on an empty database or if "--force" flag is used.'
     cnt = len(func(all_fields=False))
     if cnt > max_count:
-        raise ImportError(u'Fail-safe: Found {} existing {}. {}'.format(cnt, label, message_end))
+        raise ImportError(u'Fail-safe: Found {} existing {}. {} Use "--force" flag to override.'.format(cnt, label, message_end))
 
 
 def get_image_url_prefix():
@@ -65,17 +67,6 @@ def get_image_url_prefix():
         host_url = u'http://{}:5000'.format(socket.gethostname())
 
     return host_url
-
-
-def load_yaml(file_path):
-    with open(file_path, u'r') as stream:
-        items = None
-        try:
-            items = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print exc.message
-
-    return items
 
 
 def create_research_groups_and_users(act, rgroups):
@@ -124,11 +115,18 @@ def api_create_user(act, username, full_name, email, password):
     u"""Create a user by calling API via the common method."""
     args_dict = {u'name': username, u'email': email, u'fullname': full_name, u'password': password}
 
-    created_msg = u'User already exists: {}'.format(username)
-    exists_msg = u'Created a new user {}'.format(username)
-    error_msg = u'name is not available'
+    success_msg = u'Created a new user {}'.format(username)
+    errors_to_skip = [
+        {
+            u'error':u'name is not available',
+            u'message':u'User already exists: {}'.format(username)
+        }
+    ]
 
-    new_user = _call_api(act.user_create, args_dict, created_msg, exists_msg, error_msg)
+    if not args.dryrun:
+        new_user = hlp.call_api(act.user_create, args_dict, success_msg, errors_to_skip)
+    else:
+        new_user = None
 
     name = new_user[u'name'] if new_user and new_user.get(u'name') else None
 
@@ -145,11 +143,17 @@ def api_create_research_group(act, name, title, description, admin, members):
     users.append({u'name': admin, u'capacity': u'admin'})
 
     args_dict = {u'name': name, u'title': title, u'description': description, u'image_url': image_url, u'users': users}
-    created_msg = u'Research Group already exists: {}'.format(title)
-    exists_msg = u'Created a new research group {}'.format(title)
-    error_msg = u'name already exists'
 
-    _call_api(act.organization_create, args_dict, created_msg, exists_msg, error_msg)
+    success_msg = u'Created a new research group {}'.format(title)
+    errors_to_skip = [
+        {
+            u'error':u'name already exists',
+            u'message':u'Research Group already exists: {}'.format(title)
+        }
+    ]
+
+    if not args.dryrun:
+        hlp.call_api(act.organization_create, args_dict, success_msg, errors_to_skip)
 
 
 def create_topics(act, topics):
@@ -172,34 +176,18 @@ def api_create_topic(act, name, title, description, admin):
     # TODO: Ensure all users can add datasets to topics. determine which users will be topic admins.
     args_dict = {u'name': name, u'title': title, u'description': description, u'image_url': image_url, u'users': admin_users}
 
-    created_msg = u'Topic already exists: {}'.format(title)
-    exists_msg = u'Created a new topic {}'.format(title)
-    error_msg = u'name already exists'
+    success_msg = u'Created a new topic {}'.format(title)
+    errors_to_skip = [
+        {
+            u'error':u'name already exists',
+            u'message':u'Topic already exists: {}'.format(title)
+        }
+    ]
 
-    _call_api(act.group_create, args_dict, created_msg, exists_msg, error_msg)
+    if not args.dryrun:
+        hlp.call_api(act.group_create, args_dict, success_msg, errors_to_skip)
 
 
-def _call_api(func, args_dict, created_msg, exists_msg, err_msg):
-    u"""The common API call method handling exceptions used to detect existing data."""
-    ok = True
-    ret = None
-    if args and hasattr(args, u'dryrun') and not args.dryrun:
-        try:
-            ret = func(**args_dict)
-        except Exception as e:
-            ok = False
-            if hasattr(e, u'error_dict') and e.error_dict and e.error_dict.get(u'name') and err_msg in e.error_dict[u'name'][0]:
-                print created_msg
-            elif u'not authorized' in str(e):
-                print u"NotAuthorized: Make sure api key is valid and the user is a sysadmin."
-                sys.exit(1)
-            else:
-                raise e
-
-    if ok:
-        print exists_msg
-
-    return ret
 
 def parse_args():
     example = ur"python bootstrap.py 2f83d65d-e5e9-4e22-9c52-baaf898c2022"

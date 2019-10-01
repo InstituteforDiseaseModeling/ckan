@@ -1,0 +1,51 @@
+---
+dataset:
+  fields:
+    title: 'Raw Dataset Description'
+    name: 'Raw Dataset Description'
+    notes: |
+            {Notes}
+
+            Permissions: {Current Dataset Permissions}, later {Expected Dataset Permissions}
+
+            Forums: {Forum} on {Date}
+    maintainer_email: 'eval: "{Researcher}".strip().lower()'
+    owner_org: Group
+
+  defaults:
+    title: Unknown
+    notes: Unknown
+    maintainer_email: dlukacevic
+    purpose: data
+    owner_org: data_services
+    private: False
+    disease: Any
+    tag_string: incomplete
+    ext_startdate: '1900-01-01'
+    ext_enddate: '1900-01-01'
+    location: Unknown
+    publisher: Unknown
+    acquisition_date: '2010-01-01'
+    request_access: False
+    license_id: notspecified
+
+
+
+resource:
+  -
+    fields:
+      name: 'Raw Dataset Description'
+      description: |
+                    eval: "{}{}".format("{Current Dataset Location}", ", later {Expected Dataset Location}" if "{Expected Dataset Location}" != "" else "")
+    defaults:
+      purpose: data
+  -
+    fields:
+      name: |
+            eval: "{Code Repository}" if "{Code Repository}".startswith("http://") else ""
+    defaults:
+      purpose: code
+
+
+
+

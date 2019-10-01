@@ -45,7 +45,7 @@ def location_autocomplete(context, data_dict):
 @logic.validate(logic.schema.default_autocomplete_schema)
 def publisher_autocomplete(context, data_dict):
     # TODO: load the list of publishers from a file
-    default_list = [u'WHO', u'NOAA', u'WorldPop', u'WorldClim']
+    default_list = [u'WHO', u'NOAA', u'WorldPop', u'WorldClim', u'DHS', u'UNICEF', u'CDC', ]
 
     # TODO:
     # - Only include datasets which a user has right to see
