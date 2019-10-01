@@ -237,11 +237,13 @@ def prep_dataset_args(rgh, ds_dict, ds_defaults_map, error_msgs):
 
     ds_dict[u'name'] = name
 
-    if ds_dict['ext_startdate'] == '1900-01-01' and ds_dict['ext_enddate'] == '1900-01-01':
-        start_year, end_year = _parse_years_range(ds_dict[u'title'])
-        if start_year and end_year:
-            ds_dict['ext_startdate'] = datetime.datetime(start_year, 1, 1).strftime('%Y-%m-%d')
-            ds_dict['ext_enddate'] = datetime.datetime(end_year, 12, 31).strftime('%Y-%m-%d')
+    for f in ['title', 'notes']:
+        if ds_dict['ext_startdate'] == '1900-01-01' and ds_dict['ext_enddate'] == '1900-01-01':
+            start_year, end_year = _parse_years_range(ds_dict[f])
+            if start_year and end_year:
+                ds_dict['ext_startdate'], ds_dict['ext_enddate'] = start_year, end_year
+                break
+
 
 
 def prep_resource_args(rgh, rs_dict, rs_defaults_map, error_msgs):
@@ -257,8 +259,9 @@ def prep_resource_args(rgh, rs_dict, rs_defaults_map, error_msgs):
 
 
 def _parse_years_range(value):
-    start_year = None
-    end_year = None
+    """Parse value and if years range is found, return them. Otherwise return None for both start and end years."""
+    start_date = None
+    end_date = None
     if value:
         years_regex = '(19[0-9]{2}|20[0-9]{2}) *(-|\\|to) *(19[0-9]{2}|20[0-9]{2})'
         parts = re.findall(years_regex , value)
@@ -266,7 +269,10 @@ def _parse_years_range(value):
             start_year = int(parts[0][0])
             end_year = int(parts[0][-1])
 
-    return start_year, end_year
+            start_date = datetime.datetime(start_year, 1, 1).strftime('%Y-%m-%d')
+            end_date = datetime.datetime(end_year, 12, 31).strftime('%Y-%m-%d')
+
+    return start_date, end_date
 
 
 def _parse_url(value):
