@@ -7,6 +7,9 @@ import re
 import unicodecsv as csv
 
 from ckanapi import RemoteCKAN
+# NOTE: the dependency on idm ckan extension means this script cannot run outside of a ckan container (or local setup)
+from ckanext.idm.logic.locations import load_locations
+
 
 import helpers as hlp
 
@@ -223,27 +226,63 @@ def prep_dataset_args(rgh, ds_dict, ds_defaults_map, error_msgs):
 
     ds_dict[u'tags'] = [{u'state': u'active', u'name': n} for n in ds_dict[u'tag_string'].split()]
 
+    # Set research group
     research_group = rgh.get_research_group(ds_dict[u'owner_org'], exact=False, default=ds_defaults_map[u'owner_org'])
     ds_dict[u'owner_org'] = _validate_args_dict_value(error_msgs, u'research group', research_group, 'id')
 
+    # Set maintainer email, either value from the .csv file or the research group admin (research manager)
     maintainer_email = get_maintainer(rgh, ds_dict[u'maintainer_email'], ds_dict[u'owner_org'], ds_defaults_map[u'maintainer_email'])
     ds_dict[u'maintainer_email'] = _validate_args_dict_value(error_msgs, u'maintainer_email', maintainer_email)
 
+    # Construct unique name (used in url)
+    ds_dict[u'name'] = construct_name(ds_dict)
+
+    # Parse years range from 'title' or 'notes' fields
+    ds_dict['ext_startdate'], ds_dict['ext_enddate'] = parse_start_end_dates(ds_dict)
+
+    # Parse location from 'title' or 'notes' fields
+    ds_dict['location'] = parse_location(ds_dict, ds_defaults_map)
+
+    # TODO: parse: publisher, disease tags, url
+
+
+def construct_name(ds_dict):
     name = ds_dict[u'name']
     if name:
         name = ''.join([s for s in name if s.isalpha() or s.isnumeric() or s in [u'-', u'_', u' ']])
         name = name.encode("ascii", errors=u'replace')
         name = name.strip().lower().replace('  ', ' ').replace(' ', '-').replace(u'?', u'u')
 
-    ds_dict[u'name'] = name
+    return name
 
-    for f in ['title', 'notes']:
-        if ds_dict['ext_startdate'] == '1900-01-01' and ds_dict['ext_enddate'] == '1900-01-01':
-            start_year, end_year = _parse_years_range(ds_dict[f])
-            if start_year and end_year:
-                ds_dict['ext_startdate'], ds_dict['ext_enddate'] = start_year, end_year
+
+def parse_location(ds_dict, ds_defaults_map):
+    # Sort locations in reverse order in respect to level, to examine
+    locations_split = [loc.split(':') for loc in load_locations()]
+    locations_and_levels = [(len(loc), loc) for loc in locations_split]
+    locations = sorted(locations_and_levels, key=lambda v: v[0], reverse=True)
+
+    if not ds_dict['location'] or ds_dict['location'] == ds_defaults_map['location']:
+        ds_location = None
+        for f in ['title', 'notes']:
+            if ds_location:
                 break
 
+            for location in locations:
+                if ds_location:
+                    break
+                # look at more precise location first (e.g. district, country, continent)
+                level_count = location[0]
+                names = location[1]
+                for level in reversed(range(level_count)):
+                    # if name path (aka dot-name) is present take it
+                    if names[level] in ds_dict[f]:
+                        ds_location = ':'.join(names[:level+1])
+                        break
+        if ds_location:
+            ds_dict['location'] = ds_location
+
+    return ds_location or ds_dict['location']
 
 
 def prep_resource_args(rgh, rs_dict, rs_defaults_map, error_msgs):
@@ -256,6 +295,19 @@ def prep_resource_args(rgh, rs_dict, rs_defaults_map, error_msgs):
     # if not rs_dict['purpose']:
     #     rs_dict['purpose'] = 'data'
     pass
+
+
+def parse_start_end_dates(ds_dict):
+    start_date, end_date = None, None
+    for f in ['title', 'notes']:
+        if ds_dict['ext_startdate'] == '1900-01-01' and ds_dict['ext_enddate'] == '1900-01-01':
+            start_date, end_date = _parse_years_range(ds_dict[f])
+            if start_date and end_date:
+                break
+            else:
+                start_date, end_date = None, None
+
+    return start_date or ds_dict['ext_startdate'], end_date or ds_dict['ext_enddate']
 
 
 def _parse_years_range(value):
