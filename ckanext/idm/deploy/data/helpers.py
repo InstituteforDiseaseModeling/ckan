@@ -18,22 +18,25 @@ def call_api(func, args_dict, success_msg='', errors_to_skip=None):
     u"""The common API call method handling exceptions used to detect existing data."""
     ok = True
     ret = None
-
     try:
         ret = func(**args_dict)
     except Exception as e:
         if u'NotAuthorized' in str(type(e)):
             print u"NotAuthorized: Make sure api key is valid and the user is a sysadmin."
             sys.exit(1)
-        elif len(errors_to_skip) > 0:
+
+        error_processed = False
+        if len(errors_to_skip) > 0:
             ok = False
             for err_info in errors_to_skip:
                 err = err_info[u'error']
                 has_name_in_err_dict = hasattr(e, u'error_dict') and e.error_dict and e.error_dict.get(u'name')
                 if has_name_in_err_dict and err in e.error_dict[u'name'][0] or err in str(e):
+                    error_processed = True
                     print '{}: {}'.format(err_info[u'message'], str(e))
                     break
-        else:
+
+        if not error_processed:
             raise e
 
     if ok:

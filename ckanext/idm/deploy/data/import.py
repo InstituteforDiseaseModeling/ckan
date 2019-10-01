@@ -2,6 +2,7 @@
 
 import argparse
 import codecs
+import datetime
 import re
 import unicodecsv as csv
 
@@ -236,6 +237,12 @@ def prep_dataset_args(rgh, ds_dict, ds_defaults_map, error_msgs):
 
     ds_dict[u'name'] = name
 
+    if ds_dict['ext_startdate'] == '1900-01-01' and ds_dict['ext_enddate'] == '1900-01-01':
+        start_year, end_year = _parse_years_range(ds_dict[u'title'])
+        if start_year and end_year:
+            ds_dict['ext_startdate'] = datetime.datetime(start_year, 1, 1).strftime('%Y-%m-%d')
+            ds_dict['ext_enddate'] = datetime.datetime(end_year, 12, 31).strftime('%Y-%m-%d')
+
 
 def prep_resource_args(rgh, rs_dict, rs_defaults_map, error_msgs):
     # if not rs_dict['url']:
@@ -247,6 +254,20 @@ def prep_resource_args(rgh, rs_dict, rs_defaults_map, error_msgs):
     # if not rs_dict['purpose']:
     #     rs_dict['purpose'] = 'data'
     pass
+
+
+def _parse_years_range(value):
+    start_year = None
+    end_year = None
+    if value:
+        years_regex = '(19[0-9]{2}|20[0-9]{2}) *(-|\\|to) *(19[0-9]{2}|20[0-9]{2})'
+        parts = re.findall(years_regex , value)
+        if parts and isinstance(parts, list) and len(parts) > 0 and len(parts[0]) > 1:
+            start_year = int(parts[0][0])
+            end_year = int(parts[0][-1])
+
+    return start_year, end_year
+
 
 def _parse_url(value):
     url_maybe = ''
@@ -300,7 +321,7 @@ def _message_postfix(args_dict):
 
 
 def parse_args():
-    example = ur"python bootstrap.py 2f83d65d-e5e9-4e22-9c52-baaf898c2022"
+    example = ur"python import.py 0b7ba2a2-9d19-42da-a656-89937f856b4b import/dataset-fields-map-Caitlin.yaml import/datasets-Caitlin-2-rows.csv"
     parser = argparse.ArgumentParser(example)
     parser.add_argument(u'api_key')
     parser.add_argument(u'field_map_file')
