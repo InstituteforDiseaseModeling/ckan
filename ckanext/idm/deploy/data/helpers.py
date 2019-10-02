@@ -58,8 +58,8 @@ class ResearchGroupQueryHelper:
         self.research_group_id_name_map = {rg['id']: rg['name'] for rg in self.research_groups}
 
     def _get_all_research_groups(self):
-        all_rg = call_api(self.act.organization_list, {u'all_fields': True, 'include_users': True})
-        need_keys = ['id', 'name', 'display_name']
+        all_rg = call_api(self.act.organization_list, {u'all_fields': True, u'include_users': True})
+        need_keys = [u'id', u'name', u'display_name']
         # all_research_groups = [_reduce_dict_keys(rg, need_keys) for rg in all_research_groups]
         all_rg_final = []
         for rg in all_rg:
@@ -126,3 +126,15 @@ def report_errors(error_msg_list):
     if len(error_msg_list) > 1:
         for msg in error_msg_list:
             print u'  {}'.format(msg)
+
+
+def take_word(all_text, start_str, new_start_str=None):
+    if all_text and start_str and len(start_str) < len(all_text):
+        the_rest = all_text.split(start_str)[1].split()[0]
+        # checking explicitly for None so that '' is not ignored
+        start = start_str if new_start_str is None else new_start_str
+        word = '{}{}'.format(start, the_rest)
+    else:
+        word = None
+
+    return word

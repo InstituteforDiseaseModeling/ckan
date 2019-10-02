@@ -35,14 +35,14 @@ resource:
   -
     fields:
       name: 'Raw Dataset Description'
+      url: 'Current Dataset Location'
       description: |
-                    eval: "{}{}".format("{Current Dataset Location}", ", later {Expected Dataset Location}" if "{Expected Dataset Location}" != "" else "")
+                    eval: "Expected URL: {Expected Dataset Location}" if "{Expected Dataset Location}" != "" else ""
     defaults:
       purpose: data
   -
     fields:
-      name: |
-            eval: "{Code Repository}" if "{Code Repository}".startswith("http://") else ""
+      url: 'Code Repository'
     defaults:
       purpose: code
 

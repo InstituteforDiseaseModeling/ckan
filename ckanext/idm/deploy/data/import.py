@@ -19,7 +19,7 @@ def main():
     act = RemoteCKAN(host_url, apikey=args.api_key).action
     rgh = hlp.ResearchGroupQueryHelper(act)
 
-    hlp.fail_safe_check(args.force, act.package_list, 'datasets')
+    hlp.fail_safe_check(args.force, act.package_list, u'datasets')
 
     # Get argument dict to be populated for each row and passed to API function
     ds_fields, rs_fields = get_args_dicts_from_schema()
@@ -83,13 +83,13 @@ def prep_field_column_maps(ds_fields, rs_fields):
 
 
 def populate_resources(rgh, row_dict, rs_fields, ds_dict, resource_fields_maps, error_msgs):
-    ds_dict['resources'] = []
+    ds_dict[u'resources'] = []
     for rs_fields_map, rs_defaults_map in resource_fields_maps:
         rs_dicts = populate_fields_from_row(row_dict, rs_fields, rs_fields_map, rs_defaults_map, error_msgs)
-        prep_resource_args(rgh, rs_dicts, rs_defaults_map, error_msgs)
+        prep_resource_args(rs_dicts, rs_defaults_map, error_msgs)
 
-        if any([v for (k, v) in rs_dicts.items() if k != 'purpose']):
-            ds_dict['resources'].append(rs_dicts)
+        if any([v for (k, v) in rs_dicts.items() if k != u'purpose']):
+            ds_dict[u'resources'].append(rs_dicts)
 
 
 def get_full_fields_map(fields_columns_map, fields):
@@ -186,7 +186,7 @@ def populate_fields_from_row(row_dict, fields, fields_map, defaults_map, error_m
                         # Put back unicode characters.
                         value = value.decode(u'utf-8')
                     except Exception as e:
-                        error_msgs.append(('eval error: {}'.format(str(e))))
+                        error_msgs.append((u'eval error: {}'.format(str(e))))
                         value = None
             else:
                 # If target is a column name, read the value from the row dict.
@@ -235,16 +235,16 @@ def prep_dataset_args(rgh, ds_dict, ds_defaults_map, error_msgs):
     ds_dict[u'name'] = construct_name(ds_dict)
 
     # Parse years range from 'title' or 'notes' fields
-    ds_dict['ext_startdate'], ds_dict['ext_enddate'] = parse_start_end_dates(ds_dict, ds_defaults_map)
+    ds_dict[u'ext_startdate'], ds_dict[u'ext_enddate'] = parse_start_end_dates(ds_dict, ds_defaults_map)
 
     # Parse location from 'title' or 'notes' fields
-    ds_dict['location'] = parse_location(rgh.act, ds_dict, ds_defaults_map)
+    ds_dict[u'location'] = parse_location(rgh.act, ds_dict, ds_defaults_map)
 
-    # TODO: parse: tags, url
+    # TODO: parse: tags, image url
 
     # Parse publisher from 'title' or 'notes' fields
     publishers = hlp.call_api(rgh.act.publisher_autocomplete, {u'q': ''})
-    ds_dict['publisher'] = guess_field(ds_dict, ds_defaults_map, 'publisher', publishers)
+    ds_dict[u'publisher'] = guess_field(ds_dict, ds_defaults_map, u'publisher', publishers)
 
     # Parse disease from 'title' or 'notes' fields
     diseases = [d for d in hlp.call_api(rgh.act.tag_list, {u'vocabulary_id': u'disease'}) if d != 'Any']
@@ -268,9 +268,9 @@ def parse_location(act, ds_dict, ds_defaults_map):
     locations_and_levels = [(len(loc), loc) for loc in locations_split]
     locations = sorted(locations_and_levels, key=lambda v: v[0], reverse=True)
 
-    if not ds_dict['location'] or ds_dict['location'] == ds_defaults_map['location']:
+    if not ds_dict[u'location'] or ds_dict[u'location'] == ds_defaults_map[u'location']:
         ds_location = None
-        for f in ['title', 'notes']:
+        for f in [u'title', u'notes']:
             if ds_location:
                 break
 
@@ -286,34 +286,69 @@ def parse_location(act, ds_dict, ds_defaults_map):
                         ds_location = ':'.join(names[:level+1])
                         break
         if ds_location:
-            ds_dict['location'] = ds_location
+            ds_dict[u'location'] = ds_location
 
-    return ds_location or ds_dict['location']
+    return ds_location or ds_dict[u'location']
 
 
-def prep_resource_args(rgh, rs_dict, rs_defaults_map, error_msgs):
-    # if not rs_dict['url']:
-    #     rs_dict['url'] = _parse_url(rs_dict['name'])
-    #
-    # if not rs_dict['url']:
-    #     rs_dict['url'] = _parse_url(rs_dict['description'])
+def prep_resource_args(rs_dict, rs_defaults_map, error_msgs):
+    try:
+        rs_dict[u'url'], comment = parse_url(rs_dict, rs_defaults_map, [u'name', u'description'])
+        if comment:
+            rs_dict[u'description'] = u"""URL: {} 
+            {}""".format(comment, rs_dict[u'description'])
+    except Exception as e:
+        error_msgs.append(u'Unable to parse URL: {}'.format(str(e)))
 
-    # if not rs_dict['purpose']:
-    #     rs_dict['purpose'] = 'data'
-    pass
+def parse_url(rs_dict, rs_defaults_map, fields):
+    http_prefix = u'http://'
+    dropbox_prefix = u'Dropbox (IDM)'
+    dropbox_idm_url = u'https://www.dropbox.com/home/'
+
+    new_url = None
+    comment= ''
+
+    url = rs_dict[u'url']
+    has_drive_letter = re.findall(u'^([a-z]|[A-Z]):', url)
+
+    if not url:
+        for f in fields:
+            url = _regex_parse_url(rs_dict[f])
+            if url:
+                break
+
+    if url:
+        if http_prefix in url:
+            new_url = hlp.take_word(url, http_prefix)
+        elif dropbox_prefix in url:
+            new_url = hlp.take_word(url, dropbox_prefix, dropbox_idm_url)
+            relative_url = url.split(dropbox_prefix)[1]
+            if relative_url:
+                new_url = new_url.replace(u'\\', u'/').replace(u'//', u'/')
+        elif has_drive_letter:
+            drive_letter = u'{}:'.format(has_drive_letter[0])
+            new_url = ''.join([s for s in hlp.take_word(url, drive_letter) if s not in [u':', u'*', u'?', u'<', u'>', u'|']])
+
+        if not new_url:
+            comment = url
+
+    if not new_url:
+        new_url = rs_defaults_map[u'url']
+
+    return new_url, comment
 
 
 def parse_start_end_dates(ds_dict, ds_defaults_map):
     start_date, end_date = None, None
-    for f in ['title', 'notes']:
-        if all([ds_dict[field] == ds_defaults_map[field] for field in ['ext_startdate', 'ext_enddate']]):
+    for f in [u'title', u'notes']:
+        if all([ds_dict[field] == ds_defaults_map[field] for field in [u'ext_startdate', u'ext_enddate']]):
             start_date, end_date = _parse_years_range(ds_dict[f])
             if start_date and end_date:
                 break
             else:
                 start_date, end_date = None, None
 
-    return start_date or ds_dict['ext_startdate'], end_date or ds_dict['ext_enddate']
+    return start_date or ds_dict[u'ext_startdate'], end_date or ds_dict[u'ext_enddate']
 
 
 def _parse_years_range(value):
@@ -321,19 +356,19 @@ def _parse_years_range(value):
     start_date = None
     end_date = None
     if value:
-        years_regex = '(19[0-9]{2}|20[0-9]{2}) *(-|\\|to) *(19[0-9]{2}|20[0-9]{2})'
+        years_regex = u'(19[0-9]{2}|20[0-9]{2}) *(-|\\|to) *(19[0-9]{2}|20[0-9]{2})'
         parts = re.findall(years_regex , value)
         if parts and isinstance(parts, list) and len(parts) > 0 and len(parts[0]) > 1:
             start_year = int(parts[0][0])
             end_year = int(parts[0][-1])
 
-            start_date = datetime.datetime(start_year, 1, 1).strftime('%Y-%m-%d')
-            end_date = datetime.datetime(end_year, 12, 31).strftime('%Y-%m-%d')
+            start_date = datetime.datetime(start_year, 1, 1).strftime(u'%Y-%m-%d')
+            end_date = datetime.datetime(end_year, 12, 31).strftime(u'%Y-%m-%d')
 
     return start_date, end_date
 
 
-def guess_field(ds_dict, ds_defaults_map, target_field, possible_values, source_fields=['title', 'notes']):
+def guess_field(ds_dict, ds_defaults_map, target_field, possible_values, source_fields=[u'title', u'notes']):
     if not ds_dict[target_field] or ds_dict[target_field] == ds_defaults_map[target_field]:
         target_field_value = None
         for f in source_fields:
@@ -354,12 +389,12 @@ def guess_field(ds_dict, ds_defaults_map, target_field, possible_values, source_
     return target_field_value or ds_dict[target_field]
 
 
-def _parse_url(value):
+def _regex_parse_url(value):
     url_maybe = ''
     if value:
         url_maybe = re.search("(?P<url>https?://[^\s]+.pdf|.html|.html)", value)
         if url_maybe:
-            url_maybe = url_maybe.group("url")
+            url_maybe = url_maybe.group(u"url")
 
     return url_maybe
 
@@ -399,8 +434,8 @@ def api_create_dataset(act, args_dict):
 
 
 def _message_postfix(args_dict):
-    value = '{} ({})'.format(args_dict[u'title'].encode(u'utf-8'), args_dict[u'name'].encode(u'utf-8'))
-    value = unicode(value, encoding=u'utf-8', errors=u'replace')
+    value = u'{} ({})'.format(args_dict[u'title'].encode(u'utf-8'), args_dict[u'name'].encode(u'utf-8'))
+    #value = unicode(value, encoding=u'utf-8', errors=u'replace')
 
     return value
 
