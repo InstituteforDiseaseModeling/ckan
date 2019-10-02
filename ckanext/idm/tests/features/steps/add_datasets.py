@@ -193,8 +193,11 @@ def step_impl(context):
 
 @step(u'I set all optional dataset fields')
 def step_impl(context):
-    for row in context.table:
-        context.newdatasetpage.fill_optional(row[u"fields"], row[u"values"])
+    if context.table is not None:
+        context.optionaltable = context.table
+    if hasattr(context, u'optionaltable'):
+        for row in context.optionaltable:
+            context.newdatasetpage.fill_optional(row[u"fields"], row[u"values"])
 
 
 @step(u'I can click "Add Data"')
@@ -254,9 +257,11 @@ def step_impl(context):
 
 @step(u'I can set optional resource fields')
 def step_impl(context):
-    for row in context.table:
-        context.newresourcepage.fill_optional(row['fields'], row['values'])
-
+    if context.table is not None:
+        context.optionalresource = context.table
+    if hasattr(context, u'optionalresource'):
+        for row in context.optionalresource:
+            context.newresourcepage.fill_optional(row[u'fields'], row[u'values'])
 
 @step(u'I can click "Save & add another"')
 def step_impl(context):
@@ -291,6 +296,7 @@ def step_impl(context):
         {u'fields': u'Type', u'values': u'Data'}]
     context.execute_steps(u'''
         Given I have filled in all required fields(tag:allRequiredFields)
+        When I set all optional dataset fields
         When I can click "Add Data"
         And I can click "Link"
         And I must set required resource fields
@@ -306,6 +312,7 @@ def step_impl(context):
     context.testfile = u'testfiles/test.png'
     context.execute_steps(u'''
         Given I have filled in all required fields(tag:allRequiredFields)
+        When I set all optional dataset fields
         When I can click "Add Data"
         And I can click "Upload" and select a local file
         And I must set required resource fields
@@ -343,7 +350,7 @@ def step_impl(context, topic):
         context.datasettopicpage.topicsInput, prefix, False)
     assert context.datasettopicpage.check_autocomplete(topic)
     context.datasettopicpage.choose_autocomplete(topic)
-    context.datasettopicpage.addButton.click()
+    context.datasettopicpage.finishButton.click()
     assert len(
         context.datasettopicpage.driver.find_elements_by_xpath(
             u'//a//span[contains(text(),"{}")]'.format(topic))) == 1

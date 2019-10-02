@@ -37,7 +37,14 @@ class datasetpage(basepage):
 
         # not found
         u'notfoundElem': (By.XPATH,
-                          u'//div[contains(text(),"Dataset not found")]')
+                          u'//div[contains(text(),"Dataset not found")]'),
+
+        # filter
+        u'filterLocation': (By.XPATH, u'//h2[contains(.,"Location")]'),
+        u'filterDisease': (By.XPATH, u'//h2[contains(.,"Disease")]'),
+        u'filterPublisher': (By.XPATH, u'//h2[contains(.,"Publisher")]'),
+        u'filterFormats': (By.XPATH, u'//h2[contains(.,"Formats")]'),
+        u'filterTags': (By.XPATH, u'//h2[contains(.,"Tags")]')
     }
 
     def find_resource_by_title(self, title):
@@ -84,3 +91,17 @@ class datasetpage(basepage):
                     break
         if not metadatafound:
             raise Exception(u'value "{}" does not match {}:'.format(field, value))
+
+    def click_filter(self, filter_elem, filter_value):
+        item = getattr(self, filter_elem)
+        nav_items = item.find_elements_by_xpath(u"following-sibling::nav/ul/li/a")
+        filter_value = [i for i in nav_items if filter_value.lower() in i.get_attribute(u'text').lower()]
+        assert len(filter_value) == 1
+        filter_value[0].click()
+
+    def search(self, text):
+        self.searchTextField.send_keys(text)
+        self.searchButton.click()
+        result = self.driver.find_elements_by_css_selector(u'ul.dataset-list li h3.dataset-heading')
+        print(u" search {} find {} items".format(text, len(result)))
+        assert len(result) > 0

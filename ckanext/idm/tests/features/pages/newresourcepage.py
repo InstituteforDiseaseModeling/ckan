@@ -25,7 +25,6 @@ class newresourcepage(basepage):
         u'saveButton':
             (By.XPATH, u'//button[contains(text(),"Save & add another")]'),
         u'finishButton': (By.XPATH, u'//button[contains(text(),"Finish")]'),
-        u'addButton': (By.XPATH, u'//button[contains(text(),"Add")]'),
         u'manageDatasetTab': (By.PARTIAL_LINK_TEXT, u'Manage'),
         u'viewDatasetTab': (By.PARTIAL_LINK_TEXT, u'View dataset')
     }

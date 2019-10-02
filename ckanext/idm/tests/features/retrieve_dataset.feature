@@ -91,7 +91,7 @@ Feature: Retrieve dataset
   Scenario Outline: Preview dataset
     Given a dataset was previously created with resource uploaded
     And the resource was in the following <format>
-    When I am on dataset page
+    When I am on generic dataset page
     Then I can preview the resource
 
     Examples:
@@ -103,7 +103,7 @@ Feature: Retrieve dataset
   @pri1
   Scenario Outline: Find Dataset by filters
     Given the dataset is created with metadata <filter>=<value>
-    When I click Dataset
+    When I am on generic dataset page
     Then I can find dataset by clicking <value> under <filter>
 
     Examples:
