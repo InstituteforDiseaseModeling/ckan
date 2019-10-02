@@ -221,7 +221,8 @@ def prep_dataset_args(rgh, ds_dict, ds_defaults_map, error_msgs):
     else:
         del ds_dict[u'spatial_mode']
 
-    ds_dict[u'tags'] = [{u'state': u'active', u'name': n} for n in ds_dict[u'tag_string'].split()]
+    # Set tags value fiels
+    ds_dict[u'tags'] = parse_tags(rgh, ds_dict, ds_defaults_map)
 
     # Set research group
     research_group = rgh.get_research_group(ds_dict[u'owner_org'], exact=False, default=ds_defaults_map[u'owner_org'])
@@ -240,15 +241,29 @@ def prep_dataset_args(rgh, ds_dict, ds_defaults_map, error_msgs):
     # Parse location from 'title' or 'notes' fields
     ds_dict[u'location'] = parse_location(rgh.act, ds_dict, ds_defaults_map)
 
-    # TODO: parse: tags, image url
-
     # Parse publisher from 'title' or 'notes' fields
     publishers = hlp.call_api(rgh.act.publisher_autocomplete, {u'q': ''})
-    ds_dict[u'publisher'] = guess_field(ds_dict, ds_defaults_map, u'publisher', publishers)
+    ds_dict[u'publisher'] = guess_field(ds_dict, ds_defaults_map, publishers, target_field=u'publisher')
 
     # Parse disease from 'title' or 'notes' fields
     diseases = [d for d in hlp.call_api(rgh.act.tag_list, {u'vocabulary_id': u'disease'}) if d != 'Any']
-    ds_dict[u'disease'] = guess_field(ds_dict, ds_defaults_map, u'disease', diseases)
+    ds_dict[u'disease'] = guess_field(ds_dict, ds_defaults_map, diseases, target_field=u'disease')
+
+
+def parse_tags(rgh, ds_dict, ds_defaults_map):
+    def to_tag_dict(name):
+        """Convert tags string (list) into list of dicts ckan expects."""
+        return {u'state': u'active', u'name': name}
+
+    tag_string = ds_dict[u'tag_string']
+    tags = [to_tag_dict(t) for t in tag_string.split(',')] if tag_string else []
+
+    # Parse tags from 'title' or 'notes' fields
+    free_tags = hlp.call_api(rgh.act.tag_list, {u'vocabulary_id': u'free'})
+    tag_list = guess_field(ds_dict, ds_defaults_map, free_tags, many=True)
+    tags.extend([to_tag_dict(t) for t in tag_list])
+
+    return tags
 
 
 def construct_name(ds_dict):
@@ -368,25 +383,42 @@ def _parse_years_range(value):
     return start_date, end_date
 
 
-def guess_field(ds_dict, ds_defaults_map, target_field, possible_values, source_fields=[u'title', u'notes']):
-    if not ds_dict[target_field] or ds_dict[target_field] == ds_defaults_map[target_field]:
-        target_field_value = None
+def guess_field(ds_dict, ds_defaults_map, possible_values, target_field=None, source_fields=[u'title', u'notes'], many=False):
+    matches = []
+
+    def is_done():
+        return not many and len(matches) > 0
+
+    if target_field:
+        current_value = ds_dict[target_field]
+        default_value = ds_defaults_map[target_field]
+        do_parse = not current_value or current_value == default_value
+    else:
+        default_value = None
+        do_parse = True
+
+    if do_parse:
         for f in source_fields:
-            if target_field_value:
+            if is_done():
                 break
 
             for value in possible_values:
-                if target_field_value:
+                if is_done():
                     break
 
                 if value.lower() in ds_dict[f].lower():
-                    target_field_value = value
-                    break
+                    matches.append(value)
+                    if is_done():
+                        break
 
-        if target_field_value:
-            ds_dict[target_field] = target_field_value
+    ret = None
+    if many:
+        ret = list(set(matches)) if len(matches) > 0 else [default_value]
+        ret = [v for v in ret if v]
+    else:
+        ret = matches[0] if len(matches) > 0 else default_value
 
-    return target_field_value or ds_dict[target_field]
+    return ret
 
 
 def _regex_parse_url(value):

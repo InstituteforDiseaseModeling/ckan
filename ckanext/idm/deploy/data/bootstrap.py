@@ -169,13 +169,13 @@ def create_topics(act, topics):
 
 def create_tag_vocabularies(act, tags):
     u"""Iterate over tag vocabularies and create them with tags."""
-    for vocabulary_id, tags in tags.items():
-        api_create_tag_vocabulary(act, vocabulary_id, tags)
+    for vocabulary_id, tag_list in tags.items():
+        api_create_tag_vocabulary(act, vocabulary_id, tag_list)
 
 
-def api_create_tag_vocabulary(act, vocabulary_id, tags):
+def api_create_tag_vocabulary(act, vocabulary_id, tag_list):
     # , u'vocabulary_id': vocabulary_id
-    tags_dicts = [{u'name': t} for t in tags]
+    tags_dicts = [{u'name': t} for t in tag_list]
     args_dict = {u'name': vocabulary_id, u'tags': tags_dicts}
 
     success_msg = u'Created a new tag vocabulary {}'.format(vocabulary_id)
