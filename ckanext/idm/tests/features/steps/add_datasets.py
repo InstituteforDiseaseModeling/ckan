@@ -350,7 +350,7 @@ def step_impl(context, topic):
         context.datasettopicpage.topicsInput, prefix, False)
     assert context.datasettopicpage.check_autocomplete(topic)
     context.datasettopicpage.choose_autocomplete(topic)
-    context.datasettopicpage.finishButton.click()
+    context.datasettopicpage.addButton.click()
     assert len(
         context.datasettopicpage.driver.find_elements_by_xpath(
             u'//a//span[contains(text(),"{}")]'.format(topic))) == 1

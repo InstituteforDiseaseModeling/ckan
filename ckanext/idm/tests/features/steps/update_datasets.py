@@ -112,7 +112,7 @@ def step_impl(context):
 def step_impl(context):
     context.added_resource_name = u'ThisIsNewlyAdded'
     context.newresourcepage.fill_required(u'Name', context.added_resource_name)
-    context.newresourcepage.addButton.click()
+    context.newresourcepage.finishButton.click()
 
 
 @step(u'I should see both old and new resources')
