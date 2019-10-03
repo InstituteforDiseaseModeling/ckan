@@ -41,10 +41,10 @@ class TestidmPlugins(helpers.FunctionalTestBase):
         u'Shapefiles',
         u'Births',
         u'Climate',
-        u'MICS - Multiple Indicator Cluster Surveys',
-        u'VTS - Vertical Transmission cohort Study',
-        u'SIAs -  Supplemental immunisation activity campaigns',
-        u'PCCS - Post Campaign Coverage Surveys'
+        u'MICS',
+        u'VTS',
+        u'SIAs',
+        u'PCCS'
     ]
 
     expected_research_groups = [

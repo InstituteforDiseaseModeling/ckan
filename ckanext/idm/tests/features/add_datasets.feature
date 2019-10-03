@@ -23,10 +23,10 @@ Feature: Add datasets for editors
       | Shapefiles                                                |
       | Births                                                    |
       | Climate                                                   |
-      | MICS - Multiple Indicator Cluster Surveys                 |
-      | VTS - Vertical Transmission cohort Study                  |
-      | SIAs -  Supplemental immunisation activity campaigns      |
-      | PCCS - Post Campaign Coverage Surveys                     |
+      | MICS                                                      |
+      | VTS                                                       |
+      | SIAs                                                      |
+      | PCCS                                                      |
 
 
   @addDataset
@@ -223,7 +223,7 @@ Feature: Add datasets for editors
       | Shapefiles                                                |
       | Births                                                    |
       | Climate                                                   |
-      | MICS - Multiple Indicator Cluster Surveys                 |
-      | VTS - Vertical Transmission cohort Study                  |
-      | SIAs - Supplemental immunisation activity campaigns       |
-      | PCCS - Post Campaign Coverage Surveys                     |
+      | MICS                                                      |
+      | VTS                                                       |
+      | SIAs                                                      |
+      | PCCS                                                      |
