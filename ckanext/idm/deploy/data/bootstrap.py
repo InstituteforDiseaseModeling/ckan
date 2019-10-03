@@ -42,9 +42,9 @@ def main(args):
 
         # Load data from a file and separate research groups and topics.
     items = hlp.load_yaml(args.file)
-    rgroups = items[u'research_groups'] if items and items.get(u'research_groups') else []
-    topics = items[u'topics'] if items and items.get(u'topics') else []
-    tags = items[u'tags'] if items and items.get(u'tags') else []
+    rgroups = items[u'research_groups'] if items and items.get(u'research_groups') else {}
+    topics = items[u'topics'] if items and items.get(u'topics') else {}
+    tags = items[u'tags'] if items and items.get(u'tags') else {}
 
     # Create users, research groups and topics.
     create_research_groups_and_users(act, rgroups)
