@@ -11,10 +11,13 @@ Feature: Add datasets for editors
       | Test Automation |
     And a list of pre-defined "Tags" has been loaded in the system
       | Tags      |
-      | Population|
-      | Measles   |
-      | Raw       |
-      | Pakistan  |
+      | Cases           |
+      | Genetics        |
+      | mCPR            |
+      | MORDOR          |
+      | Prevalence      |
+      | RI              |
+      | Surveys         |
     And a list of pre-defined "Topics" has been loaded in the system
       | Topic                                                     |
       | Incidence Data                                            |
@@ -143,11 +146,14 @@ Feature: Add datasets for editors
     And I can select the pre-existing <tags> to auto-complete the tag
 
     Examples:
-      | tags        |
-      | Population  |
-      | Measles     |
-      | Raw         |
-      | Pakistan    |
+      | tags            |
+      | Cases           |
+      | Genetics        |
+      | mCPR            |
+      | MORDOR          |
+      | Prevalence      |
+      | RI              |
+      | Surveys         |
 
 
    Scenario Outline: Spatial coverage for location
