@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+import hashlib
 import re
 import ckan.logic as logic
 
@@ -39,11 +40,49 @@ def set_maintainer(key, data, errors, context):
     else:
         try:
             user = logic.get_action(u'user_show')(context, {u'id': value})
-            data[(u'maintainer_email',)] = user[u'email']
             data[(u'maintainer',)] = user[u'fullname']
+            email = None
+
+            expected_hash = user[u'email_hash'] if user.get(u'email_hash') else None
+            has_context_user = context.get(u'user_obj') and hasattr(context[u'user_obj'], u'email')
+
+            # Determine email
+            if user.get(u'email'):
+                email = _validate_email(user[u'email'], expected_hash)
+
+            if not email and has_context_user:
+                email = _validate_email(context[u'user_obj'].email, expected_hash)
+
+            if not email:
+                # If email is not available directly, guess it by attaching the same domain as a current user.
+                my_user = logic.get_action(u'user_show')(context, {u'id': context[u'user']})
+                domain = my_user[u'email'].split(u'@')[1]
+                email = u'{}@{}'.format(data[(u'maintainer_email',)], domain)
+                _validate_email(email, expected_hash, raise_exception=True)
+
+            data[(u'maintainer_email',)] = email
+
         except logic.NotFound as e:
             raise Invalid(_(u'Enter a username, an email or a contact (e.g. First Last <alias@server.org>).'))
 
     return data[key]
 
 
+def _validate_email(email, expected_hash, raise_exception=False):
+    if not expected_hash:
+        raise ValueError(u"Expected email hash is not available.")
+
+    is_hash_ok = _hash_email(email) == expected_hash
+    
+    if raise_exception and not is_hash_ok:
+        raise ValueError(u"User email hash doesn't match the expected value. ".format(email))
+
+    return email if is_hash_ok else None
+
+
+def _hash_email(email):
+    # This hashing code is from the ckan core
+    e = email.strip().lower().encode(u'utf8')
+    email_hash = hashlib.md5(e).hexdigest()
+
+    return email_hash
