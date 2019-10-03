@@ -11,7 +11,14 @@ from ckanext.idm.logic.locations import get_location_geometry
 
 def set_spatial_to_location_geometry(key, data, errors, context):
     location = data[(u'location',)]
-    if data[(u'spatial_mode',)] != u'manual':
+    spatial_mode = data[(u'spatial_mode',)]
+
+    # TODO: Remove after issue #63 is fixed (this is a workaround for issue #55).
+    if isinstance(spatial_mode, list) and len(spatial_mode) > 0:
+        spatial_mode = spatial_mode[0]
+
+    # Note, when spatial mode is not checked, spatial_mode is either an empty list or an object of type Missing.
+    if spatial_mode != u'manual':
         data[(u'spatial',)] = get_location_geometry(location)
 
     return data[key]
