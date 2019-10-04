@@ -24,12 +24,11 @@ def before_tag(context, tag):
     context.redis_server = context.config.userdata[u'redis_server']
     context.redis_port = int(context.config.userdata[u'redis_port'])
     context.solr_url = context.config.userdata[u'solr_url']
-    context.UI = False
+    context.UI = True
 
     if context.config.verbose:
         print(u'run:', context.browsertype)
     if tag == u'UI':
-        context.UI = True
         if context.browsertype == u'firefox':
             use_fixture(driver.firefox_driver, context)
         elif context.browsertype == u'chrome':

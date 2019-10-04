@@ -6,12 +6,12 @@ from .basepage import basepage
 
 class datasetpage(basepage):
     def __init__(self, context):
-        try:
-            datasetname = context.datasetname
-        except AttributeError:
-            datasetname = u''
-        context.relative_url = u'dataset' + u'/{}'.format(datasetname)\
-            if datasetname != u'' else u'dataset'
+        context.relative_url = u'dataset/'
+        if hasattr(context, u'urlparam'):
+            context.relative_url += context.urlparam
+        elif hasattr(context, u'datasetname'):
+            context.relative_url += u'{}'.format(context.datasetname)
+
         super(datasetpage, self).__init__(context)
 
     locator_dictionary = {
