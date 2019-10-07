@@ -1,6 +1,15 @@
 #!/bin/bash
 
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
 export CKAN_SITE_URL=http://$HOSTNAME:5000
+
+# Ensure working dir
+OPS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd $OPS_DIR
 
 function nuke {
   read -p "Are you sure? "
@@ -19,14 +28,19 @@ function git_pull {
     git reset --hard
     git clean -f
     git pull
-    my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-    cd $my_dir
+    OPS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+    cd $OPS_DIR
     chmod +x deploy.sh
     chmod +x data/bootstrap.sh
 }
 
 function boot_data {
   docker exec ckan /home/ckan/src/ckan/ckanext/idm/deploy/data/bootstrap.sh
+}
+
+function setup_backup {
+  bash ./ops/mount-backup-share.sh
+  bash ./ops/create-backup-cron.sh
 }
 
 function deploy_prod {
@@ -50,7 +64,7 @@ function prod_up {
   docker-compose up -d ckan
   docker exec ckan paster search-index rebuild -c /etc/ckan/production.ini
   docker-compose logs
-  sleep 10
+  sleep 20
 }
 
 function stage_up {
@@ -59,7 +73,7 @@ function stage_up {
   docker-compose -f docker-compose.yml -f docker-local.yml up -d ckan
   docker exec ckan paster search-index rebuild -c /etc/ckan/production.ini
   docker-compose -f docker-compose.yml -f docker-local.yml logs
-  sleep 10
+  sleep 20
 }
 
 
@@ -79,22 +93,26 @@ case  $1  in
       refresh-stage)
           git_pull
           deploy_stage
+          setup_backup
           ;;
       refresh-prod)
           git_pull
-          deploy_stage
+          deploy_prod
+          setup_backup
           ;;
       boot-stage)
           nuke
           git_pull
           deploy_stage
           boot_data
+          setup_backup
           ;;
       boot-prod)
           nuke
           git_pull
-          deploy_stage
+          deploy_prod
           boot_data
+          setup_backup
           ;;
       *)
 esac

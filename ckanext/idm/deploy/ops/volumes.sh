@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 
 COMMAND=$1
-IN_TAR=$2
+INTERVAL=${2:-test}
+RESTOR_TAR=$2
 CKAN_ENV=${3:-prod}
 
 LABEL=_"$HOSTNAME"_"$(date +'%Y%m%d-%I%M')"
-BACKUP_DIR=/mnt/ActiveDevelopmentProjects/ckan/backup/$HOSTNAME
-
-# Ensure working dir
-my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-cd $my_dir
+SHARES_DIR=/mnt/ckan
+BACKUP_DIR="$SHARES_DIR"/backup/"$HOSTNAME"/"$INTERVAL"
 
 function tar_volumes {
   dst_dir=$1
@@ -18,7 +16,7 @@ function tar_volumes {
 
   mkdir -p $dst_dir
   echo Backing up "$dst_file"
-  docker run -it --rm --name=backup --volumes-from=ckan --volumes-from=db --volumes-from=solr -v=$dst_dir/:/backup alpine \
+  docker run --rm --name=backup --volumes-from=ckan --volumes-from=db --volumes-from=solr -v=$dst_dir/:/backup alpine \
     tar -cvzf /backup/"$dst_file" /var/lib/ckan /var/lib/postgresql/data /opt/solr/server/solr/ckan/data
 }
 
@@ -47,6 +45,8 @@ function restore_volumes {
     docker stop ops
 
     echo Step 4: Running "$CKAN_ENV"-up
+    # Ensure working dir
+    ops_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
     bash deploy.sh "$CKAN_ENV"-up
 
   else
@@ -55,18 +55,34 @@ function restore_volumes {
   fi
 }
 
+function remove_old_backups {
+  dst_dir=${1}
+  days=${2}
+  find "$dst_dir"/ -name "*.tar.gz" -type f -mtime +"$days" -exec rm -f {} \;
+}
+
+case  $INTERVAL in
+      hourly)
+            RETAIN_DAYS=1;;
+      daily)
+            RETAIN_DAYS=60;;
+      weekly)
+            RETAIN_DAYS=365;;
+      test)
+            RETAIN_DAYS=1;;
+      *)
+            RETAIN_DAYS=10000;;
+esac
+
 case  $COMMAND  in
-      mirror)
-            echo "Mirror docker volumes."
-            tar_volumes "$BACKUP_DIR" 'MIRROR'
-            ;;
       backup)
             echo "Backup docker volumes."
+            remove_old_backups "$BACKUP_DIR" "$RETAIN_DAYS"
             tar_volumes "$BACKUP_DIR" "$LABEL"
             ;;
       restore)
             echo "Restore docker volumes."
-            restore_volumes "$IN_TAR"
+            restore_volumes "$RESTOR_TAR"
             ;;
       *)
 esac

@@ -37,7 +37,7 @@ IF "%command%"=="up-ckan"         CALL :UP_CKAN
 IF "%command%"=="logs"            CALL :LOGS %2
 IF "%command%"=="backup"          CALL :BACKUP_VOLUMES
 IF "%command%"=="boot"            CALL :BOOTSTRAP
-IF "%command%"=="reset"           CALL :RESET
+IF "%command%"=="boot-stage"      CALL :BOOT_STAGE
 
 GOTO :END
 
@@ -107,7 +107,7 @@ EXIT /B
 docker exec ckan /home/ckan/src/ckan/ckanext/idm/deploy/data/bootstrap.sh
 EXIT /B
 
-:RESET
+:BOOT_STAGE
 SET /P AREYOUSURE=Are you sure (Y/[N])?
 IF /I "%AREYOUSURE%" NEQ "Y" GOTO :END
 

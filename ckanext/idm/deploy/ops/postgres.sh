@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 
 COMMAND=$1
-IN_TAR=$2
-CKAN_ENV=${3:-prod}
+INTERVAL=${2:-test}
+RESTOR_TAR=$2
 
 LABEL=_"$HOSTNAME"_"$(date +'%Y%m%d-%I%M')"
-BACKUP_DIR=/mnt/ActiveDevelopmentProjects/ckan/backup/$HOSTNAME
-
-# Ensure working dir
-my_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-cd $my_dir
+SHARES_DIR=/mnt/ckan
+BACKUP_DIR="$SHARES_DIR"/backup/"$HOSTNAME"/"$INTERVAL"
 
 function tar_pg {
   dst_dir=$1
@@ -65,7 +62,7 @@ case $COMMAND  in
             ;;
       restore)
             echo "Restore postgres dump tar"
-            restore_pg "$IN_TAR"
+            restore_pg "$RESTOR_TAR"
             ;;
       *)
 esac
