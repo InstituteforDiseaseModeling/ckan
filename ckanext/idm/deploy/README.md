@@ -1,4 +1,33 @@
 # IDM CKAN: Deploy and Run
+    
+## Deploy to Production  
+
+Setup CentOS 7 docker host machine per instructions in the [ops/README.md](ops/README.md).  
+ 
+Clone the GitHub repo  
+ 
+    mkdir -p /home/ckan
+    clone -b 0-idm-proto https://github.com/InstituteforDiseaseModeling/ckan/tree/0-idm-proto /home/ckan/ckan
+
+Run the deploy script (1st time):        
+
+    cd /home/ckan/ckan/ckanext/idm/deploy         
+    sudo chmod +x deploy.sh 
+    sudo ./deploy.sh boot-prod
+    
+
+Refresh the "build" with the latest changes from GitHub:
+  
+    sudo ./deploy.sh refresh-prod
+
+
+In case the port is not open add it:  
+
+    # On the host machine open ports:
+    firewall-cmd --permanent --add-port=5000/tcp
+    firewall-cmd --reload
+
+Note: To setup Stage environment use above instructions and replace 'prod' with 'stage'.
 
 ## Automated Tests 
 
@@ -83,30 +112,7 @@ Build Docker image using the latest CKAN code and run all components as Docker c
     cd c:\git\ckan\ckanext\idm\deploy 
     run-docker-compose.cmd stage  
     explorer http://localhost:5000/  
-  
-
     
-## Deploy to Production  
-
-Windows:
-
-    cd c:\git\ckan\ckanext\idm\deploy 
-    run-docker-compose.cmd prod  
-    explorer http://localhost:5000/  
-
-CentOS 7
-
-    cd c:\git\ckan\ckanext\idm\deploy
-    chmod +x deploy.sh 
-    ./deploy.sh
-        
-    # On the host machine open ports:
-    firewall-cmd --permanent --add-port=5000/tcp
-    firewall-cmd --permanent --add-port=8800/tcp
-    firewall-cmd --reload
-
-
-... more coming soon...
 
 ###### References  
 How to install on Windows 7:  
