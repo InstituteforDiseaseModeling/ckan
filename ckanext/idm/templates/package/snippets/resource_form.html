@@ -1,6 +1,23 @@
 {% ckan_extends %}
-
       {% block add_button %}
         <button class="btn btn-primary" name="save" value="go-dataset-complete" type="submit">{{ _('Finish') }}</button>
       {% endblock %}
+
+    {% block save_button %}
+      {{ super() }}
+      <!-- Attach "keydown" event listener to "name" textbox. TODO: move this into the schema/preset -->
+      <script lang="JavaScript">
+        // Pressing Enter in "name" textbox acts like "Finish" button.
+        document.getElementsByName('name')[0].addEventListener('keydown', function (e) {
+          if ($("button:contains('Finish')").length > 0 && $('[name=save]').length > 0) {
+            if (e.which == 13 || e.keyCode == 13) {
+              $('[name=save]').val($("button:contains('Finish')").val())
+            }
+          }
+        }
+        );
+
+      </script>
+    {% endblock %}
+
 
