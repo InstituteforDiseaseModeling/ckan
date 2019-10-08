@@ -199,6 +199,7 @@ resource_fields:
 - field_name: name
   label: Name
   required: true
+  #preset: resource_name_handle_enter_key
   form_placeholder: e.g. weather files
 
 - field_name: purpose

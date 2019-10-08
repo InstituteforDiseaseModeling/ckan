@@ -8,7 +8,7 @@
     value=data[field.field_name],
     error=errors[field.field_name],
     classes=field.classes if 'classes' in field else ['control-medium'],
-    attrs=dict({}, **(field.get('form_attrs', {}))),
+    attrs=dict({"onkeydown": "function (e) { if (e.which == 13 || e.keyCode == 13) $('[name=save]').val($('button:contains(''Finish'')').val()) }"}, **(field.get('form_attrs', {}))),
     is_required=h.scheming_field_required(field)
     )
 %}

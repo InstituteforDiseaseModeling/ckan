@@ -100,6 +100,14 @@
       }
     },
     {
+      "preset_name": "resource_name_handle_enter_key",
+      "values": {
+        "form_snippet": "resource_name.html",
+        "display_snippet": "resource_name.html",
+        "validators": "scheming_required"
+      }
+    },
+    {
       "preset_name": "select",
       "values": {
         "form_snippet": "select.html",
