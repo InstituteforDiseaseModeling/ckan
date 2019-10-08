@@ -99,7 +99,10 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
 
     def get_helpers(self):
         return {
-            u'get_diseases_choices': hlp.get_diseases_choices
+            u'get_diseases_choices': hlp.get_diseases_choices,
+            u'gravatar': hlp.gravatar,
+            u'linked_gravatar': hlp.linked_gravatar,
+            u'linked_user': hlp.linked_user,
             #'get_resource_types_choices': hlp.get_resource_types_choices
         }
 

@@ -3,6 +3,11 @@
 import logging
 
 import ckan.plugins.toolkit as tk
+import ckan.model as model
+
+from ckan.lib.helpers import core_helper, url_for
+from six import text_type
+from webhelpers.html import literal, tags
 
 
 def get_diseases_choices(field):
@@ -45,3 +50,40 @@ def _get_vocabilary(vocabulary_name):
     except tk.ObjectNotFound:
         return None
 
+
+@core_helper
+def gravatar(email_hash, size=100, default=None):
+    i = int(email_hash[0], 16) % 20 + 1
+    img_tag = u'''<img src="/images/user-logo/tux-{}.png" width="{}" height="{}" alt="Tux" />'''
+    return literal(img_tag.format(i, size, size))
+
+
+@core_helper
+def linked_gravatar(email_hash, size=100, default=None):
+    return literal(gravatar(email_hash, size, default))
+
+
+@core_helper
+def linked_user(user, maxlength=0, avatar=20):
+    if not isinstance(user, model.User):
+        user_name = text_type(user)
+        user = model.User.get(user_name)
+        if not user:
+            return user_name
+    if user:
+        name = user.name if model.User.VALID_NAME.match(user.name) else user.id
+        displayname = user.display_name
+
+        if maxlength and len(user.display_name) > maxlength:
+            displayname = displayname[:maxlength] + '...'
+
+        return tags.literal(u'{icon} {link}'.format(
+            icon=gravatar(
+                email_hash=user.email_hash,
+                size=avatar
+            ),
+            link=tags.link_to(
+                displayname,
+                url_for('user.read', id=name)
+            )
+        ))
