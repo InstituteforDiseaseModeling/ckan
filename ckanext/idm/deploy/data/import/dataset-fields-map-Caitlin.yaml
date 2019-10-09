@@ -42,7 +42,7 @@ resource:
       purpose: data
   -
     fields:
-      url: 'Code Repository'
+      name: 'Code Repository'
     defaults:
       purpose: code
 
