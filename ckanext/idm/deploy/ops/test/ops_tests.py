@@ -10,7 +10,7 @@ class SmokeTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.check_env(u'BACKUP_ROOT', u'\\\\rivendell\\ActiveDevelopmentProjects\\ckan\\backup')
+        cls.check_env(u'BACKUP_ROOT')
         cls.check_env(u'USER_NAME')
         cls.check_env(u'HOST_URL')
         cls.host_name = cls.host_url[cls.host_url.index(u'//') + 2: cls.host_url.rindex(u':')]
