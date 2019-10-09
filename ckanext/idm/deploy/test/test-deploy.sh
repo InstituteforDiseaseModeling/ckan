@@ -16,12 +16,17 @@ chmod +x run-test-bootstrap.sh
 yes | cp -rf /home/mewu/ckan/*_$now.log /mnt/ckan/test/deploy
 logfile=file://P:/ckan/test/deploy
 
+echo "***********************************"
 err_deploy=$(cat /home/mewu/ckan/deploy_$now.log | grep Error)
+echo $err_deploy
 err_backup=$(cat /home/mewu/ckan/backup_$now.log | grep Error)
+echo $err_backup
 err_restore=$(cat /home/mewu/ckan/restore_$now.log | grep Error)
+echo $err_restore
 err_bootstrap=$(cat /home/mewu/ckan/bootstrap_$now.log | grep Error)
+echo $err_bootstrap
 
-curl -H "Content-Type: application/json" -d "{\"text\": \"Deployed Finished: see logs in ${logfile}\n ERROR FROM Log:\n $err_deploy\"}" $webhookurl
-curl -H "Content-Type: application/json" -d "{\"text\": \"Backup Finished: see logs in ${logfile}\n ERROR FROM Log:\n $err_backup\"}" $webhookurl
-curl -H "Content-Type: application/json" -d "{\"text\": \"Restore Finished: see logs in ${logfile}\n ERROR FROM Log:\n $err_restore\"}" $webhookurl
-curl -H "Content-Type: application/json" -d "{\"text\": \"Bootstrap Finished: see logs in ${logfile}\n ERROR FROM Log:\n $err_bootstrap\"}" $webhookurl
+curl -H "Content-Type: application/json" -d "{\"text\": \"Deployed Finished: see logs in ${logfile} ERROR FROM Log:  $err_deploy\"}" $webhookurl
+curl -H "Content-Type: application/json" -d "{\"text\": \"Backup Finished: see logs in ${logfile} ERROR FROM Log:  $err_backup\"}" $webhookurl
+curl -H "Content-Type: application/json" -d "{\"text\": \"Restore Finished: see logs in ${logfile} ERROR FROM Log:  $err_restore\"}" $webhookurl
+curl -H "Content-Type: application/json" -d "{\"text\": \"Bootstrap Finished: see logs in ${logfile}  ERROR FROM Log:  $err_bootstrap\"}" $webhookurl
