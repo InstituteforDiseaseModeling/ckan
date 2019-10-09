@@ -50,18 +50,30 @@ class SmokeTest(unittest.TestCase):
         updated_user = self.action.user_list(q=self.user_name)
         self.assertEqual(updated_about, str(self.action.user_list(q=self.user_name)[0][u'about']))
 
-    @unittest.skip(u'not yet implemented')
     def test_backup_status(self):
-        backup_path = os.path.join(self.backup_root, self.host_name)
-        pattern = u'postgres*.tar.gz'
-        files = [os.path.join(backup_path, file) for file in os.listdir(backup_path)
-                 if (fnmatch.fnmatch(file, pattern))]
-        self.assertGreater(len(files), 0, u'no backup found!')
-        files.sort(key=os.path.getmtime)
-        lasthour_timestamp = datetime.now() + timedelta(hours=-1)
-        created_timestamp = datetime.fromtimestamp(os.path.getmtime(files[-1]))
-        print(u"last backup created at ",  created_timestamp.strftime(u"%Y-%m-%d, %H:%M:%S"))
-        self.assertGreater(created_timestamp, lasthour_timestamp)
+        backuphost_path = os.path.join(self.backup_root, self.host_name)
+        backup_paths= [os.path.join(backuphost_path, "hourly"), os.path.join(backuphost_path, "daily")]
+        patterns = [u'docker_volumes*.tar.gz'] #u'postgres*.tar.gz'
+
+        for backup_path in backup_paths:
+            print("check: ", backup_path)
+            for pattern in patterns:
+                print("check: ", pattern)
+                files = [os.path.join(backup_path, file) for file in os.listdir(backup_path)
+                         if (fnmatch.fnmatch(file, pattern))]
+                self.assertGreater(len(files), 0, u'no backup found!')
+                files.sort(key=os.path.getmtime)
+                created_timestamp = datetime.fromtimestamp(os.path.getmtime(files[-1]))
+                if "hourly" in backup_path:
+                    lasthour_timestamp = datetime.now() + timedelta(hours=-1)
+                    print(u"last hourly backup for {} created at ".format(pattern),
+                          created_timestamp.strftime(u"%Y-%m-%d, %H:%M:%S"))
+                    self.assertGreater(created_timestamp, lasthour_timestamp)
+                elif "daily" in backup_path:
+                    lastday_timestamp = datetime.now() + timedelta(days=-1)
+                    print(u"last daily backup for {} created at ".format(pattern),
+                          created_timestamp.strftime(u"%Y-%m-%d, %H:%M:%S"))
+                    self.assertGreater(created_timestamp, lastday_timestamp)
 
 
 if __name__ == '__main__':
