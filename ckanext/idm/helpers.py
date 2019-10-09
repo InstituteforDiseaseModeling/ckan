@@ -19,7 +19,7 @@ def get_diseases():
 
 
 def _to_choices_helper_format(list):
-    choices = [{u'value': str(v), u'label': v} for v in list]
+    choices = [{u'value': str(v), u'label': v} for v in list or []]
 
     return choices
 
