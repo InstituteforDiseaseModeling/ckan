@@ -23,7 +23,7 @@ err_backup=$(cat /home/mewu/ckan/backup_$now.log | grep Error | sed -e 's:\":\*:
 echo $err_backup
 err_restore=$(cat /home/mewu/ckan/restore_$now.log | grep Error | sed -e 's:\":\*:g' )
 echo $err_restore
-err_bootstrap=$(cat /home/mewu/ckan/bootstrap_$now.log | grep Error | sed -e 's:\":\*:g')
+err_bootstrap=$(cat /home/mewu/ckan/bootstrap_$now.log | grep Error )
 echo $err_bootstrap
 
 curl -H "Content-Type: application/json" -d "{\"text\": \"Deployed Finished: see logs in ${logfile} ERROR FROM Log:  ${err_deploy}\"}" $webhookurl

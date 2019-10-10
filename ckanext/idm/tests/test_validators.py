@@ -5,7 +5,8 @@ from ckan.common import config
 from ckan.plugins.toolkit import get_validator, Invalid
 from ckan import plugins
 from ckan.tests import helpers
-
+from datetime import date, timedelta
+from ckanext.idm.logic import validators
 
 class TestValidators(helpers.FunctionalTestBase):
 
@@ -43,3 +44,32 @@ class TestValidators(helpers.FunctionalTestBase):
     def test_reasonable_range_date_lowerbound(self):
         v = get_validator(u'reasonable_range_date')
         assert_equals(u'1950/01/01', v(u'1950/01/01'))
+
+    def test_acquisition_today(self):
+        self.reload_idm(u'ckan.acquisition_max_date', '')
+        reload(validators)
+        v = get_validator(u'reasonable_acquisition_date')
+        today = date.today().strftime(u'%Y/%m/%d')
+        assert_equals(today, v(today))
+
+    def test_acquisition_future(self):
+        self.reload_idm(u'ckan.acquisition_max_date', u'')
+        reload(validators)
+        v = get_validator(u'reasonable_acquisition_date')
+        tomorrow = (date.today() + timedelta(days=1)).strftime(u'%Y/%m/%d')
+        assert_raises(Invalid, v, tomorrow)
+
+    def test_acquisition_mindate(self):
+        self.reload_idm(u'ckan.acquisition_min_date', u'')
+        reload(validators)
+        v = get_validator(u'reasonable_acquisition_date')
+        crazydate = u'1800/01/01'
+        assert_raises(Invalid, v, crazydate)
+
+    def test_acquisition_yesterday(self):
+        self.reload_idm(u'ckan.acquisition_min_date', u'')
+        self.reload_idm(u'ckan.acquisition_max_date', u'')
+        reload(validators)
+        v = get_validator(u'reasonable_acquisition_date')
+        yesterday = (date.today() + timedelta(days=-1)).strftime(u'%Y/%m/%d')
+        assert_equals(yesterday, v(yesterday))
