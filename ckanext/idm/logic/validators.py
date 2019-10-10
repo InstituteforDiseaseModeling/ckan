@@ -6,20 +6,28 @@ from ckan.common import _, config
 from ckan.lib.helpers import date_str_to_datetime
 from ckan.plugins.toolkit import Invalid
 
-RANGE_MIN_DATE = date_str_to_datetime(config.get(u'ckan.range_min_date') or u'1900-01-01')
-RANGE_MAX_DATE = date_str_to_datetime(config.get(u'ckan.range_max_date') or u'2100-01-01')
-ACQ_MIN_DATE = date_str_to_datetime(config.get(u'ckan.acquisition_min_date')or u'2010-01-01')
-ACQ_MAX_DATE = date_str_to_datetime(config.get(u'ckan.acquisition_max_date')) if config.get(u'ckan.acquisition_max_date') else datetime.datetime.today()
 
+class DateLimits:
+    range_min = date_str_to_datetime(config.get(u'ckan.range_min_date') or u'1900-01-01')
+    range_max = date_str_to_datetime(config.get(u'ckan.range_max_date') or u'2100-01-01')
+    acquisition_min = date_str_to_datetime(config.get(u'ckan.acquisition_min_date') or u'2010-01-01')
+    _acquisition_max = date_str_to_datetime(config.get(u'ckan.acquisition_max_date')) if config.get(u'ckan.acquisition_max_date') else None
+
+    @property
+    def acquisition_max(self):
+        return self._acquisition_max or datetime.datetime.today()
+
+
+date_limits = DateLimits()
 
 def reasonable_range_date(value):
-    _reasonable_date(value, RANGE_MIN_DATE, RANGE_MAX_DATE)
+    _reasonable_date(value, date_limits.range_min, date_limits.range_max)
 
     return value
 
 
 def reasonable_acquisition_date(value):
-    _reasonable_date(value, ACQ_MIN_DATE, ACQ_MAX_DATE)
+    _reasonable_date(value, date_limits.acquisition_min, date_limits.acquisition_max)
 
     return value
 
@@ -58,3 +66,5 @@ def _get_date_value(value):
         raise Exception(u'Unsupported {} type.')
 
     return date_value
+
+
