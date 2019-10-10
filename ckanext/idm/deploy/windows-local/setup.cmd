@@ -34,6 +34,7 @@ IF NOT EXIST development.ini (
   python populate_ini.py ..\.env development.ini
   REM TODO: refactor setting all config info
   ..\ckan-site_info.sh development.ini
+  copy /Y ..\..\..\..\ckanext\idm\public\images\idm-favicon.ico ..\..\..\..\ckan\public\base\images\ckan.ico
 )
 
 REM Navigate to the ckan parent dir.

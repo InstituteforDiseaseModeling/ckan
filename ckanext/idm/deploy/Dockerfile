@@ -46,6 +46,8 @@ ADD . $CKAN_HOME/
 RUN pip install -e $CKAN_HOME/ && \
     ln -s $CKAN_HOME/ckan/config/who.ini $CKAN_CONFIG/who.ini && \
     cp -v $CKAN_HOME/ckanext/idm/deploy/ckan-entrypoint.sh /ckan-entrypoint.sh && \
+    # Copy IDM favicon over the default ico because ckan.favicon setting has a bug (doesn't work for non-root URLs).
+    cp -f $CKAN_HOME/ckanext/idm/public/images/idm-favicon.ico $CKAN_HOME/ckan/public/base/images/ckan.ico && \
     chmod +x /ckan-entrypoint.sh && \
     chown -R ckan:ckan $CKAN_HOME $CKAN_CONFIG $CKAN_STORAGE_PATH && \
     chmod a-x $(find $CKAN_HOME -name "*.py" -type f)
