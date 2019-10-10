@@ -6,19 +6,19 @@ pip install pyyaml
 
 user_request () {
   echo "check user: "$1
-  echo "http --json GET http://"$2":5000/api/3/action/user_list q="$1
-  json_result=$(http --json GET http://$2:5000/api/3/action/user_list q=$1)
+  echo "http --ignore-stdin --json GET http://"$2":5000/api/3/action/user_list q="$1
+  json_result=$(http --ignore-stdin --json GET http://$2:5000/api/3/action/user_list q=$1)
   echo $json_result
   userid_result=$(echo $json_result | jq '.result[].id' | sed 's/"//g')
-  if [ $3 -eq 0 ]; then echo "check new user is no longer there" && [ ! -z "$userid_result" ] && echo "Error: something wrong after restore" && exit 1; fi
-  if [ $3 -eq 1 ]; then echo "check deleted user is back" && [ -z "$userid_result" ] && echo "Error: deleted user not recover restore" && exit 1; fi
+  if [ $3 -eq 0 ]; then echo "user not expected to exist" && [ ! -z "$userid_result" ] && echo "Error: something wrong after restore" && exit 1; fi
+  if [ $3 -eq 1 ]; then echo "user expected to exist" && [ -z "$userid_result" ] && echo "Error: deleted user not recover restore" && exit 1; fi
 }
 
 user_create () {
   username=$(uuidgen -t)
   echo "create user: "$username
-  echo "http --json POST http://"$1":5000/api/3/action/user_create name="$username" email=mewu@gmail.com password=12345678 Authorization:"$2
-  json=$(http --json POST http://$1:5000/api/3/action/user_create name=$username email=mewu@gmail.com password=12345678 Authorization:$2)
+  echo "http --ignore-stdin --json POST http://"$1":5000/api/3/action/user_create name="$username" email=mewu@gmail.com password=12345678 Authorization:"$2
+  json=$(http --ignore-stdin --json POST http://$1:5000/api/3/action/user_create name=$username email=mewu@gmail.com password=12345678 Authorization:$2)
   echo $json
   userid=$(echo $json | jq '.result.id' | sed 's/"//g')
   json_result=$(http --json GET http://$1:5000/api/3/action/user_list q=$username)
@@ -29,9 +29,9 @@ user_create () {
 user_delete () {
   del_username=$1
   echo "delete user:"$del_username
-  echo "http --json POST http://"$2":5000/api/3/action/user_delete id=$del_username Authorization:"$3
-  http --json POST http://$2:5000/api/3/action/user_delete id=$del_username Authorization:$3
-  json_deleted=$(http --json GET http://$host:5000/api/3/action/user_list q=$del_username)
+  echo "http --ignore-stdin --json POST http://"$2":5000/api/3/action/user_delete id=$del_username Authorization:"$3
+  http --ignore-stdin --json POST http://$2:5000/api/3/action/user_delete id=$del_username Authorization:$3
+  json_deleted=$(http --ignore-stdin --json GET http://$host:5000/api/3/action/user_list q=$del_username)
   echo $json_deleted
   result_deleted=$(echo $json_deleted | jq '.result[].id' | sed 's/"//g')
   [ ! -z "$userid_deleted" ] && echo "Error: User deletion failed before restore" && exit 1
