@@ -42,8 +42,11 @@ function restore_pg {
 
     echo Step 2: Apply sql dump to db container
     docker cp /"$sql_path" db:/tmp/"$sql_file"
-    docker exec db psql -U ckan -w -f /tmp/"$sql_file"
+    docker pause ckan
+    docker exec db psql -U ckan -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname in ('ckan', 'datastore', 'template_postgis') AND pid <> pg_backend_pid();"
+    docker exec db psql -d postgres -U ckan -w -f /tmp/"$sql_file"
     docker exec db rm /tmp/"$sql_file"
+    docker unpause ckan
     rm "$sql_path"
 
     sleep 10
@@ -66,4 +69,3 @@ case $COMMAND  in
             ;;
       *)
 esac
-
