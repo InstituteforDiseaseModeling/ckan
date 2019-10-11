@@ -1,0 +1,12 @@
+{% ckan_extends %}
+
+    {%- block resource_format -%}
+      <tr>
+        <th scope="row">{{ _('Format') }}</th>
+        {% if res.format %}
+          <td>{{ res.format }} {{ res.mimetype_inner or res.mimetype or '' }}</td>
+        {% else %}
+          <td>{{ res.mimetype_inner or res.mimetype or _('unknown')  }}</td>
+        {% endif %}
+      </tr>
+    {%- endblock -%}

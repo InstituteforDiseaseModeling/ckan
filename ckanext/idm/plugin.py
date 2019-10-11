@@ -4,6 +4,7 @@ import os
 from collections import OrderedDict
 
 import ckan.plugins as p
+import ckan.lib.uploader as uploader
 
 from ckan.lib.plugins import DefaultTranslation
 from flask import Blueprint
@@ -29,6 +30,7 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
     p.implements(p.ITemplateHelpers, inherit=False)
     p.implements(p.IValidators)
     p.implements(p.IAuthFunctions)
+    p.implements(p.IResourceController, inherit=True)
 
     # IFacets
 
@@ -121,4 +123,13 @@ class IdmPlugin(p.SingletonPlugin, DefaultTranslation):
 
     def get_auth_functions(self):
         return {u'member_create': auth_create.member_create}
+
+    # IResourceController
+    def before_update(self, context, current, resource):
+        data_dict = resource
+        upload = uploader.get_resource_uploader(data_dict)
+
+        if u'mimetype' not in data_dict:
+            if hasattr(upload, u'mimetype'):
+                data_dict[u'mimetype'] = upload.mimetype or ''
 
