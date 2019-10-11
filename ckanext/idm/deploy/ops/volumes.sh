@@ -58,7 +58,7 @@ function restore_volumes {
 function remove_old_backups {
   dst_dir=${1}
   days=${2}
-  find "$dst_dir"/ -name "*.tar.gz" -type f -mtime +"$days" -exec rm -f {} \;
+  find "$dst_dir"/ -name "*.tar.gz" -type f -mtime "$days" -exec rm -f {} \;
 }
 
 case  $INTERVAL in
