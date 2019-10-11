@@ -75,14 +75,17 @@ def _validate_email(email, expected_hash, raise_exception=False):
     is_hash_ok = _hash_email(email) == expected_hash
     
     if raise_exception and not is_hash_ok:
-        raise ValueError(u"User email hash doesn't match the expected value. ".format(email))
+        raise Invalid(u"User email is missing or it doesn't match the expected value.".format(email))
 
     return email if is_hash_ok else None
 
 
 def _hash_email(email):
-    # This hashing code is from the ckan core
-    e = email.strip().lower().encode(u'utf8')
-    email_hash = hashlib.md5(e).hexdigest()
+    try:
+        # This hashing code is from the ckan core
+        e = email.strip().lower().encode(u'utf8')
+        email_hash = hashlib.md5(e).hexdigest()
+    except Exception as e:
+        email_hash = None
 
     return email_hash
