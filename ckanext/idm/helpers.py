@@ -15,7 +15,7 @@ def get_diseases_choices(field):
 
 
 def get_diseases():
-    return _get_vocabilary(u'disease')
+    return _get_vocabulary(u'disease')
 
 
 def _to_choices_helper_format(list):
@@ -42,7 +42,7 @@ def _create_tag_vocabilary(vocabulary_name, values_tuple):
             tk.get_action(u'tag_create')(context, data)
 
 
-def _get_vocabilary(vocabulary_name):
+def _get_vocabulary(vocabulary_name):
     """Return the list of resource_types from the resource_type vocabulary."""
     try:
         resource_type = tk.get_action(u'tag_list')(data_dict={u'vocabulary_id': vocabulary_name})
