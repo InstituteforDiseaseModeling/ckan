@@ -1,0 +1,16 @@
+{% ckan_extends %}
+
+{% block primary_content_inner %}
+{{ super() }}
+      <script lang="JavaScript">
+
+      spatial = document.getElementById('field-spatial');
+      chkbox = document.getElementById('field-spatial_mode-manual');
+
+      function controlSpatial(){  spatial.readOnly=!chkbox.checked }
+
+      chkbox.addEventListener('click', controlSpatial);
+      controlSpatial();
+
+    </script>
+{% endblock %}
