@@ -1,3 +1,4 @@
+import re
 import sys
 import yaml
 
@@ -6,10 +7,7 @@ def load_yaml(file_path):
     # TODO allow yaml to contain unicode
     with open(file_path, u'r') as stream:
         data = None
-        try:
-            data = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print str(exc)
+        data = yaml.safe_load(stream)
 
     return data
 
@@ -138,3 +136,12 @@ def take_word(all_text, start_str, new_start_str=None):
         word = None
 
     return word
+
+
+def split_into_words(all_text):
+    """
+    Split text into words.
+    https://stackoverflow.com/questions/12705293/regex-to-split-words-in-python
+    """
+    rgx = re.compile("(\w[\w']*\w|\w)")
+    return rgx.findall(all_text)

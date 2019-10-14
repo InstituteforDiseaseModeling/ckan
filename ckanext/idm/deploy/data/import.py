@@ -18,6 +18,7 @@ def main():
     host_url = args.ckan_url or u'http://localhost:5000'
     act = RemoteCKAN(host_url, apikey=args.api_key).action
     rgh = hlp.ResearchGroupQueryHelper(act)
+    topics = hlp.call_api(act.group_list) #, {u'all_fields': True})
 
     hlp.fail_safe_check(args.force, act.package_list, u'datasets')
 
@@ -27,6 +28,9 @@ def main():
 
     # Get dataset .csv file reader
     reader = get_dataset_file_reader(args.dataset_file)
+
+    # Locations dot-name list into list of tuples e.g. (3, 6, 'Southern', 'Africa:Zambia:Southern')
+    locations = prepare_locations_matching(act)
 
     # Process .csv dataset file. Iterate over all lines
     header = None
@@ -42,7 +46,7 @@ def main():
 
             # Populate fields dict with values from the .csv file row for datasets and resources
             ds_dict = populate_fields_from_row(row_dict, ds_fields, ds_fields_map, ds_defaults_map, error_msgs)
-            prep_dataset_args(rgh, ds_dict, ds_defaults_map, error_msgs)
+            prep_dataset_args(rgh, ds_dict, ds_defaults_map, locations, topics, error_msgs)
             populate_resources(rgh, row_dict, rs_fields, ds_dict, resource_fields_maps, error_msgs)
 
             # Call create dataset/resources API
@@ -172,19 +176,22 @@ def populate_fields_from_row(row_dict, fields, fields_map, defaults_map, error_m
             has_params = u'{' in target and u'}' in target
             has_eval = target[:len(eval_prefix)] == eval_prefix
             if has_params or has_eval:
+                # Prep values for eval
+                row_dict = {k: v.replace(u'"', u'||').replace(u"'", u"||").replace(u'\\', u'/') for k, v in row_dict.items()}
                 # Replace params for value (relevant if there is no eval) and target (relevant for eval).
                 target = value = target.format(**row_dict)
                 if has_eval:
                     # Remove eval prefix
                     target = target[len(eval_prefix):]
                     try:
-                        # Encode unicode chars to preserve them through eval.
-                        target = target.encode(u'utf-8')
                         # Put back nameless params {} (if exist).
                         target = target.replace(u'[nameless]', u'{}')
+                        # Encode unicode chars to preserve them through eval.
+                        target = target.replace(u'\xa0', u' ').replace(u'\\', u'/')
+                        target = target.encode(u'utf-8', errors=u'replace')
                         value = eval(target)
-                        # Put back unicode characters.
-                        value = value.decode(u'utf-8')
+                        # Put back unicode and quote characters.
+                        value = value.decode(u'utf-8').replace('||', '"')
                     except Exception as e:
                         error_msgs.append((u'eval error: {}'.format(str(e))))
                         value = None
@@ -206,7 +213,7 @@ def populate_fields_from_row(row_dict, fields, fields_map, defaults_map, error_m
     return args_dict
 
 
-def prep_dataset_args(rgh, ds_dict, ds_defaults_map, error_msgs):
+def prep_dataset_args(rgh, ds_dict, ds_defaults_map, locations, topics, error_msgs):
     # transform to meet API expectation
     ds_dict[u'type'] = u'dataset'
     ds_dict[u'state'] = u'active'
@@ -239,7 +246,10 @@ def prep_dataset_args(rgh, ds_dict, ds_defaults_map, error_msgs):
     ds_dict[u'ext_startdate'], ds_dict[u'ext_enddate'] = parse_start_end_dates(ds_dict, ds_defaults_map)
 
     # Parse location from 'title' or 'notes' fields
-    ds_dict[u'location'] = parse_location(rgh.act, ds_dict, ds_defaults_map)
+    ds_dict[u'location'] = parse_location(locations, ds_dict, ds_defaults_map)
+
+    # Set topics
+    ds_dict[u'groups'] = parse_topics(topics, ds_dict, ds_defaults_map)
 
     # Parse publisher from 'title' or 'notes' fields
     publishers = hlp.call_api(rgh.act.publisher_autocomplete, {u'q': ''})
@@ -276,34 +286,58 @@ def construct_name(ds_dict):
     return name
 
 
-def parse_location(act, ds_dict, ds_defaults_map):
-    # Sort locations in reverse order in respect to level, to examine
+def prepare_locations_matching(act):
+    # Retrieve all location from API
     all_locations = hlp.call_api(act.location_autocomplete, {u'q': ''})
-    locations_split = [loc.split(':') for loc in all_locations]
-    locations_and_levels = [(len(loc), loc) for loc in locations_split]
-    locations = sorted(locations_and_levels, key=lambda v: v[0], reverse=True)
+    # [(3, 6, 'Southern', 'Africa:Zambia:Southern')...]
+    locations_w_info = [(loc.count(':'), len(loc.split(':')[-1]), loc.split(':')[-1], loc) for loc in all_locations]
+    # Sort by level and length of the last name part, in the reverse order.
+    locations = sorted(locations_w_info, key=lambda v: (v[0], v[1]), reverse=True)
 
+    return locations
+
+
+def parse_location(locations, ds_dict, ds_defaults_map):
     if not ds_dict[u'location'] or ds_dict[u'location'] == ds_defaults_map[u'location']:
         ds_location = None
         for f in [u'title', u'notes']:
+            field_value = ds_dict[f]
+
+            # Try to exactly match location name with words from field value
+            ds_location= _match_location_name(locations, field_value, lambda n, v: n.lower() in hlp.split_into_words(v.lower()))
             if ds_location:
                 break
 
-            for location in locations:
-                if ds_location:
-                    break
-                # look at more precise location first (e.g. district, country, continent)
-                level_count = location[0]
-                names = location[1]
-                for level in reversed(range(level_count)):
-                    # if name path (aka dot-name) is present take it
-                    if names[level] in ds_dict[f]:
-                        ds_location = ':'.join(names[:level+1])
-                        break
-        if ds_location:
-            ds_dict[u'location'] = ds_location
+            # If not found try more relaxed match
+            ds_location = _match_location_name(locations, field_value, lambda name, field_value: name in field_value)
+            if ds_location:
+                break
 
     return ds_location or ds_dict[u'location']
+
+
+def _match_location_name(locations, field_value, compare_func):
+    ds_location = None
+    for _, _, name, name_path in locations:
+        if ds_location:
+            break
+        if compare_func(name, field_value):
+            ds_location = name_path
+            break
+
+    return ds_location
+
+
+def parse_topics(topics, ds_dict, ds_defaults_map):
+    #if not ds_dict[u'topics'] or ds_dict[u'topics'] == ds_defaults_map['topics']:
+    ds_topics = []
+    for f in [u'title', u'notes']:
+        field_value = ds_dict[f].lower()
+        for t in topics:
+            if t.lower() in field_value:
+                ds_topics.append(t)
+
+    return [{'name': t} for t in ds_topics] #or ds_dict[u'topics']
 
 
 def prep_resource_args(rs_dict, rs_defaults_map, error_msgs):
@@ -314,6 +348,7 @@ def prep_resource_args(rs_dict, rs_defaults_map, error_msgs):
             {}""".format(comment, rs_dict[u'description'])
     except Exception as e:
         error_msgs.append(u'Unable to parse URL: {}'.format(str(e)))
+
 
 def parse_url(rs_dict, rs_defaults_map, fields):
     http_prefix = u'http://'

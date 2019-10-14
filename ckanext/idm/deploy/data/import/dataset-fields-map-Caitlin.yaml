@@ -4,11 +4,16 @@ dataset:
     title: 'Raw Dataset Description'
     name: 'Raw Dataset Description'
     notes: |
-            {Notes}
+            eval: """{Notes}
 
-            Permissions: {Current Dataset Permissions}, later {Expected Dataset Permissions}
+                {}{}
 
-            Forums: {Forum} on {Date}
+                {}
+                """.format(
+                        u"Permissions: {Current Dataset Permissions}" if "{Current Dataset Permissions}" != "" else "",
+                        u", later {Expected Dataset Permissions}" if "{Expected Dataset Permissions}" != "" else "",
+                        u"Forums: {Forum} on {Date}" if "{Forum}" != "" and "{Date}" != "" else ""
+                  )
     maintainer_email: 'eval: "{Researcher}".strip().lower()'
     owner_org: Group
 
@@ -28,6 +33,7 @@ dataset:
     acquisition_date: '2010-01-01'
     request_access: False
     license_id: notspecified
+    topics: []
 
 
 
@@ -35,14 +41,17 @@ resource:
   -
     fields:
       name: 'Raw Dataset Description'
-      url: 'Current Dataset Location'
+      url: |
+            eval: "Current storage: {Current Dataset Location}" if "{Current Dataset Location}" != "" else ""
+
       description: |
-                    eval: "Expected URL: {Expected Dataset Location}" if "{Expected Dataset Location}" != "" else ""
+                    eval: "Future storage: {Expected Dataset Location}" if "{Expected Dataset Location}" != "" else ""
+
     defaults:
       purpose: data
   -
     fields:
-      name: 'Code Repository'
+      name: 'Current Code Repository'
     defaults:
       purpose: code
 

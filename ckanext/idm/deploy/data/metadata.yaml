@@ -3,52 +3,52 @@ research_groups:
     title: Applied Math (AMath)
     description: 'Global Development'
     admin: Daniel Klein <dklein@idmod.org>
-    members: Atiye Alaeddini <aalaeddini@idmod.org>; Cliff Kerr <ckerr@idmod.org>
+    members: Atiye Alaeddini <aalaeddini@idmod.org>; Cliff Kerr <ckerr@idmod.org>; Guillaume Chabot-Couture <gcouture@idmod.org>
   data_services:
     title: Data Services
     description: 'Software'
     admin: Christopher Lorton <clorton@idmod.org>
-    members: Dennis Harding <dharding@idmod.org>; Meikang Wu <mewu@idmod.org>; Mary Fisher <mafisher@idmod.org>
+    members: Dennis Harding <dharding@idmod.org>; Meikang Wu <mewu@idmod.org>; Mary Fisher <mafisher@idmod.org>; Charles Eliot <celiot@idmod.org>; Rob Baker <rbaker@idmod.org>
   dda:
     title: Data, Dynamics, and Analytics (DDA)
     description: 'Global Development'
     admin: Josh Proctor <jproctor@idmod.org>;
-    members: Albert Lee <allee@idmod.org>; Jessica Ribado <jribado@idmod.org>; Mollie Van Gordon <mvangordon@idmod.org>
+    members: Albert Lee <allee@idmod.org>; Jessica Ribado <jribado@idmod.org>; Mollie Van Gordon <mvangordon@idmod.org>; Guillaume Chabot-Couture <gcouture@idmod.org>
   econ:
     title: Economy Finance (ECON)
     description: 'Global Development'
     admin: Brittany Hagedorn <bhagedorn@idmod.org>;
-    members: Enrique Saldarriaga <esaldarriaga@idmod.org>; Marita Zimmermann <mzimmermann@idmod.org>; Rui Han <rhan@idmod.org>; William Trouleau <wtrouleau@idmod.org>
+    members: Enrique Saldarriaga <esaldarriaga@idmod.org>; Marita Zimmermann <mzimmermann@idmod.org>; Rui Han <rhan@idmod.org>; William Trouleau <wtrouleau@idmod.org>; Guillaume Chabot-Couture <gcouture@idmod.org>
   measles:
     title: Measles
     description: 'Global Development'
     admin: Kevin McCarthy <kmccarthy@idmod.org>;
-    members: Harrison Goldwyn <hgoldwyn@idmod.org>; Kurt Frey <kfrey@idmod.org>; Niket Thakkar <nthakkar@idmod.org>
+    members: Harrison Goldwyn <hgoldwyn@idmod.org>; Kurt Frey <kfrey@idmod.org>; Niket Thakkar <nthakkar@idmod.org>; Guillaume Chabot-Couture <gcouture@idmod.org>
   stats:
     title: Stats
     description: 'Global Development'
     admin: Hil Lyons <hlyons@idmod.org>;
-    members: Roy Burstein <rburstein@idmod.org>; Steve Kroiss <skroiss@idmod.org>
+    members: Roy Burstein <rburstein@idmod.org>; Steve Kroiss <skroiss@idmod.org>; Guillaume Chabot-Couture <gcouture@idmod.org>
   epi:
     title: EPI
     description: 'Global Health'
     admin: Mike Famulare <mfamulare@idmod.org>
-    members: Assaf Oron <aoron@idmod.org>; Ben Althouse <balthouse@idmod.org>; Dennis Chao <dennisc@idmod.org>; Dina Mistry <dmistry@idmod.org>; Gregory Hart <ghart@idmod.org>; Jillian Gauld <jgauld@idmod.org>; Laura Skrip <lskrip@idmod.org>; Mike Famulare <mfamulare@idmod.org>; Navideh Noori <nnoori@idmod.org>; Rafael Nunez <rnunez@idmod.org>; Wesley Wong <wwong@idmod.org>
+    members: Assaf Oron <aoron@idmod.org>; Ben Althouse <balthouse@idmod.org>; Dennis Chao <dennisc@idmod.org>; Dina Mistry <dmistry@idmod.org>; Gregory Hart <ghart@idmod.org>; Jillian Gauld <jgauld@idmod.org>; Laura Skrip <lskrip@idmod.org>; Mike Famulare <mfamulare@idmod.org>; Navideh Noori <nnoori@idmod.org>; Rafael Nunez <rnunez@idmod.org>; Wesley Wong <wwong@idmod.org>; Edward Wenger <ewenger@idmod.org>
   hivtb:
     title: HIV/TB
     description: 'Global Health'
     admin: Anna Bershteyn <abershteyn@idmod.org>
-    members: Adam Akullian <aakullian@idmod.org>; Anna Bershteyn <abershteyn@idmod.org>; Bradley Wagner <bwagner@idmod.org>; Britta Jewell <bjewell@idmod.org>; Karyn Sutton <ksutton@idmod.org>; Stewart Chang <stchang@idmod.org>
+    members: Adam Akullian <aakullian@idmod.org>; Anna Bershteyn <abershteyn@idmod.org>; Bradley Wagner <bwagner@idmod.org>; Britta Jewell <bjewell@idmod.org>; Karyn Sutton <ksutton@idmod.org>; Stewart Chang <stchang@idmod.org>; Edward Wenger <ewenger@idmod.org>
   malaria:
     title: Malaria
     description: 'Global Health'
     admin: Caitlin Bever <cbever@idmod.org>
-    members: Amelia Bertozzi-Villa <abertozzivilla@idmod.org>; Andre Lin Ouédraogo <aouedraogo@idmod.org>; Jaline Gerardin <jgerardin@idmod.org>; Jon Russell <jorussell@idmod.org>; Josh Suresh <jsuresh@idmod.org>; Julie Zhang <juzhang@idmod.org>; Marlin Figgins <mfiggins@idmod.org>; Monique Ambrose <mambrose@idmod.org>; Prashanth Selvaraj <pselvaraj@idmod.org>
+    members: Amelia Bertozzi-Villa <abertozzivilla@idmod.org>; Andre Lin Ouédraogo <aouedraogo@idmod.org>; Jaline Gerardin <jgerardin@idmod.org>; Jon Russell <jorussell@idmod.org>; Josh Suresh <jsuresh@idmod.org>; Julie Zhang <juzhang@idmod.org>; Marlin Figgins <mfiggins@idmod.org>; Monique Ambrose <mambrose@idmod.org>; Prashanth Selvaraj <pselvaraj@idmod.org>; Edward Wenger <ewenger@idmod.org>
   mnch:
     title: MNCH
     description: 'Global Health'
     admin: Dennis Chao <dennisc@idmod.org>
-    members: Andre Lin Ouédraogo <aouedraogo@idmod.org>; Assaf Oron <aoron@idmod.org>; Dennis Chao <dennisc@idmod.org>; Dina Mistry <dmistry@idmod.org>; Julie Zhang <juzhang@idmod.org>; Navideh Noori <nnoori@idmod.org>
+    members: Andre Lin Ouédraogo <aouedraogo@idmod.org>; Assaf Oron <aoron@idmod.org>; Dennis Chao <dennisc@idmod.org>; Dina Mistry <dmistry@idmod.org>; Julie Zhang <juzhang@idmod.org>; Navideh Noori <nnoori@idmod.org>; Edward Wenger <ewenger@idmod.org>
 topics:
   births:
     title: Births
@@ -119,7 +119,6 @@ tags:
     - MORDOR
     - NightimeLights
     - Prevalence
-    - RI
     - Surveillance
     - Surveys
 
