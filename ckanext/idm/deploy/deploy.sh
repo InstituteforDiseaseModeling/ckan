@@ -5,7 +5,22 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-export CKAN_SITE_URL=http://$HOSTNAME:5000
+source .env
+
+# Replace URL for PROD and STAGE env.
+case  $HOSTNAME  in
+      $CKAN_PROD_HOST)
+          export CKAN_SITE_URL=$CKAN_PROD_URL
+          ;;
+      $CKAN_STAGE_HOST)
+          export CKAN_SITE_URL=$CKAN_STAGE_URL
+          ;;
+      *)
+          export CKAN_SITE_URL=http://$HOSTNAME:5000
+          ;;
+esac
+
+echo CKAN_SITE_URL=$CKAN_SITE_URL
 
 # Ensure working dir
 OPS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
