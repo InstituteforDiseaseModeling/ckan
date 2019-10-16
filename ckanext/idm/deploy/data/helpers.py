@@ -71,12 +71,15 @@ class ResearchGroupQueryHelper:
 
         return all_rg_final
 
-
-    def get_research_group(self, name, exact=True, default=None):
+    def get_research_group(self, name, maintainer_email, exact=True, default=None):
         rgs = [g for g in self.research_groups if name == g['name']]
         if not exact and len(rgs) == 0:
             # TODO consider fuzzy matching
             rgs = [g for g in self.research_groups if name in g['name']]
+
+        if len(rgs) == 0 and maintainer_email:
+            maintainer = maintainer_email.split('@')[0]
+            rgs = [g for g in self.research_groups if maintainer in self.get_all_users(g['name'])]
 
         if len(rgs) == 0 and default:
             rgs = [g for g in self.research_groups if default == g['name']]
@@ -96,10 +99,9 @@ class ResearchGroupQueryHelper:
         for g in rgs:
             all_users.extend(g['admins'])
             if not only_admin:
-                all_users.extend([g['users'] for g in self.research_groups])
+                all_users.extend(g['users'])
 
         return all_users
-
 
     def get_research_group_admins(self, exclude_admins=None):
         if exclude_admins:

@@ -132,10 +132,10 @@ def get_org_id(act, org):
     return rg[u'id']
 
 
-def get_maintainer(rgh, maintainer, research_group_id, default):
-    user = maintainer
+def get_maintainer(rgh, maintainer_email, research_group_id, default):
+    user = maintainer_email.split('@')[0]
     research_group = rgh.research_group_id_name_map[research_group_id] if research_group_id else None
-    if not maintainer in rgh.get_all_users():
+    if not user in rgh.get_all_users():
         research_group_admins = rgh.get_research_group_admins(exclude_admins=[default])
         if research_group in research_group_admins.keys():
             user = research_group_admins[research_group][0]
@@ -234,7 +234,7 @@ def prep_dataset_args(rgh, ds_dict, ds_defaults_map, locations, topics, error_ms
     ds_dict[u'tags'] = parse_tags(rgh, ds_dict, ds_defaults_map)
 
     # Set research group
-    research_group = rgh.get_research_group(ds_dict[u'owner_org'], exact=False, default=ds_defaults_map[u'owner_org'])
+    research_group = rgh.get_research_group(ds_dict[u'owner_org'], ds_dict[u'maintainer_email'], exact=False, default=ds_defaults_map[u'owner_org'])
     ds_dict[u'owner_org'] = _validate_args_dict_value(error_msgs, u'research group', research_group, 'id')
 
     # Set maintainer email, either value from the .csv file or the research group admin (research manager)
