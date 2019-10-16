@@ -3,6 +3,7 @@
 import argparse
 import codecs
 import datetime
+import os
 import re
 import unicodecsv as csv
 
@@ -15,7 +16,8 @@ def main():
     u""" """
 
     # Construct CKAN url and initiate API object.
-    host_url = args.ckan_url or u'http://localhost:5000'
+    port = os.environ[u'CKAN_PORT'] if u'CKAN_PORT' in os.environ else 5000
+    host_url = args.ckan_url or u'http://localhost:{}'.format(port)
     act = RemoteCKAN(host_url, apikey=args.api_key).action
     rgh = hlp.ResearchGroupQueryHelper(act)
     topics = hlp.call_api(act.group_list) #, {u'all_fields': True})

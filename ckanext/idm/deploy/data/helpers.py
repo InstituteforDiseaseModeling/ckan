@@ -1,3 +1,4 @@
+import os
 import re
 import sys
 import yaml
@@ -145,3 +146,9 @@ def split_into_words(all_text):
     """
     rgx = re.compile("(\w[\w']*\w|\w)")
     return rgx.findall(all_text)
+
+
+def get_ckan_port():
+    port = os.environ[u'CKAN_PORT'] if u'CKAN_PORT' in os.environ else 5000
+
+    return port

@@ -26,7 +26,7 @@ def main(args):
     """
 
     # Construct CKAN url and initiate API object.
-    host_url = args.ckan_url or u'http://localhost:5000'
+    host_url = args.ckan_url or u'http://localhost:{}'.format(hlp.get_ckan_port())
     act = RemoteCKAN(host_url, apikey=args.api_key).action
 
     # Fail safe, only run if DB is empty or unless "force" flag is used.
@@ -66,7 +66,7 @@ def get_image_url_prefix():
     elif u'CKAN_SITE_URL' in os.environ:
         host_url = os.environ[u'CKAN_SITE_URL']
     else:
-        host_url = u'http://{}:5000'.format(socket.gethostname())
+        host_url = u'http://{}:{}'.format(socket.gethostname(), hlp.get_ckan_port())
 
     return host_url
 

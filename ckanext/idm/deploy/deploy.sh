@@ -10,13 +10,15 @@ source .env
 # Replace URL for PROD and STAGE env.
 case  $HOSTNAME  in
       $CKAN_PROD_HOST)
-          export CKAN_SITE_URL=$CKAN_PROD_URL
+          export CKAN_PORT=80
+          export CKAN_SITE_URL=http://"$CKAN_PROD_ALIAS":"${CKAN_PORT}"
           ;;
       $CKAN_STAGE_HOST)
-          export CKAN_SITE_URL=$CKAN_STAGE_URL
+          export CKAN_PORT=80
+          export CKAN_SITE_URL=http://"$CKAN_STAGE_ALIAS":"${CKAN_PORT}"
           ;;
       *)
-          export CKAN_SITE_URL=http://$HOSTNAME:5000
+          export CKAN_SITE_URL=http://"$HOSTNAME":"${CKAN_PORT}"
           ;;
 esac
 
