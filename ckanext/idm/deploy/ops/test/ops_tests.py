@@ -53,11 +53,13 @@ class SmokeTest(unittest.TestCase):
     def test_backup_status(self):
         backuphost_path = os.path.join(self.backup_root, self.host_name)
         backup_paths= [os.path.join(backuphost_path, "hourly"), os.path.join(backuphost_path, "daily")]
-        patterns = [u'docker_volumes*.tar.gz'] #u'postgres*.tar.gz'
+        patterns = [u'docker_volumes*.tar.gz', u'postgres*.tar.gz']
 
         for backup_path in backup_paths:
             print("check: ", backup_path)
             for pattern in patterns:
+                if ("hourly" in backup_path or "daily" in backup_path) and pattern == u'postgres*.tar.gz':
+                    continue
                 print("check: ", pattern)
                 files = [os.path.join(backup_path, file) for file in os.listdir(backup_path)
                          if (fnmatch.fnmatch(file, pattern))]
@@ -74,6 +76,11 @@ class SmokeTest(unittest.TestCase):
                     print(u"last daily backup for {} created at ".format(pattern),
                           created_timestamp.strftime(u"%Y-%m-%d, %H:%M:%S"))
                     self.assertGreater(created_timestamp, lastday_timestamp)
+                elif "weekly" in backup_path:
+                    lastweek_timestamp = datetime.now() + timedelta(weeks=-1)
+                    print(u"weekly daily backup for {} created at ".format(pattern),
+                          created_timestamp.strftime(u"%Y-%m-%d, %H:%M:%S"))
+                    self.assertGreater(created_timestamp, lastweek_timestamp)
 
 
 if __name__ == '__main__':
