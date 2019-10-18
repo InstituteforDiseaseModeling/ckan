@@ -9,6 +9,7 @@ import ckan.plugins as plugins
 from ckan.common import config
 from bs4 import BeautifulSoup
 from ckan.tests import factories, helpers
+from datetime import date
 import sys
 
 
@@ -94,6 +95,23 @@ class TestidmPlugins(helpers.FunctionalTestBase):
         if plugins.plugin_loaded(u'scheming_datasets'):
             plugins.unload(u'scheming_datasets')
         helpers.reset_db()
+
+    def setup(self):
+        helpers.reset_db()
+        self.setup_disease()
+
+    def setup_disease(self):
+        voc_data = {u'name': u'disease'}
+        try:
+            vocab = helpers.call_action(u'vocabulary_create', context=None, name=u'disease')
+        except logic.ValidationError as e:
+            assert u'vocabulary name is already in use' in str(e.error_dict[u'name'])
+            vocab = helpers.call_action(u'vocabulary_show', context=None, id=u'disease')
+        for d in self.expected_diseases:
+            try:
+                helpers.call_action(u'tag_create', context=None, name=d, vocabulary_id=vocab[u'id'])
+            except logic.ValidationError as e:
+                assert u'Tag {} already belongs to vocabulary'.format(d) in str(e.error_dict[u'vocabulary_id'])
 
     def create_topics(self, name=None):
         topics = helpers.call_action(u'group_list')
@@ -304,9 +322,17 @@ class TestidmPlugins(helpers.FunctionalTestBase):
         testdata[u'acquisition_date'] = u'1900/01/01'
         validated = False
         try:
-            helpers.call_action(u'package_create',
+            result = helpers.call_action(u'package_create',
                                 **testdata)
         except logic.ValidationError as e:
             assert e.error_dict[u'acquisition_date']
             validated = True
-        assert validated
+        assert validated, str(result)
+
+    def test_acquisition_date_now(self):
+        testdata = self.basic_testdata.copy()
+        testdata[u'name'] = sys._getframe().f_code.co_name
+        testdata[u'acquisition_date'] = date.today().strftime('%Y/%m/%d')
+        result = helpers.call_action(u'package_create', **testdata)
+        nt.assert_equals(testdata[u'acquisition_date'], result[u'acquisition_date'])
+        helpers.call_action(u'package_delete', id=result[u'id'])

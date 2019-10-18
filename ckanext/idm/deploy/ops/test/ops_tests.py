@@ -8,12 +8,18 @@ from ckanapi import RemoteCKAN
 
 class SmokeTest(unittest.TestCase):
 
+    server_map = {u"data-catalog": u"ipadvapp001.ipa.idm.ctr",
+                  u"data-catalog2": u"ipadvapp002.ipa.idm.ctr"}
+
     @classmethod
     def setUpClass(cls):
         cls.check_env(u'BACKUP_ROOT')
         cls.check_env(u'USER_NAME')
         cls.check_env(u'HOST_URL')
-        cls.host_name = cls.host_url[cls.host_url.index(u'//') + 2: cls.host_url.rindex(u':')]
+        cls.host_name = cls.server_map[cls.host_url[cls.host_url.index(u'//') + 2:
+                                                    cls.host_url.rindex(u':')
+                                                    if cls.host_url.rindex(u':') > cls.host_url.index(u':')
+                                                    else len(cls.host_url)]]
         cls.check_env(u'API_KEY')
         setattr(cls, u'action', RemoteCKAN(cls.host_url, apikey=cls.api_key).action)
 
