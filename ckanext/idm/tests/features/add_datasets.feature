@@ -16,7 +16,6 @@ Feature: Add datasets for editors
       | mCPR            |
       | MORDOR          |
       | Prevalence      |
-      | RI              |
       | Surveys         |
     And a list of pre-defined "Topics" has been loaded in the system
       | Topic                                                     |
@@ -152,7 +151,6 @@ Feature: Add datasets for editors
       | mCPR            |
       | MORDOR          |
       | Prevalence      |
-      | RI              |
       | Surveys         |
 
 

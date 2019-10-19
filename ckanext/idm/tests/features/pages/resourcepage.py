@@ -43,7 +43,9 @@ class resourcepage(basepage):
                     actual_value = \
                         row.find_element_by_tag_name(u'td').text
                 print(u"Value: {}".format(actual_value))
-                if value.strip() == actual_value.strip():
+                if key == u'Format' and value.strip().lower() in actual_value.strip().lower():
+                    metadatafound = True
+                elif value.strip() == actual_value.strip():
                     metadatafound = True
                 break
         if not metadatafound:

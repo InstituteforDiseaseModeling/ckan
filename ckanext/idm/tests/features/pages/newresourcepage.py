@@ -55,7 +55,7 @@ class newresourcepage(basepage):
                 u'field not in the optional list:', fieldname)
 
     def fill_field(self, fieldname, fieldtext, handler=None, autocomplete=False):
-        if handler in ['Format']:
+        if handler in [u'Format']:
             if not autocomplete:
                 self.driver.find_element_by_xpath(
                     u'//div//label[contains(text(),"{}")]'

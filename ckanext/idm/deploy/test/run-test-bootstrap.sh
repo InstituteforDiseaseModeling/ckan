@@ -51,8 +51,6 @@ cd ../data/
 python bootstrap.py $apikey --force
 python bootstrap.py $apikey -f ../test/test_metadata.yaml -p testPassword --force
 
-#import
-docker exec -i -w /home/ckan/src/ckan/ckanext/idm/deploy/data/ ckan python import.py $apikey import/dataset-fields-map-Caitlin.yaml import/datasets-Caitlin.csv --force
 
 #backup
 echo "remove old backup"
