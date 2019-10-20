@@ -1,0 +1,19 @@
+{% ckan_extends %}
+  {% block basic_fields %}
+  {{ super() }}
+   <script lang="JavaScript">
+    window.addEventListener('load', function () {
+      // TODO: Move this to the server-side and set URL to the actual value for the uploaded file.
+      // This should be similar to the case when the "upload" resource is updated:
+      // URL control is set to the full url but only the file name is displayed.
+      setTimeout(function(){
+        is_upload = $("label:contains('URL')").length == 0
+        has_errors = $("li:contains('Missing value')").length > 0
+        if(is_upload && has_errors) $("a:contains('Remove')").click()
+      }, 1000);
+    })
+  </script>
+  {% endblock %}
+
+
+
