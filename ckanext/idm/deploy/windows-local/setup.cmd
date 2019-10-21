@@ -12,7 +12,8 @@ REM Apply needed ckan core chnages
 xcopy source_change\after ..\..\..\.. /Y /S
 
 REM Runs depending containers
-CALL ..\run-docker-compose.cmd dev
+CALL ..\run-docker-compose.cmd boot-stage
+docker stop ckan
 timeout 10
 
 REM Install required Python packages
@@ -32,8 +33,10 @@ IF NOT EXIST development.ini (
   paster make-config --no-interactive ckan development.ini
 
   python populate_ini.py ..\.env development.ini
-  REM TODO: refactor setting all config info
-  ..\ckan-site_info.sh development.ini
+  REM Setting site info (from ..\ckan-site_info.sh)
+  paster config-tool development.ini ckan.site_title="IDM Data Catalog"
+  paster config-tool development.ini ckan.site_logo=/images/idm-logo.png
+
   copy /Y ..\..\..\..\ckanext\idm\public\images\idm-favicon.ico ..\..\..\..\ckan\public\base\images\ckan.ico
 )
 
