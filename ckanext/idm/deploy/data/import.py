@@ -33,6 +33,7 @@ def main():
 
     # Locations dot-name list into list of tuples e.g. (3, 6, 'Southern', 'Africa:Zambia:Southern')
     locations = prepare_locations_matching(act)
+    free_tags = hlp.call_api(rgh.act.tag_list, {u'vocabulary_id': u'free'})
 
     # Process .csv dataset file. Iterate over all lines
     header = None
@@ -48,7 +49,7 @@ def main():
 
             # Populate fields dict with values from the .csv file row for datasets and resources
             ds_dict = populate_fields_from_row(row_dict, ds_fields, ds_fields_map, ds_defaults_map, error_msgs)
-            prep_dataset_args(rgh, ds_dict, ds_defaults_map, locations, topics, error_msgs)
+            prep_dataset_args(rgh, ds_dict, ds_defaults_map, locations, free_tags, topics, error_msgs)
             populate_resources(rgh, row_dict, rs_fields, ds_dict, resource_fields_maps, error_msgs)
 
             # Call create dataset/resources API
@@ -133,9 +134,10 @@ def get_org_id(act, org):
 
 
 def get_maintainer(rgh, maintainer_email, research_group_id, default):
-    user = maintainer_email.split('@')[0]
+    user = maintainer_email.split('@')[0] if maintainer_email else default
     research_group = rgh.research_group_id_name_map[research_group_id] if research_group_id else None
-    if not user in rgh.get_all_users():
+
+    if not user in rgh.get_all_users() or user == default:
         research_group_admins = rgh.get_research_group_admins(exclude_admins=[default])
         if research_group in research_group_admins.keys():
             user = research_group_admins[research_group][0]
@@ -215,7 +217,7 @@ def populate_fields_from_row(row_dict, fields, fields_map, defaults_map, error_m
     return args_dict
 
 
-def prep_dataset_args(rgh, ds_dict, ds_defaults_map, locations, topics, error_msgs):
+def prep_dataset_args(rgh, ds_dict, ds_defaults_map, locations, free_tags, topics, error_msgs):
     # transform to meet API expectation
     ds_dict[u'type'] = u'dataset'
     ds_dict[u'state'] = u'active'
@@ -231,7 +233,7 @@ def prep_dataset_args(rgh, ds_dict, ds_defaults_map, locations, topics, error_ms
         del ds_dict[u'spatial_mode']
 
     # Set tags value fiels
-    ds_dict[u'tags'] = parse_tags(rgh, ds_dict, ds_defaults_map)
+    ds_dict[u'tags'] = parse_tags(rgh, ds_dict, ds_defaults_map, free_tags)
 
     # Set research group
     research_group = rgh.get_research_group(ds_dict[u'owner_org'], ds_dict[u'maintainer_email'], exact=False, default=ds_defaults_map[u'owner_org'])
@@ -262,7 +264,7 @@ def prep_dataset_args(rgh, ds_dict, ds_defaults_map, locations, topics, error_ms
     ds_dict[u'disease'] = guess_field(ds_dict, ds_defaults_map, diseases, target_field=u'disease')
 
 
-def parse_tags(rgh, ds_dict, ds_defaults_map):
+def parse_tags(rgh, ds_dict, ds_defaults_map, free_tags):
     def to_tag_dict(name):
         """Convert tags string (list) into list of dicts ckan expects."""
         return {u'state': u'active', u'name': name}
@@ -271,7 +273,6 @@ def parse_tags(rgh, ds_dict, ds_defaults_map):
     tags = [to_tag_dict(t) for t in tag_string.split(',')] if tag_string else []
 
     # Parse tags from 'title' or 'notes' fields
-    free_tags = hlp.call_api(rgh.act.tag_list, {u'vocabulary_id': u'free'})
     tag_list = guess_field(ds_dict, ds_defaults_map, free_tags, many=True)
     tags.extend([to_tag_dict(t) for t in tag_list])
 
@@ -300,22 +301,26 @@ def prepare_locations_matching(act):
 
 
 def parse_location(locations, ds_dict, ds_defaults_map):
+    ds_location = None
     if not ds_dict[u'location'] or ds_dict[u'location'] == ds_defaults_map[u'location']:
-        ds_location = None
         for f in [u'title', u'notes']:
-            field_value = ds_dict[f]
+            ds_location = _guess_location(locations, ds_dict[f])
 
-            # Try to exactly match location name with words from field value
-            ds_location= _match_location_name(locations, field_value, lambda n, v: n.lower() in hlp.split_into_words(v.lower()))
-            if ds_location:
-                break
-
-            # If not found try more relaxed match
-            ds_location = _match_location_name(locations, field_value, lambda name, field_value: name in field_value)
-            if ds_location:
-                break
+    elif ds_dict[u'location']:
+        ds_location = _guess_location(locations, ds_dict[u'location'])
 
     return ds_location or ds_dict[u'location']
+
+
+def _guess_location(locations, field_value):
+    # Try to exactly match location name with words from field value
+    ds_location = _match_location_name(locations, field_value,
+                                       lambda n, v: n.lower() in hlp.split_into_words(v.lower()))
+    if not ds_location:
+        # If not found try more relaxed match
+        ds_location = _match_location_name(locations, field_value, lambda name, field_value: name in field_value)
+
+    return ds_location
 
 
 def _match_location_name(locations, field_value, compare_func):
@@ -354,6 +359,7 @@ def prep_resource_args(rs_dict, rs_defaults_map, error_msgs):
 
 def parse_url(rs_dict, rs_defaults_map, fields):
     http_prefix = u'http://'
+    http_prefix2 = u'https://'
     dropbox_prefix = u'Dropbox (IDM)'
     dropbox_idm_url = u'https://www.dropbox.com/home/'
 
@@ -370,8 +376,11 @@ def parse_url(rs_dict, rs_defaults_map, fields):
                 break
 
     if url:
-        if http_prefix in url:
+        url = url.replace(':/www', '://www')
+        if url.startswith(http_prefix):
             new_url = hlp.take_word(url, http_prefix)
+        elif url.startswith(http_prefix2):
+            new_url = hlp.take_word(url, http_prefix2)
         elif dropbox_prefix in url:
             new_url = hlp.take_word(url, dropbox_prefix, dropbox_idm_url)
             relative_url = url.split(dropbox_prefix)[1]
@@ -443,7 +452,10 @@ def guess_field(ds_dict, ds_defaults_map, possible_values, target_field=None, so
                 if is_done():
                     break
 
-                if value.lower() in ds_dict[f].lower():
+                compare_value = value.lower()
+                compare_field_value = ds_dict[f].lower()
+
+                if hlp.match_word(compare_value, compare_field_value):
                     matches.append(value)
                     if is_done():
                         break

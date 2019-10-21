@@ -10,4 +10,6 @@ sleep 5
 python bootstrap.py $apikey
 sleep 20
 python import.py $apikey import/dataset-fields-map-Caitlin.yaml import/datasets-Caitlin.csv
+# TODO: Use "--force" as a temp solution. This will be refactored in a more comprehensive import mechanism.
+python import.py $apikey import/dataset-fields-map-Measles.yaml import/datasets-Measles.csv --force
 cd /home/ckan/src/ckan

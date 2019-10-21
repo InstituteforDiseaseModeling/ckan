@@ -49,7 +49,7 @@ def publisher_autocomplete(context, data_dict):
 
 
 def get_default_publishers():
-    return [u'WHO', u'NOAA', u'WorldPop', u'WorldClim', u'DHS', u'UNICEF', u'CDC', u'IHME']
+    return [u'WHO', u'NOAA', u'WorldPop', u'WorldClim', u'DHS', u'UNICEF', u'CDC', u'IHME', u'UNICEF']
 
 
 def _extra_autocomplete(context, data_dict, key, default_list=[]):

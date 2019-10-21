@@ -1,0 +1,44 @@
+---
+dataset:
+  fields:
+    title: title
+    name: title
+    notes: notes
+    maintainer_email: maintainer_email
+    spatial_resolution: spatial_resolution
+    location: location
+    disease: 'eval: "Measles"'
+
+  defaults:
+    title: Unknown
+    notes: Unknown
+    maintainer_email: dlukacevic
+    purpose: data
+    owner_org: measles
+    disease: Measles
+    private: False
+    tag_string: incomplete
+    ext_startdate: '1900-01-01'
+    ext_enddate: '1900-01-01'
+    location: Unknown
+    publisher: Unknown
+    acquisition_date: '2010-01-01'
+    request_access: False
+    license_id: notspecified
+    topics: []
+
+
+
+resource:
+  -
+    fields:
+      name: resource_name
+      url: resource_url
+      description: resource_description
+      format: resource_format
+    defaults:
+      purpose: data
+
+
+
+

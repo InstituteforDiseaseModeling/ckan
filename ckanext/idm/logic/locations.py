@@ -8,18 +8,23 @@ import zipfile
 WORLD = u'World'
 WORLD_GEOMETRY = u'{ "type": "Polygon", "coordinates": [ [ [ -180, -90 ], [ -180, 90 ], [ 180, 90 ], [ 180, -90 ], [ -180, -90 ] ] ] }'
 
+SEARO = u'Asia:SEARO'
+SEARO_GEOMETRY = u'{ "type": "Polygon", "coordinates": [ [ [ 68, 5 ], [ 68, 36 ], [ 105, 36 ], [ 105, 5 ], [ 68, 5 ] ] ] }'
+
 
 def load_locations():
     features = _load()
     countries = [c[u'properties'][u'path'] for c in features]
     countries = sorted(countries)
 
-    return [u'World'] + countries
+    return [WORLD, SEARO] + countries
 
 
 def get_location_geometry(location):
     if location.lower() == WORLD.lower():
         return WORLD_GEOMETRY
+    elif location.lower() == SEARO.lower():
+        return SEARO_GEOMETRY
 
     features = _load()
     geos = [c[u'geometry'] for c in features if c[u'properties'][u'path'] == location]

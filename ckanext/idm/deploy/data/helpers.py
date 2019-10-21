@@ -130,6 +130,7 @@ def report_errors(error_msg_list):
 
 
 def take_word(all_text, start_str, new_start_str=None):
+    # TODO: implement this using regex
     if all_text and start_str and len(start_str) < len(all_text):
         the_rest = all_text.split(start_str)[1].split()[0]
         # checking explicitly for None so that '' is not ignored
@@ -148,6 +149,10 @@ def split_into_words(all_text):
     """
     rgx = re.compile("(\w[\w']*\w|\w)")
     return rgx.findall(all_text)
+
+
+def match_word(value, all_text, ignore_case=True):
+    return re.search(ur'(?:\b|_){}(?=\b|_)'.format(value), all_text, flags=re.IGNORECASE if ignore_case else 0)
 
 
 def get_ckan_port():

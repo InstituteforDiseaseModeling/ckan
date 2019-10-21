@@ -8,7 +8,7 @@ research_groups:
     title: Data Services
     description: 'Software'
     admin: Christopher Lorton <clorton@idmod.org>
-    members: Dennis Harding <dharding@idmod.org>; Meikang Wu <mewu@idmod.org>; Mary Fisher <mafisher@idmod.org>; Charles Eliot <celiot@idmod.org>; Rob Baker <rbaker@idmod.org>
+    members: Dennis Harding <dharding@idmod.org>; Meikang Wu <mewu@idmod.org>; Mary Fisher <mafisher@idmod.org>; Charles Eliot <celiot@idmod.org>; Rob Baker <rbaker@idmod.org>; Robert Hart <rhart@idmod.org>
   dda:
     title: Data, Dynamics, and Analytics (DDA)
     description: 'Global Development'
@@ -119,6 +119,7 @@ tags:
     - MORDOR
     - NightimeLights
     - Prevalence
+    - RI
     - Surveillance
     - Surveys
 
