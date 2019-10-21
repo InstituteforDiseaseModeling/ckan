@@ -247,7 +247,10 @@ def prep_dataset_args(rgh, ds_dict, ds_defaults_map, locations, free_tags, topic
     ds_dict[u'name'] = construct_name(ds_dict)
 
     # Parse years range from 'title' or 'notes' fields
-    ds_dict[u'ext_startdate'], ds_dict[u'ext_enddate'] = parse_start_end_dates(ds_dict, ds_defaults_map)
+    ds_dict[u'ext_startdate'], ds_dict[u'ext_enddate'], discrete_years = parse_start_end_dates(ds_dict, ds_defaults_map)
+    if discrete_years:
+        discrete_years_str = ', '.join([str(y) for y in discrete_years])
+        ds_dict[u'temporal_gaps'] = u'Supported years: {}'.format(discrete_years_str)
 
     # Parse location from 'title' or 'notes' fields
     ds_dict[u'location'] = parse_location(locations, ds_dict, ds_defaults_map)
@@ -400,16 +403,20 @@ def parse_url(rs_dict, rs_defaults_map, fields):
 
 
 def parse_start_end_dates(ds_dict, ds_defaults_map):
-    start_date, end_date = None, None
+    start_date, end_date, years = None, None, None
     for f in [u'title', u'notes']:
         if all([ds_dict[field] == ds_defaults_map[field] for field in [u'ext_startdate', u'ext_enddate']]):
             start_date, end_date = _parse_years_range(ds_dict[f])
             if start_date and end_date:
                 break
-            else:
-                start_date, end_date = None, None
 
-    return start_date or ds_dict[u'ext_startdate'], end_date or ds_dict[u'ext_enddate']
+            start_date, end_date, years = _parse_discrete_years(ds_dict[f])
+            if start_date and end_date:
+                break
+
+            start_date, end_date = None, None
+
+    return start_date or ds_dict[u'ext_startdate'], end_date or ds_dict[u'ext_enddate'], years
 
 
 def _parse_years_range(value):
@@ -417,6 +424,7 @@ def _parse_years_range(value):
     start_date = None
     end_date = None
     if value:
+        value = _exclude_false_positives_years(value)
         years_regex = u'(19[0-9]{2}|20[0-9]{2}) *(-|\\|to) *(19[0-9]{2}|20[0-9]{2})'
         parts = re.findall(years_regex , value)
         if parts and isinstance(parts, list) and len(parts) > 0 and len(parts[0]) > 1:
@@ -427,6 +435,46 @@ def _parse_years_range(value):
             end_date = datetime.datetime(end_year, 12, 31).strftime(u'%Y-%m-%d')
 
     return start_date, end_date
+
+
+def _parse_discrete_years(value):
+    """"""
+    start_date = None
+    end_date = None
+    years = None
+    if value:
+        value = _exclude_false_positives_years(value)
+        year_regex = u'(19[0-9]{2}|20[0-9]{2})'
+        found_years = re.findall(year_regex , value)
+        if found_years and isinstance(found_years, list) and len(found_years) > 0:
+            years = []
+            for y in found_years:
+                try:
+                    years.append(int(y))
+                except Exception as e:
+                    print str(e)
+
+        if years:
+            years = sorted(years)
+            start_date = datetime.datetime(years[0], 1, 1).strftime(u'%Y-%m-%d')
+            end_date = datetime.datetime(years[-1], 12, 31).strftime(u'%Y-%m-%d')
+
+    return start_date, end_date, years
+
+
+def _exclude_false_positives_years(value):
+    scope_markers = [u'DATE OF PRODUCTION:', u'Provenance:', u'FILENAMES:', u'MAPPING APPROACH', u'CITATION:', u'FORMAT:', u'UNITS:', u'PROJECTION:', u'SPATIAL RESOLUTION:', u'REGION:']
+    if any(m in value for m in scope_markers):
+        lines = []
+        for line in value.split('\n'):
+            if not any(m in line for m in scope_markers):
+                lines.append(line)
+
+        filtered_value = '\n'.join(lines)
+    else:
+        filtered_value = value
+
+    return filtered_value
 
 
 def guess_field(ds_dict, ds_defaults_map, possible_values, target_field=None, source_fields=[u'title', u'notes'], many=False):
