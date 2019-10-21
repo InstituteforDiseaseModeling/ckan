@@ -48,6 +48,8 @@ def main():
             error_msgs = []
 
             # Populate fields dict with values from the .csv file row for datasets and resources
+            # TODO: Fields without a value should be set to None. Defaults should be set at the end.
+            # Now it is not clear if a default value came from the input file or because the value is missing.
             ds_dict = populate_fields_from_row(row_dict, ds_fields, ds_fields_map, ds_defaults_map, error_msgs)
             prep_dataset_args(rgh, ds_dict, ds_defaults_map, locations, free_tags, topics, error_msgs)
             populate_resources(rgh, row_dict, rs_fields, ds_dict, resource_fields_maps, error_msgs)

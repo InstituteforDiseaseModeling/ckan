@@ -77,7 +77,7 @@ class ResearchGroupQueryHelper:
             # TODO consider fuzzy matching
             rgs = [g for g in self.research_groups if name in g['name']]
 
-        if len(rgs) == 0 and maintainer_email:
+        if (len(rgs) == 0 or rgs[0]['name'] == default) and maintainer_email:
             maintainer = maintainer_email.split('@')[0]
             rgs = [g for g in self.research_groups if maintainer in self.get_all_users(g['name'])]
 
