@@ -62,7 +62,11 @@ def step_impl(context):
 @step(u'I can find dataset by clicking {value} under {filter}')
 def step_impl(context, value, filter):
     elem_name = u'filter' + filter
-    context.urlparam = u'?_{}_limit=0'.format(filter.lower())
+    if filter.lower() == u'formats':
+        filtervalue = u'res_format'
+    else:
+        filtervalue = filter.lower()
+    context.urlparam = u'?_{}_limit=0'.format(filtervalue)
     context.datasetpage = datasetpage(context)
     context.datasetpage.visit()
     context.datasetpage.click_filter(elem_name, value)

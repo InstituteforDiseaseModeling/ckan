@@ -8,7 +8,7 @@ docker-compose down -v
 chmod +x deploy.sh
 now=$(date +"%m_%d_%Y")
 rm -rf /mnt/ckan/test/deploy/*.*
-./deploy.sh boot-prod 2>&1 | tee /home/mewu/ckan/deploy_$now.log
+echo "delete-all-data" | bash ./deploy.sh boot-prod 2>&1 | tee /home/mewu/ckan/deploy_$now.log
 cd test
 chmod +x run-test-bootstrap.sh
 ./run-test-bootstrap.sh 2>&1 | tee /home/mewu/ckan/bootstrap_$now.log
