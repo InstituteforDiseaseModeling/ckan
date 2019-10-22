@@ -74,32 +74,35 @@ def get_image_url_prefix():
 def create_research_groups_and_users(act, rgroups):
     u"""Iterate over research groups (RG), create each RG add listed member users."""
     for name, info in rgroups.items():
-        members = []
-
-        # Create the admin user
-        if info and info.get(u'admin'):
-            admin = create_single_user(act, info[u'admin'], members)
-
-        # Create listed member users
-        if info and info.get(u'members'):
-            members_raw = [u.strip() for u in info[u'members'].split(u';')]
-            members_raw = list(set(members_raw))
-            for member_raw in members_raw:
-                create_single_user(act, member_raw, members)
+        members = {}
+        if info:
+            for key in [u'admins', u'members']:
+                if info.get(key):
+                    users = create_users_from_list(act, info[key])
+                    members[key] = users
 
         # Create the research group adding listed users as members.
         title = info[u'title'] if info and info.get(u'title') else name
         description = info[u'description'] if info and info.get(u'description') else u''
-        api_create_research_group(act, name, title, description, admin, members)
+        api_create_research_group(act, name, title, description, members[u'admins'], members[u'members'])
 
 
-def create_single_user(act, user_raw, all_members):
+def create_users_from_list(act, users_list):
+    users = []
+    members_raw = [u.strip() for u in users_list.split(u';')]
+    members_raw = list(set(members_raw))
+    for member_raw in members_raw:
+        user = create_single_user(act, member_raw)
+        users.append(user)
+
+    return users
+
+def create_single_user(act, user_raw):
     u"""Create a user calling API and if successful return user name."""
     username, full_name, email = parse_user(user_raw)
     member = api_create_user(act, username, full_name, email, args.password)
     if member:
         assert member == username
-        all_members.append(member)
 
     return username
 
@@ -135,14 +138,14 @@ def api_create_user(act, username, full_name, email, password):
     return name
 
 
-def api_create_research_group(act, name, title, description, admin, members):
+def api_create_research_group(act, name, title, description, admins, members):
     u"""Create a research group by calling API via the common method."""
     host_url = get_image_url_prefix()
     image_url = u'{}/images/rgroup-{}.png'.format(host_url, name)
 
-    # Research Group (organization) roles: member - see all datasets, editor - edit datasets, admin - manage info
-    users = [{u'name': username, u'capacity': u'editor'} for username in members if username != admin]
-    users.append({u'name': admin, u'capacity': u'admin'})
+    # Research Group (organization) roles: member - see all datasets, editor - edit datasets, admins - manage info
+    users = [{u'name': username, u'capacity': u'editor'} for username in members]
+    users.extend([{u'name': username, u'capacity': u'admin'} for username in admins])
 
     args_dict = {u'name': name, u'title': title, u'description': description, u'image_url': image_url, u'users': users}
 
@@ -163,8 +166,8 @@ def create_topics(act, topics):
     for name, info in topics.items():
         title = info[u'title'] if info and info.get(u'title') else name
         description = info[u'description'] if info and info.get(u'description') else u''
-        admin = info[u'admin']
-        api_create_topic(act, name, title, description, admin)
+        admins = info[u'admins']
+        api_create_topic(act, name, title, description, admins)
 
 
 def create_tag_vocabularies(act, tags):
@@ -190,14 +193,14 @@ def api_create_tag_vocabulary(act, vocabulary_id, tag_list):
         hlp.call_api(act.vocabulary_create, args_dict, success_msg, errors_to_skip)
 
 
-def api_create_topic(act, name, title, description, admin):
+def api_create_topic(act, name, title, description, admins):
     u"""Create a topic by calling API via the common method."""
     host_url = get_image_url_prefix()
     image_url = u'{}/images/topic-{}.png'.format(host_url, name)
     # Make all research group admins as topic admins.
-    admin_users = [{u'name': admin, u'capacity': u'admin'}]
+    admin_users = [{u'name': admins, u'capacity': u'admins'}]
 
-    # Topics (group) roles: admin - manage info, member - add data to the topic (all can see the groups and datasets)
+    # Topics (group) roles: admins - manage info, member - add data to the topic (all can see the groups and datasets)
     # TODO: Ensure all users can add datasets to topics. determine which users will be topic admins.
     args_dict = {u'name': name, u'title': title, u'description': description, u'image_url': image_url, u'users': admin_users}
 
