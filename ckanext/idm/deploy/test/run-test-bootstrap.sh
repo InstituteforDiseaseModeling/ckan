@@ -48,7 +48,6 @@ apikey=$(<apikey.txt)
 echo "$apikey"
 
 cd ../data/
-python bootstrap.py $apikey --force
 python bootstrap.py $apikey -f ../test/test_metadata.yaml -p testPassword --force
 
 

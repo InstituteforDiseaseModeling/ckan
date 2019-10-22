@@ -2,11 +2,11 @@ research_groups:
   test-automation:
     title: Test Automation
     description: 'test automation use'
-    admin: Test Admin <testadmin@idmod.org>
+    admins: Test Admin <testadmin@idmod.org>
     members: Test User <testuser@idmod.org>; Test User2 <testuser2@idmod.org>; Test User3 <testuser3@idmod.org>
 
 topics:
   bdd:
     title: Behavior Driven Development
     description: 'best practices'
-    admin: Test Admin <testadmin@idmod.org>
+    admins: Test Admin <testadmin@idmod.org>
