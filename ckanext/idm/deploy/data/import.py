@@ -312,6 +312,8 @@ def parse_location(locations, ds_dict, ds_defaults_map):
     if not ds_dict[u'location'] or ds_dict[u'location'] == ds_defaults_map[u'location']:
         for f in [u'title', u'notes']:
             ds_location = _guess_location(locations, ds_dict[f])
+            if ds_location:
+                break
 
     elif ds_dict[u'location']:
         ds_location = _guess_location(locations, ds_dict[u'location'])
@@ -482,7 +484,7 @@ def _parse_discrete_years(value):
 
 
 def _exclude_false_positives_years(value):
-    scope_markers = [u'DATE OF PRODUCTION:', u'Provenance:', u'FILENAMES:', u'MAPPING APPROACH', u'CITATION:', u'FORMAT:', u'UNITS:', u'PROJECTION:', u'SPATIAL RESOLUTION:', u'REGION:']
+    scope_markers = [u'DATE OF PRODUCTION:', u'Provenance:', u'FILENAMES:', u'MAPPING APPROACH', u'CITATION:', u'FORMAT:', u'UNITS:', u'PROJECTION:', u'SPATIAL RESOLUTION:', u'REGION:', u'Forums:']
     if any(m in value for m in scope_markers):
         lines = []
         for line in value.split('\n'):
