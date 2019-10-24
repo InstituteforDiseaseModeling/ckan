@@ -28,9 +28,10 @@ dataset:
     tag_string: incomplete
     ext_startdate: '1900-01-01'
     ext_enddate: '1900-01-01'
+    temporal_gaps: ''
     location: Unknown
     publisher: Unknown
-    acquisition_date: '2010-01-01'
+    acquisition_date: '2019-10-01'
     request_access: False
     license_id: notspecified
     topics: []
