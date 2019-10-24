@@ -1,4 +1,5 @@
 import argparse
+import chardet
 import codecs
 import datetime
 import unicodecsv as csv
@@ -32,7 +33,7 @@ def main(dropbox_dir, dropbox_url_prefix, output_path, filter_dir='', filter_fil
             tags = topics = [parts[0]]
 
             location = parse_location(relative_path)
-            title = u'{} {} {}'.format(location if location != 'Unknown' else '', topics[0], u' '.join(parts[2:])).strip()
+            title = u'{} {} {}'.format(location if location != u'Unknown' else '', topics[0], u' '.join(parts[2:])).strip()
 
             # Resources: construct dropbox url, set name to title and list of files to desc.
             resource_url = u'{}/{}'.format(dropbox_url_prefix, relative_path).replace(os.sep, u'/')
@@ -41,9 +42,15 @@ def main(dropbox_dir, dropbox_url_prefix, output_path, filter_dir='', filter_fil
             resource_description_list = [u'Content:'] + resource_files[:10] + ['...' if len(resource_files) > 10 else '']
             resource_description = os.linesep.join(resource_description_list)
 
-            print readme_path[len(dropbox_dir)+1:]
+            # determine the encoding (provided by MeWu)
+            with open(readme_path, u'rb') as f:
+                raw_data = b''.join([f.readline() for _ in range(20)])
+                encoding = chardet.detect(raw_data)[u'encoding']
+                print(str(encoding))
 
-            with codecs.open(readme_path, u'rb', encoding=u'utf-8', errors=u'replace') as readme_file:
+            print u'{}, encoding: {}'.format(readme_path[len(dropbox_dir)+1:], encoding)
+
+            with codecs.open(readme_path, u'rb', encoding=encoding) as readme_file:
                 all_lines = readme_file.readlines()
                 notes = os.linesep.join(all_lines)
 
