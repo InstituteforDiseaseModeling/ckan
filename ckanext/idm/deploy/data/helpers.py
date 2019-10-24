@@ -48,13 +48,13 @@ def _reduce_dict_keys(dc, need_keys):
     return {k: v for k, v in dc.items() if k in need_keys}
 
 def to_unicode(value):
-    return unicode(value, encoding='utf-8') if isinstance(value, str) else value
+    return unicode(value, encoding=u'utf-8') if isinstance(value, str) else value
 
 class ResearchGroupQueryHelper:
     def __init__(self, act):
         self.act = act
         self.research_groups = self._get_all_research_groups()
-        self.research_group_id_name_map = {rg['id']: rg['name'] for rg in self.research_groups}
+        self.research_group_id_name_map = {rg[u'id']: rg[u'name'] for rg in self.research_groups}
 
     def _get_all_research_groups(self):
         all_rg = call_api(self.act.organization_list, {u'all_fields': True, u'include_users': True})
@@ -63,26 +63,26 @@ class ResearchGroupQueryHelper:
         all_rg_final = []
         for rg in all_rg:
             rg2 = _reduce_dict_keys(rg, need_keys)
-            admins = [u['name'] for u in rg['users'] if u['capacity'] == 'admin']
-            users = [u['name'] for u in rg['users'] if u['capacity'] != 'admin']
-            rg2['admins'] = admins if len(admins) > 0 else None
-            rg2['users'] = users
+            admins = [u[u'name'] for u in rg[u'users'] if u[u'capacity'] == u'admin']
+            users = [u[u'name'] for u in rg[u'users'] if u[u'capacity'] != u'admin']
+            rg2[u'admins'] = admins if len(admins) > 0 else None
+            rg2[u'users'] = users
             all_rg_final.append(rg2)
 
         return all_rg_final
 
     def get_research_group(self, name, maintainer_email, exact=True, default=None):
-        rgs = [g for g in self.research_groups if name == g['name']]
+        rgs = [g for g in self.research_groups if name == g[u'name']]
         if not exact and len(rgs) == 0:
             # TODO consider fuzzy matching
-            rgs = [g for g in self.research_groups if name in g['name']]
+            rgs = [g for g in self.research_groups if name in g[u'name']]
 
-        if (len(rgs) == 0 or rgs[0]['name'] == default) and maintainer_email:
-            maintainer = maintainer_email.split('@')[0]
-            rgs = [g for g in self.research_groups if maintainer in self.get_all_users(g['name'])]
+        if (len(rgs) == 0 or rgs[0][u'name'] == default) and maintainer_email:
+            maintainer = maintainer_email.split(u'@')[0]
+            rgs = [g for g in self.research_groups if maintainer in self.get_all_users(g[u'name'])]
 
         if len(rgs) == 0 and default:
-            rgs = [g for g in self.research_groups if default == g['name']]
+            rgs = [g for g in self.research_groups if default == g[u'name']]
 
         research_group = rgs[0] if len(rgs) > 0 else None
 
@@ -92,22 +92,22 @@ class ResearchGroupQueryHelper:
         all_users = []
 
         if research_group:
-            rgs = [g for g in self.research_groups if g['name'] == research_group]
+            rgs = [g for g in self.research_groups if g[u'name'] == research_group]
         else:
             rgs = self.research_groups
 
         for g in rgs:
-            all_users.extend(g['admins'])
+            all_users.extend(g[u'admins'])
             if not only_admin:
-                all_users.extend(g['users'])
+                all_users.extend(g[u'users'])
 
         return all_users
 
     def get_research_group_admins(self, exclude_admins=None):
         if exclude_admins:
-            rg_admins = {g['name']: [a for a in g['admins'] if not a in exclude_admins] for g in self.research_groups}
+            rg_admins = {g[u'name']: [a for a in g[u'admins'] if not a in exclude_admins] for g in self.research_groups}
         else:
-            rg_admins = {g['name']: g['admins'] for g in self.research_groups}
+            rg_admins = {g[u'name']: g[u'admins'] for g in self.research_groups}
 
         return rg_admins
 
@@ -129,17 +129,15 @@ def report_errors(error_msg_list):
             print u'  {}'.format(msg)
 
 
-def take_word(all_text, start_str, new_start_str=None):
-    # TODO: implement this using regex
-    if all_text and start_str and len(start_str) < len(all_text):
-        the_rest = all_text.split(start_str)[1].split()[0]
-        # checking explicitly for None so that '' is not ignored
-        start = start_str if new_start_str is None else new_start_str
-        word = '{}{}'.format(start, the_rest)
-    else:
-        word = None
+def extract_url(all_text):
+    url = None
+    if all_text:
+        urls_re = re.search("(https?://[\w|\.|/|-|%]+)", all_text)
+        if urls_re:
+            urls = urls_re.groups()
+            url = urls[0] if urls and len(urls) > 0 else None
 
-    return word
+    return url
 
 
 def split_into_words(all_text):
@@ -159,3 +157,14 @@ def get_ckan_port():
     port = os.environ[u'CKAN_PORT'] if u'CKAN_PORT' in os.environ else 5000
 
     return port
+
+
+def research_groups_dropbox_dirs():
+    dirs_dict = {
+        u'measles': u'Measles Team Folder/Data',
+        u'malaria': u'Malaria Team Folder/Data',
+        u'dda': u'Data, Dynamics, and Analytics Folder/Data',
+        u'stats': u'SMUG Folder'
+    }
+
+    return dirs_dict

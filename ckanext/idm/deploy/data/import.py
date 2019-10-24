@@ -6,6 +6,7 @@ import datetime
 import os
 import re
 import unicodecsv as csv
+import urllib
 
 from ckanapi import RemoteCKAN
 
@@ -193,6 +194,7 @@ def populate_fields_from_row(row_dict, fields, fields_map, defaults_map, error_m
                         # Put back nameless params {} (if exist).
                         target = target.replace(u'[nameless]', u'{}')
                         # Encode unicode chars to preserve them through eval.
+                        # TODO: remove below line after adding encoding-detection code.
                         target = target.replace(u'\xa0', u' ').replace(u'\\', u'/')
                         target = target.encode(u'utf-8', errors=u'replace')
                         value = eval(target)
@@ -349,7 +351,7 @@ def parse_topics(topics, ds_dict, ds_defaults_map):
             if t.lower() in field_value:
                 ds_topics.append(t)
 
-    return [{'name': t} for t in ds_topics] #or ds_dict[u'topics']
+    return [{u'name': t} for t in ds_topics] #or ds_dict[u'topics']
 
 
 def prep_resource_args(rs_dict, rs_defaults_map, error_msgs):
@@ -363,10 +365,10 @@ def prep_resource_args(rs_dict, rs_defaults_map, error_msgs):
 
 
 def parse_url(rs_dict, rs_defaults_map, fields):
-    http_prefix = u'http://'
-    http_prefix2 = u'https://'
     dropbox_prefix = u'Dropbox (IDM)'
-    dropbox_idm_url = u'https://www.dropbox.com/home/'
+    dropbox_idm_url = u'https://www.dropbox.com/home'
+
+    dropbox_dirs_dict = hlp.research_groups_dropbox_dirs()
 
     new_url = None
     comment= ''
@@ -381,19 +383,27 @@ def parse_url(rs_dict, rs_defaults_map, fields):
                 break
 
     if url:
-        url = url.replace(':/www', '://www')
-        if url.startswith(http_prefix):
-            new_url = hlp.take_word(url, http_prefix)
-        elif url.startswith(http_prefix2):
-            new_url = hlp.take_word(url, http_prefix2)
-        elif dropbox_prefix in url:
-            new_url = hlp.take_word(url, dropbox_prefix, dropbox_idm_url)
-            relative_url = url.split(dropbox_prefix)[1]
-            if relative_url:
-                new_url = new_url.replace(u'\\', u'/').replace(u'//', u'/')
-        elif has_drive_letter:
-            drive_letter = u'{}:'.format(has_drive_letter[0])
-            new_url = ''.join([s for s in hlp.take_word(url, drive_letter) if s not in [u':', u'*', u'?', u'<', u'>', u'|']])
+        url = url.replace(u':/www', u'://www')
+        new_url = hlp.extract_url(url)
+        if not new_url:
+            if dropbox_prefix in url:
+                # If Dropbox prefix is detected construct research group Dropbox url.
+                new_url = url.split(dropbox_prefix)[1]
+                research_group_dir = ''
+
+                # If research group dir is present add it to the url
+                for research_group_dir in dropbox_dirs_dict.values():
+                    if research_group_dir.lower() in url.lower():
+                        new_url = new_url[len(research_group_dir) + 2:]
+                        research_group_dir = urllib.quote(research_group_dir)
+
+                # Strip any other text after the URL
+                new_url = u'{}/{}/{}'.format(dropbox_idm_url, research_group_dir, new_url)
+                new_url = hlp.extract_url(new_url)
+
+            elif has_drive_letter:
+                drive_letter = u'{}:'.format(has_drive_letter[0])
+                new_url = ''.join([s for s in hlp.extract_url(url, drive_letter) if s not in [u':', u'*', u'?', u'<', u'>', u'|']])
 
         if not new_url:
             comment = url

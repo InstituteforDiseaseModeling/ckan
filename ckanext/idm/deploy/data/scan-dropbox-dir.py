@@ -2,6 +2,7 @@ import argparse
 import chardet
 import codecs
 import datetime
+import helpers as hlp
 import unicodecsv as csv
 import os
 import re
@@ -201,9 +202,8 @@ def parse_args():
 if __name__ == u"__main__":
     args = parse_args()
 
-    dropbox_data_dir = {
-        u'measles': u'Measles Team Folder/Data'
-    }
+
+    dropbox_data_dir = hlp.research_groups_dropbox_dirs()
 
     dropbox_root_dir = args.dropbox_root_dir or os.path.join(os.path.expanduser('~'), u'Dropbox (IDM)')
     dropbox_dir = os.path.normpath(os.path.join(dropbox_root_dir, dropbox_data_dir[args.research_group]))
