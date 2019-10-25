@@ -43,6 +43,8 @@ def step_impl(context, filter, value):
     ]
     if filter == u'Tags':
         context.optionaltable = [({u'fields': u'Tags', u'values': u'{}'.format(value)})]
+    if filter == u'Formats':
+        context.optionalresource = [({u'fields': u'Format', u'values': u'json'})]
     for row in context.testtable:
         if row[u"fields"] == filter:
             row[u'values'] = value

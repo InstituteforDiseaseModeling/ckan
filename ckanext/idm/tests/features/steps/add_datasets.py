@@ -300,6 +300,7 @@ def step_impl(context):
         When I can click "Add Data"
         And I can click "Link"
         And I must set required resource fields
+        And I can set optional resource fields
         And I can click "Finish"
         ''')
 
