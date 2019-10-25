@@ -12,4 +12,5 @@ sleep 20
 python import.py $apikey import/dataset-fields-map-Caitlin.yaml import/datasets-Caitlin.csv
 # TODO: Use "--force" as a temp solution. This will be refactored in a more comprehensive import mechanism.
 python import.py $apikey import/dataset-fields-map-Measles.yaml import/datasets-Measles.csv --force
+ckanapi load datasets -I import/datasets-data-services.json -a $apikey -r http://localhost:${CKAN_PORT:-5000}
 cd /home/ckan/src/ckan
