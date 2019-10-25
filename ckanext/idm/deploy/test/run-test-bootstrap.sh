@@ -21,7 +21,9 @@ user_create () {
   json=$(http --ignore-stdin --json POST http://$1:5000/api/3/action/user_create name=$username email=mewu@gmail.com password=12345678 Authorization:$2)
   echo $json
   userid=$(echo $json | jq '.result.id' | sed 's/"//g')
-  json_result=$(http --json GET http://$1:5000/api/3/action/user_list q=$username)
+  echo "http --ignore-stdin --json GET http://"$1":5000/api/3/action/user_list q="$username
+  json_result=$(http --ignore-stdin --json GET http://$1:5000/api/3/action/user_list q=$username)
+  echo $json_result
   userid_result=$(echo $json_result | jq '.result[].id' | sed 's/"//g')
   [ -z "$userid_result" ] && echo "Error: User creation failed before restore" && exit 1
 }
@@ -31,6 +33,7 @@ user_delete () {
   echo "delete user:"$del_username
   echo "http --ignore-stdin --json POST http://"$2":5000/api/3/action/user_delete id=$del_username Authorization:"$3
   http --ignore-stdin --json POST http://$2:5000/api/3/action/user_delete id=$del_username Authorization:$3
+  echo "http --ignore-stdin --json GET http://"$host":5000/api/3/action/user_list q="$del_username
   json_deleted=$(http --ignore-stdin --json GET http://$host:5000/api/3/action/user_list q=$del_username)
   echo $json_deleted
   result_deleted=$(echo $json_deleted | jq '.result[].id' | sed 's/"//g')
