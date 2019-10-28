@@ -15,3 +15,15 @@ where sh.shape_set_id = (SELECT id FROM sd.shape_set WHERE shape_set_name = 'GAD
 	AND a.admin_level <= 1	
 
 -- ogr2ogr -f GeoJSON -a_srs EPSG:4326 locations.json "PG:host=<server> dbname=idm_db" -sql @locations.sql
+UNION
+
+SELECT 	sh.id,
+	sh.name,
+	sh.name as path,
+	0 as level,
+	ST_Envelope(sh.geom)
+FROM sd.shape_table sh
+WHERE sh.shape_set_id = 1
+	AND sh.admin_level = 1
+	AND sh.name in ('Africa', 'Asia', 'Europe', 'North America', 'South America', 'Oceania' )
+	--AND a.admin_level is NULL
