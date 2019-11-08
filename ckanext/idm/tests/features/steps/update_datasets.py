@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 import datetime
+import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from behave import step, given, when, then
@@ -48,7 +49,11 @@ def step_impl(context):
 @step(u'I click Manage')
 def step_impl(context):
     context.datasetpage.manageLink.click()
+    print("Clicked managed button")
     context.editdatasetpage = editdatasetpage(context)
+    time.sleep(3)
+    print("Wait for edit dataset page to load")
+    print("current url:", context.editdatasetpage.driver.current_url)
     
 
 @step(u'I enter {new_values} in {data_fields} to update dataset and expect changes to be there')
