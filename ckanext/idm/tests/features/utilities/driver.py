@@ -32,6 +32,10 @@ def chrome_driver(context):
                      context.driver_version + u'/chromedriver.exe')
     chrome_options = Options()
     chrome_options.add_argument(u"--start-maximized")
+    chrome_options.add_argument(u"--disable-gpu")
+    chrome_options.add_argument(u"--disable-extensions")
+    chrome_options.add_argument(u'--disable-useAutomationExtension')
+
     driver = webdriver.Chrome(
         executable_path=chorme_driver_path
         if context.driverpath is None else context.driverpath, chrome_options=chrome_options)

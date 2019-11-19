@@ -5,6 +5,7 @@ import datetime
 import time
 import os
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import ActionChains
 from behave import step, given, when, then
 from pages.loginpage import loginpage
 from pages.homepage import homepage
@@ -324,7 +325,10 @@ def step_impl(context):
 @step(u'I click on the Topic tab on dataset page')
 def step_impl(context):
     context.datasetpage = datasetpage(context)
-    context.datasetpage.topicLink.click()
+    topicLinkElem = context.datasetpage.topicLink
+    ActionChains(context.datasetpage.driver).click(topicLinkElem).perform()
+    print(u"topic Link clicked")
+    print(u"current url:", context.datasetpage.driver.current_url)
 
 
 @step(u'A drop-down of available {topic} are listed')

@@ -4,6 +4,7 @@ import datetime
 import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import ActionChains
 from behave import step, given, when, then
 from pages.datasetpage import datasetpage
 from pages.editdatasetpage import editdatasetpage
@@ -48,7 +49,10 @@ def step_impl(context):
     
 @step(u'I click Manage')
 def step_impl(context):
-    context.datasetpage.manageLink.click()
+    managedLinkElem = context.datasetpage.manageLink
+    # temporaily workaround for chrome 78 click issue
+    # see https://stackoverflow.com/questions/58589425/possible-issue-with-chromedriver-78-selenium-can-not-find-web-element-of-pdf-op
+    ActionChains(context.datasetpage.driver).move_to_element(managedLinkElem).click(managedLinkElem).perform()
     print("Clicked managed button")
     context.editdatasetpage = editdatasetpage(context)
     time.sleep(3)
