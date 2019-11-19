@@ -5,6 +5,6 @@ mkdir %temp%\ckan_ui_test
 virtualenv %temp%\ckan_ui_test --python=3.6
 call %temp%\ckan_ui_test\Scripts\activate
 pip install -r .\requirement.txt
-tox
+tox -c "%1"
 deactivate
 if exist .tox ( rmdir /q /s .tox )
