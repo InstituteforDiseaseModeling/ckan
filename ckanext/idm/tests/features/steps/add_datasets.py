@@ -326,7 +326,7 @@ def step_impl(context):
 def step_impl(context):
     context.datasetpage = datasetpage(context)
     topicLinkElem = context.datasetpage.topicLink
-    ActionChains(context.datasetpage.driver).click(topicLinkElem).perform()
+    ActionChains(context.datasetpage.driver).move_to_element(topicLinkElem).click(topicLinkElem).perform()
     print(u"topic Link clicked")
     print(u"current url:", context.datasetpage.driver.current_url)
 
