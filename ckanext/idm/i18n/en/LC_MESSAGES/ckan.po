@@ -2879,7 +2879,7 @@ msgstr ""
 #: ckan/templates/package/resource_read.html:31 ckan/templates/user/edit.html:8
 #: ckan/templates/user/edit_base.html:3 ckan/templates/user/read_base.html:14
 msgid "Manage"
-msgstr ""
+msgstr "Edit"
 
 #: ckan/templates/group/edit.html:12
 msgid "Edit Group"
