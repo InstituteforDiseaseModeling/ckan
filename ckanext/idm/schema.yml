@@ -69,7 +69,7 @@ dataset_fields:
 - field_name: disease
   label: Disease
   required: true
-  preset: select
+  preset: multiple_select
   choices_helper: get_diseases_choices
 
 - field_name: tag_string

@@ -10,12 +10,12 @@ RUN mkdir -p /opt/solr/server/solr/$SOLR_CORE/data
 
 # Adding Files
 ADD ./ckanext/idm/deploy/solr/solrconfig.xml \
-./ckan/config/solr/schema.xml \
-https://raw.githubusercontent.com/apache/lucene-solr/releases/lucene-solr/6.6.5/solr/server/solr/configsets/basic_configs/conf/currency.xml \
-https://raw.githubusercontent.com/apache/lucene-solr/releases/lucene-solr/6.6.5/solr/server/solr/configsets/basic_configs/conf/synonyms.txt \
-https://raw.githubusercontent.com/apache/lucene-solr/releases/lucene-solr/6.6.5/solr/server/solr/configsets/basic_configs/conf/stopwords.txt \
-https://raw.githubusercontent.com/apache/lucene-solr/releases/lucene-solr/6.6.5/solr/server/solr/configsets/basic_configs/conf/protwords.txt \
-https://raw.githubusercontent.com/apache/lucene-solr/releases/lucene-solr/6.6.5/solr/server/solr/configsets/data_driven_schema_configs/conf/elevate.xml \
+./ckanext/idm/deploy/solr/schema.xml \
+./ckanext/idm/deploy/solr/currency.xml \
+./ckanext/idm/deploy/solr/synonyms.txt \
+./ckanext/idm/deploy/solr/stopwords.txt \
+./ckanext/idm/deploy/solr/protwords.txt \
+./ckanext/idm/deploy/solr/elevate.xml \
 /opt/solr/server/solr/$SOLR_CORE/conf/
 
 # Create Core.properties
