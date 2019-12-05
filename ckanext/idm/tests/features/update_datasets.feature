@@ -22,13 +22,13 @@ Feature: Update dataset
    Then I enter <new_values> in <data_fields> to update dataset and expect changes to be there
    Examples:
      | data_fields       | data_values                            | new_values      |
+     | Disease           | Any                                    | TB,Malaria      |
      | Title             | ERA5 daily files.                      | ERA5            |
      | Description       | Daily files from ERA5 hourly.          | changed         |
      | Maintainer email  | dlukacevic@idmond.org                  | xyz@abc.com     |
      | Purpose           | Raw Data                               | Published Paper |
      | Quality Rating    | Good                                   | Great           |
      | Quality Issues    | Unknown                                | Passed          |
-     | Disease           | Any                                    | Malaria         |
      | Start Date        | 1979-01-01                             | 1980-01-01      |
      | End Date          | 2018-12-31                             | 1980-01-02      |
      | Location          | World                                  | USA             |

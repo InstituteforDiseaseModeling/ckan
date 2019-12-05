@@ -59,8 +59,9 @@ class datasetpage(basepage):
         if not resourcefound:
             raise Exception(u'resource not found:', title)
 
-    def check_metadata(self, field, value):
+    def check_metadata(self, field, value, commaSeparated=False):
         metadatafound = False
+        notfound = False
         if field == u'Description':
             description = self.descriptionElem.text
             metadatafound = True if description.strip() == value else False
@@ -85,11 +86,17 @@ class datasetpage(basepage):
                     else:
                         actual_value = row.find_element_by_tag_name(u'td').text
                     print(u"Value: {}".format(actual_value))
+                    if commaSeparated:
+                        for t in value.strip().split(u','):
+                            if t not in actual_value.strip():
+                                notfound = True
+                            else:
+                                metadatafound = True
                     if value.strip() == actual_value.strip():
                         metadatafound = True
 
                     break
-        if not metadatafound:
+        if not metadatafound or notfound:
             raise Exception(u'value "{}" does not match {}:'.format(field, value))
 
     def click_filter(self, filter_elem, filter_value):

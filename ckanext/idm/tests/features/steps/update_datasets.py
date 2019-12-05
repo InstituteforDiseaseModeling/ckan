@@ -62,6 +62,9 @@ def step_impl(context):
 
 @step(u'I enter {new_values} in {data_fields} to update dataset and expect changes to be there')
 def step_impl(context, new_values, data_fields):
+    commaSeparated = True if data_fields == u'Disease' else False
+    if commaSeparated:
+        print(u"x")
     if data_fields == u'Spatial Extent':
         context.editdatasetpage.fill_optional(u'spatial Mode', u'True')
     if data_fields in [u'Quality Issues',
@@ -73,12 +76,12 @@ def step_impl(context, new_values, data_fields):
                        ]:
         context.editdatasetpage.fill_optional(data_fields, new_values)
     else:
-        context.editdatasetpage.fill_required(data_fields, new_values)
+        context.editdatasetpage.fill_required(data_fields, new_values, commaSeparated)
     context.editdatasetpage.updateDatasetButton.click()
     context.datasetpage = datasetpage(context)
     context.datasetpage.visit()
     if data_fields not in [u'Visibility', u'License']:
-        context.datasetpage.check_metadata(data_fields, new_values)
+        context.datasetpage.check_metadata(data_fields, new_values, commaSeparated)
 
 
 @step(u'I can delete the dataset')

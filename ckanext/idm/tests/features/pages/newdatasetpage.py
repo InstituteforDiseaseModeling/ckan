@@ -45,7 +45,7 @@ class newdatasetpage(basepage):
             (By.XPATH, u'//button[contains(text(), "Next: Add Data")]')
     }
 
-    def fill_required(self, fieldname, fieldtext):
+    def fill_required(self, fieldname, fieldtext, comma_separated=False):
         required_fields = {u'Title': self.titleField,
                            u'Description': self.descrptionField,
                            u'Maintainer email': self.maintaineremailField,
@@ -64,7 +64,7 @@ class newdatasetpage(basepage):
                            }
         if fieldname in required_fields.keys():
             self.fill_field(required_fields[fieldname],
-                            fieldtext, fieldname)
+                            fieldtext, fieldname, comma_separated=comma_separated)
         else:
             raise Exception(u'field not in the required list:', fieldname)
 
@@ -85,7 +85,7 @@ class newdatasetpage(basepage):
         else:
             raise Exception(u'field not in the optional list:', fieldname)
 
-    def fill_field(self, fieldname, fieldtext, handler=None, autocomplete=False):
+    def fill_field(self, fieldname, fieldtext, handler=None, autocomplete=False, comma_separated=False):
         handler = u'Maintainer' if handler == u'Maintainer email' else handler
         if handler in [u'Research Group', u'Location', u'Publisher', u'License', u'Tags', u'Maintainer']:
             if not autocomplete:
@@ -97,7 +97,12 @@ class newdatasetpage(basepage):
                     u'//div//label[contains(text(),"{}")]/following-sibling::input'.format(handler))\
                     .send_keys(fieldtext, Keys.DOWN)
         else:
-            super(newdatasetpage, self).fill_field(fieldname, fieldtext)
+            #allow multi-select
+            if comma_separated:
+                for t in fieldtext.split(u','):
+                    super(newdatasetpage, self).fill_field(fieldname, t, multi_select=True)
+            else:
+                super(newdatasetpage, self).fill_field(fieldname, fieldtext)
 
     def check_autocomplete(self, word):
         found = False

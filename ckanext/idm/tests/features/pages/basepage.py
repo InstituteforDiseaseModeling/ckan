@@ -85,13 +85,17 @@ class basepage(object):
     def method_missing(self, elem):
         print(elem, u'Not found in ', self.url)
 
-    def fill_field(self, fieldname, fieldtext, cleartext=True):
+    def fill_field(self, fieldname, fieldtext, cleartext=True, multi_select=False):
         fieldname.location_once_scrolled_into_view
         if fieldname.tag_name == u'select':
             selected = False
             for option in fieldname.find_elements_by_tag_name(u'option'):
                 if option.text.strip() == fieldtext.strip():
-                    option.click()
+                    if multi_select:
+                        if not option.is_selected():
+                            ActionChains(self.driver).key_down(Keys.CONTROL).click(option).key_up(Keys.CONTROL).perform()
+                    else:
+                        option.click()
                     selected = True
                     break
             if not selected:
