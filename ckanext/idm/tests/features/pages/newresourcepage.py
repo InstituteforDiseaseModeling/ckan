@@ -29,7 +29,7 @@ class newresourcepage(basepage):
         u'viewDatasetTab': (By.PARTIAL_LINK_TEXT, u'View dataset')
     }
 
-    def fill_required(self, fieldname, fieldtext, comma_separated=False):
+    def fill_required(self, fieldname, fieldtext):
         required_fields = {
             u'URL': self.urlField,
             u'Name': self.nameField,
@@ -37,7 +37,7 @@ class newresourcepage(basepage):
         }
         if fieldname in required_fields.keys():
             self.fill_field(required_fields[fieldname],
-                            fieldtext, fieldname, comma_separated)
+                            fieldtext, fieldname, autocomplete=False)
         else:
             raise Exception(
                 u'field not in the required list:', fieldname)
@@ -54,7 +54,7 @@ class newresourcepage(basepage):
             raise Exception(
                 u'field not in the optional list:', fieldname)
 
-    def fill_field(self, fieldname, fieldtext, handler=None, autocomplete=False, comma_separated=False):
+    def fill_field(self, fieldname, fieldtext, handler=None, autocomplete=False):
         if handler in [u'Format']:
             if not autocomplete:
                 self.driver.find_element_by_xpath(
@@ -67,4 +67,4 @@ class newresourcepage(basepage):
                     u'/following-sibling::input'.format(handler)) \
                     .send_keys(fieldtext, Keys.DOWN)
         else:
-            super(newresourcepage, self).fill_field(fieldname, fieldtext, comma_separated)
+            super(newresourcepage, self).fill_field(fieldname, fieldtext)

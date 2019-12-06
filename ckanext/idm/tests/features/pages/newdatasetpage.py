@@ -100,7 +100,7 @@ class newdatasetpage(basepage):
             #allow multi-select
             if comma_separated:
                 for t in fieldtext.split(u','):
-                    super(newdatasetpage, self).fill_field(fieldname, t, multi_select=True)
+                    super(newdatasetpage, self).fill_field(fieldname, t)
             else:
                 super(newdatasetpage, self).fill_field(fieldname, fieldtext)
 

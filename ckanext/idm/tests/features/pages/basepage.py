@@ -4,7 +4,7 @@ from datetime import datetime
 from urllib.parse import urljoin
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -85,20 +85,15 @@ class basepage(object):
     def method_missing(self, elem):
         print(elem, u'Not found in ', self.url)
 
-    def fill_field(self, fieldname, fieldtext, cleartext=True, multi_select=False):
+    def fill_field(self, fieldname, fieldtext, cleartext=True):
         fieldname.location_once_scrolled_into_view
         if fieldname.tag_name == u'select':
             selected = False
-            for option in fieldname.find_elements_by_tag_name(u'option'):
-                if option.text.strip() == fieldtext.strip():
-                    if multi_select:
-                        if not option.is_selected():
-                            ActionChains(self.driver).key_down(Keys.CONTROL).click(option).key_up(Keys.CONTROL).perform()
-                    else:
-                        option.click()
-                    selected = True
-                    break
-            if not selected:
+            select = Select(fieldname)
+            try:
+                select.select_by_visible_text(fieldtext.strip())
+                selected = True
+            except Exception:
                 try:
                     fieldname.find_element_by_xpath(
                         u'option[contains(text(),"{}")]'.format(fieldtext)).click()
