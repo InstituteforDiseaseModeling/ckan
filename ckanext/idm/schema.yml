@@ -21,7 +21,7 @@ dataset_fields:
   label: Description
   required: true
   form_snippet: markdown.html
-  form_placeholder: 'eg. More info about data properties, provenance or usage restrictions.'
+  form_placeholder: 'eg. More info about data properties, provenance or usage recommendations.'
 
 - field_name: maintainer_email
   label: Maintainer
@@ -45,6 +45,8 @@ dataset_fields:
     label: Project Files
   - value: paper
     label: Published Paper
+  help_text: "Raw Data - used as input to project pipeline || Project Files: tracks research workflow || Published Paper: all data for reproducing the paper."
+
 
 #- field_name: data_type
 #  label: Data Type
@@ -65,6 +67,7 @@ dataset_fields:
   label: Research Group
   required: true
   preset: dataset_research_group
+  help_text: "Public - anyone can see || Private - visible only to research group members."
 
 - field_name: disease
   label: Disease
@@ -76,6 +79,7 @@ dataset_fields:
   label: Tags
   preset: tag_string_autocomplete
   form_placeholder: eg. economy, mental health, government
+  help_text: Start typing. Pick from the list or enter a new value. Press Tab or Enter to enter a tag.
 
 - field_name: quality
   label: Quality Rating
@@ -87,10 +91,12 @@ dataset_fields:
     label: Good
   - value: bad
     label: Bad
+  help_text: "Great - no major issues. || Good - some issue but still usable. || Bad - many issues, difficult to use."
 
 - field_name: quality_notes
   label: Quality Issues
   form_placeholder: 'e.g. inconsistent names, wrong coordinates, see temporal gaps, see attached resource.'
+  help_text: Enumerate most impactful quality issues. This should help others decide whether to use the dataset.
 
 # Temporal
 
@@ -99,18 +105,19 @@ dataset_fields:
   required: true
   validators: not_empty reasonable_range_date temporal_range
   preset: date
-  form_placeholder: eg. 01/01/2001
+  help_text: Temporal range start date, e.g. 01/01/2001.
 
 - field_name: ext_enddate
   label: End Date
   required: true
   validators: not_empty reasonable_range_date temporal_range
   preset: date
-  form_placeholder: eg. 2018-12-31
+  help_text: Temporal range start date, e.g. 2018-12-31.
 
 - field_name: temporal_gaps
   label: Temporal Gaps
   form_placeholder: 'e.g. missing years 2011 and 2016.'
+  help_text: If applicable, describe which portion of the temporal range, defined by start/end date, is not covered by this dataset.
 
 # Spatial
 
@@ -118,11 +125,13 @@ dataset_fields:
   label: Location
   required: true
   preset: location_autocomplete
+  help_text: The name of the location that best describes spatial scope of the dataset. Choose from the list or enter a new value.
 
 - field_name: spatial
   label: Extent
   validators: ignore_missing remove_whitespace set_spatial_to_location_geometry
   form_placeholder: 'e.g. { "type": "Polygon", "coordinates": [ [ [50.8, -34.2],[50.8, 36.7], [-19.9, 36.7], [-19.9, -34.2], [50.8, -34.2] ] ] }'
+  help_text: Location GeoJSON (geometry attribute), set automatically if name path is picked from the list, e.g. Africa:Zambia. Enables spatial search.
 
 - field_name: spatial_mode
   label: Extent Mode
@@ -130,15 +139,17 @@ dataset_fields:
   choices:
   - value: manual
     label: Location extent is set manually.
-  help_text: By default, if location is picked from the autocomplete list, the extent is set automatically when dataset is created/updated.
+  help_text: Check to enter location GeoJSON geometry manually.
 
 - field_name: spatial_gaps
   label: Spatial Gaps
   form_placeholder: 'e.g. missing area north from N12.'
+  help_text: If applicable, describe which portion of the chosen location is not covered by this dataset.
 
 - field_name: spatial_resolution
   label: Spatial Resolution
   form_placeholder: 'e.g. 0.25 degrees, 30'', 2.5'', 1km, 750m'
+  help_text: The dataset spatial resolution.
 
 # Provenance
 
@@ -146,12 +157,14 @@ dataset_fields:
   label: Publisher
   required: true
   preset: publisher_autocomplete
+  help_text: The name of the organization or entity which created and published the dataset. Choose from the list or enter a new value.
 
 - field_name: url
-  label: Origin URL
+  label: Publisher URL
   form_placeholder: http://example.com/dataset.json
   display_property: foaf:homepage
   display_snippet: link.html
+  help_text: A link to a publisher's website. Preferably to a page which describes the dataset and how to obtain it.
 
 - field_name: acquisition_date
   label: Acquisition Date
@@ -159,11 +172,13 @@ dataset_fields:
   validators: not_empty reasonable_acquisition_date
   preset: date
   form_placeholder: e.g. 2018-12-31
+  help_text: The date when the dataset was obtained from the publisher.
 
 - field_name: version
   label: Version
   validators: ignore_missing unicode package_version_validator
   form_placeholder: '1.0'
+  help_text: The version information if applicable. If known, enter the exact version as used by Publisher.
 
 # Access
 
@@ -182,12 +197,21 @@ dataset_fields:
   choices:
   - value: maintainer
     label: Must request access from maintainer
+  help_text: Checked to indicate that access to the dataset must be explicitly approved by the maintainer.
+
+- field_name: terms_of_use
+  label: Terms of Use
+  required: false
+  form_snippet: markdown.html
+  form_placeholder: e.g. Publicly available, please cite when used for model development.
+  help_text: The terms of use details, disclaimers and other usage restrictions.
 
 - field_name: license_id
-  label: License
+  label: License Type
   required: true
   form_snippet: license_field.html
   help_text: License definitions and additional information can be found at http://opendefinition.org/
+
 
 
 resource_fields:
@@ -219,6 +243,8 @@ resource_fields:
     label: Provenance
   - value: other
     label: Other
+  help_text: Select based on the main purpose of the resource.
+
 
 - field_name: description
   label: Description
@@ -228,3 +254,4 @@ resource_fields:
 - field_name: format
   label: Format
   preset: resource_format_autocomplete
+  help_text: The resource file format, if applicable. If the resource has multiple formats, choose the most representative one (or split the resource into multiple).
