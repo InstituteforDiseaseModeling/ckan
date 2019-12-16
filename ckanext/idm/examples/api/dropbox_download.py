@@ -1,18 +1,30 @@
-# This example shows two possible scenarios for integrating Data Catalog into research workflows:
-# 1. Obtain dataset Dropbox path and convert it to a local path where Dropbox app is syncing files.
-# 2. Obtain dataset Dropbox path and use Dropbox API to download data from Dropbox.
+# This example shows two possible scenarios:
+#
+# 1. Obtain dataset path to a local Dropbox dir.
+# 2. Download dataset from Dropbox using API.
 #
 # Setup:
+#
 # - Install a new Python 2.7 virtual environment
 # - pip install -r requirement.txt
-# - Find Data Catalog API key. In Data Catalog click on user name (top right). Look at the left bottom part of the page.
-# - Find Data Catalog dataset ID. In Data Catalog open the dataset page and find ID in the browser URL (last part).
-# - For scenario 2 (Dropbox API) generate Dropbox authentication token. For instruction see:
-#   https://www.iperiusbackup.net/en/create-dropbox-app-get-authentication-token/
+#
+# - Find Data Catalog API key.
+#       + In Data Catalog click on user name (top right).
+#       + Look at the left bottom part of the page.
+#
+# - Find Data Catalog dataset ID.
+#       + In Data Catalog open the dataset page and find ID in the browser URL (last part).
+#
+# - Generate Dropbox authentication token (scenario 2 only):
+#   Instruction: https://www.iperiusbackup.net/en/create-dropbox-app-get-authentication-token/
 #
 # Run:
-# - Run like this (below guids are made-up):
-#   python dropbox_download.py 11111111-2222-3333-4444-555566667777 pakistan-worldpop --token xl_4444444444x4333_11111111117777777
+#
+# - Usage:
+#       python dropbox_download.py DATA-CATALOG_API_GUID DATASET_ID [--token DROPBOX_TOKEN_GUID] [--dir-download]
+#
+# - For example (below guids are made-up):
+#       python dropbox_download.py 11111111-2222-3333-4444-555566667777 pakistan-worldpop --token xl_4444444444x4333_11111111117777777
 
 
 import argparse
@@ -32,7 +44,9 @@ def main(host_url, apikey, dataset_id, dropbox_token, dir_download):
     # Scenario 1: Construct local Dropbox path
     dropbox_local_path = scenario_1_local_dropbox_path(dropbox_path)
     print 'Local Dropbox dir is {}'.format(dropbox_local_path)
-
+    #
+    # YOUR CODE COULD GO HERE
+    #
 
     if dropbox_token is None:
         return
@@ -42,12 +56,18 @@ def main(host_url, apikey, dataset_id, dropbox_token, dir_download):
     download_path = tempfile.mkdtemp()
     scenario_2_download_file_from_dropbox(dropbox_path, dbx, download_path, u'licence.txt')
     print 'Downloaded file into {}'.format(download_path)
+    #
+    # YOUR CODE COULD GO HERE
+    #
 
     # Scenario 2b: Download the entire dir from Dropbox
     if dir_download:
         metadata = scenario_2_download_dir_from_dropbox(dataset_id, dropbox_path, dbx, download_path)
         print 'Downloaded all files into {}'.format(download_path)
         print metadata
+        #
+        # YOUR CODE COULD GO HERE
+        #
 
 
 def get_dropbox_url_from_data_catalog(host_url, apikey, dataset_id):
@@ -78,7 +98,7 @@ def scenario_2_download_dir_from_dropbox(dropbox_path, dbx, download_path):
 
 
 if __name__ == '__main__':
-    example = 'python dropbox_download.py DATA-CATALOG_API_GUID DATA-CATALOG_DATASET_ID [--token DROPBOX_TOKEN_GUID] [--dir-download]'
+    example = 'python dropbox_download.py DATA-CATALOG_API_GUID DATASET_ID [--token DROPBOX_TOKEN_GUID] [--dir-download]'
     parser = argparse.ArgumentParser(example)
 
     parser.add_argument('apikey', default=None, help='Data Catalog API key.')
