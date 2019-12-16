@@ -4,22 +4,17 @@
 # 2. Download dataset from Dropbox using API.
 #
 # Setup:
-#
 # - Install a new Python 2.7 virtual environment
 # - pip install -r requirement.txt
-#
 # - Find Data Catalog API key.
 #       + In Data Catalog click on user name (top right).
 #       + Look at the left bottom part of the page.
-#
 # - Find Data Catalog dataset ID.
 #       + In Data Catalog open the dataset page and find ID in the browser URL (last part).
-#
 # - Generate Dropbox authentication token (scenario 2 only):
 #   Instruction: https://www.iperiusbackup.net/en/create-dropbox-app-get-authentication-token/
 #
 # Run:
-#
 # - Usage:
 #       python dropbox_download.py DATA-CATALOG_API_GUID DATASET_ID [--token DROPBOX_TOKEN_GUID] [--dir-download]
 #
