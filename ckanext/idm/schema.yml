@@ -45,7 +45,7 @@ dataset_fields:
     label: Project Files
   - value: paper
     label: Published Paper
-  help_text: "Raw Data - used as input to project pipeline || Project Files: tracks research workflow || Published Paper: all data for reproducing the paper."
+  help_text: "Raw Data - used as input to project pipeline || Project Files - tracking research workflow || Published Paper - all data for reproducing a paper."
 
 
 #- field_name: data_type
@@ -112,7 +112,7 @@ dataset_fields:
   required: true
   validators: not_empty reasonable_range_date temporal_range
   preset: date
-  help_text: Temporal range start date, e.g. 2018-12-31.
+  help_text: Temporal range end date, e.g. 2018-12-31.
 
 - field_name: temporal_gaps
   label: Temporal Gaps
@@ -131,7 +131,7 @@ dataset_fields:
   label: Extent
   validators: ignore_missing remove_whitespace set_spatial_to_location_geometry
   form_placeholder: 'e.g. { "type": "Polygon", "coordinates": [ [ [50.8, -34.2],[50.8, 36.7], [-19.9, 36.7], [-19.9, -34.2], [50.8, -34.2] ] ] }'
-  help_text: Location GeoJSON (geometry attribute), set automatically if name path is picked from the list, e.g. Africa:Zambia. Enables spatial search.
+  help_text: Location GeoJSON (geometry attribute), set automatically if name path is picked from the list, e.g. Africa:Zambia. This field enables spatial search for this dataset.
 
 - field_name: spatial_mode
   label: Extent Mode
@@ -197,7 +197,7 @@ dataset_fields:
   choices:
   - value: maintainer
     label: Must request access from maintainer
-  help_text: Checked to indicate that access to the dataset must be explicitly approved by the maintainer.
+  help_text: Check to indicate that access to the dataset must be explicitly approved by the maintainer.
 
 - field_name: terms_of_use
   label: Terms of Use
