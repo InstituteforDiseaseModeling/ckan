@@ -1,5 +1,4 @@
 # This example shows two possible scenarios:
-#
 # 1. Obtain dataset path to a local Dropbox dir.
 # 2. Download dataset from Dropbox using API.
 #
@@ -17,7 +16,6 @@
 # Run:
 # - Usage:
 #       python dropbox_download.py DATA-CATALOG_API_GUID DATASET_ID [--token DROPBOX_TOKEN_GUID] [--dir-download]
-#
 # - For example (below guids are made-up):
 #       python dropbox_download.py 11111111-2222-3333-4444-555566667777 pakistan-worldpop --token xl_4444444444x4333_11111111117777777
 
