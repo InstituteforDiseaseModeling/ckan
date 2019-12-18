@@ -199,6 +199,7 @@ schema. In this case the version should be set to the next CKAN version number.
 <copyField source="ckan_url" dest="urls"/>
 <copyField source="download_url" dest="urls"/>
 <copyField source="res_url" dest="urls"/>
+<copyField source="res_url" dest="text"/>
 <copyField source="extras_*" dest="text"/>
 <copyField source="res_extras_*" dest="text"/>
 <copyField source="vocab_*" dest="text"/>
