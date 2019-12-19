@@ -22,6 +22,9 @@ pip install pip==9.0.1
 pip install -r ..\..\..\..\requirement-setuptools.txt
 pip install -r ..\..\..\..\requirements.txt
 pip install -r ..\..\..\..\requirements-scheming.txt
+pip install -r ..\..\..\..\dev-requirements.txt
+pip install -r ..\test\test-requirements.txt
+
 pip install python-magic-bin==0.4.14 python-dotenv==0.10.3 configparser==3.7.4
 pip install --upgrade bleach
 pip install bin\Shapely-1.6.4.post2-cp27-cp27m-win_amd64.whl
@@ -29,6 +32,7 @@ pip install -r ..\..\..\..\requirements-spatial.txt
 
 REM Creates config files
 IF NOT EXIST who.ini copy  ..\..\..\..\ckan\config\who.ini who.ini
+IF NOT EXIST who.ini copy  ..\..\..\..\ckan\config\who.ini ..\test\who.ini
 IF NOT EXIST development.ini (
   paster make-config --no-interactive ckan development.ini
 
