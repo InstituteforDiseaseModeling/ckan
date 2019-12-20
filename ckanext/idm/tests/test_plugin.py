@@ -198,27 +198,48 @@ class TestidmPlugins(helpers.FunctionalTestBase):
         testdata = self.basic_testdata.copy()
         testdata[u'name'] = sys._getframe().f_code.co_name
         for d in self.expected_diseases:
-            testdata[u'disease'] = d
+            testdata[u'disease'] = [d]
             result = helpers.call_action(u'package_create',
                                          **testdata
                                          )
 
-            nt.assert_equals(d, result[u'disease'])
+            nt.assert_equals([d], result[u'disease'])
             helpers.call_action(u'package_delete', id=result[u'id'])
+
+    def test_multiple_diseases(self):
+        testdata = self.basic_testdata.copy()
+        testdata[u'name'] = sys._getframe().f_code.co_name
+        testdata[u'disease'] = [u'Any', u'Malaria']
+        result = helpers.call_action(u'package_create',
+                                     **testdata
+                                     )
+        nt.assert_equals([u'Any', u'Malaria'], result[u'disease'])
+        helpers.call_action(u'package_delete', id=result[u'id'])
 
     def test_update_disease(self):
         testdata = self.basic_testdata.copy()
         testdata[u'name'] = sys._getframe().f_code.co_name
-        testdata[u'disease'] = u'Any'
+        testdata[u'disease'] = [u'Any']
         result = helpers.call_action(u'package_create',
                                      **testdata
                                      )
-        nt.assert_equals(u'Any', result[u'disease'])
-        testdata[u'disease'] = u'Polio'
+        nt.assert_equals([u'Any'], result[u'disease'])
+        testdata[u'disease'] = [u'Polio']
         result = helpers.call_action(u'package_update',
                                      **testdata
                                      )
-        nt.assert_equals(u'Polio', result[u'disease'])
+        nt.assert_equals([u'Polio'], result[u'disease'])
+        helpers.call_action(u'package_delete', id=result[u'id'])
+
+    def test_terms_of_use(self):
+        testdata = self.basic_testdata.copy()
+        testdata[u'name'] = sys._getframe().f_code.co_name
+        terms = u'This is a limited edition, use carefully'
+        testdata[u'terms_of_use'] = terms
+        result = helpers.call_action(u'package_create',
+                                     **testdata
+                                     )
+        nt.assert_equals(terms, result[u'terms_of_use'])
         helpers.call_action(u'package_delete', id=result[u'id'])
 
     def test_create_resource_type(self):
@@ -226,7 +247,7 @@ class TestidmPlugins(helpers.FunctionalTestBase):
             result = helpers.call_action(u'package_create',
                                          name=u'test_resource_type_package',
                                          license_id=u'License not specified',
-                                         disease=u'Any',
+                                         disease=[u'Any'],
                                          acquisition_date=u'2019/01/01',
                                          maintainer_email=u'fake@idm.org',
                                          ext_startdate=u'2019/01/01',
