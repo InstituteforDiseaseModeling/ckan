@@ -36,11 +36,14 @@ Note: To setup Stage environment use above instructions and replace 'prod' with 
 ###### Windows 
 
     cd c:\git\ckan\ckanext\idm\deploy\test 
-    run-docker-compose.cmd run  
-    
+    run-docker-compose.cmd run {idm_test_only=True|False} {ckan_test_run=True|False}
+idm_test_only is set to "True" by default, this will run only the idm plugin tests, if set to "False", all tests will be included.
+<BR>
+ckan_test_run if set to "True" by default so the script will launch the tests then exit. Set to "False" if you only want to get the ckan-test container up without running tests.
+<BR>
 The results are stored in 
  
-    C:\Users\dlukacevic\ckan\test_results
+    %USERPROFILE%\ckan\test_results
 
 ###### Linux:
     cd ~/ckan/ckanext/idm/deploy/test 
@@ -104,6 +107,20 @@ Debug with PyCharm using paster.py and the below configuration
     
     Working directory:  
     C:\git\ckan\ckanext\idm\deploy\windows-local  
+
+#### Debug IDM tests with Pycharm
+
+	Goto C:\git\ckan\ckanext\idm\deploy\test folder
+    Run commnad "run-docker-compose.cmd debug"
+    In PyCharm 
+    Create a python test (nosetests) configuration
+    open Run, Edit Configuration as set:    
+    
+    Parameters: 
+    --ckan --reset-db  -v --with-pylons=ckanext\idm\deploy\test\test-idm-local.ini  ckanext/idm  
+    
+    Working directory:  
+    C:\git\ckan 
     
 #### Verify by running from docker-compose
  

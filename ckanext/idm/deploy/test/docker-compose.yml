@@ -18,9 +18,10 @@ services:
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - DS_RO_PASS=${POSTGRES_PASSWORD}
-      - CKAN_TEST_RUN
+      - CKAN_TEST_RUN=${CKAN_TEST_RUN}
       - CKAN_TEST
       - EXT_TEST
+      - IDM_TEST_ONLY=${IDM_TEST_ONLY}
     networks:
       test-net:
         aliases:
@@ -39,6 +40,8 @@ services:
         - datapusher
     ports:
       - "8801:8800"
+    logging:
+      driver: "none"   
 
   db-test:
     image: idm_db-test
@@ -58,6 +61,8 @@ services:
         - db
     ports:
       - "5433:5432"
+    logging:
+      driver: "none"     
 
   solr-test:
     image: idm_solr-test
@@ -71,6 +76,8 @@ services:
         - solr
     ports:
       - "8984:8983"
+    logging:
+      driver: "none"    
 
   redis-test:
     container_name: redis-test
@@ -81,3 +88,5 @@ services:
         - redis
     ports:
       - "6380:6379"
+    logging:
+      driver: "none"    

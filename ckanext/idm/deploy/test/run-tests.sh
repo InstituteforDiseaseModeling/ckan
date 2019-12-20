@@ -29,36 +29,41 @@ paster datastore -c test-core.ini set-permissions | psql --host=db -U ckan
 paster db init -c test-core.ini
 
 if [[ $CKAN_TEST_RUN == "True" ]]; then
+  echo "start ckan via paster"
   mkdir -p $CKAN_TEST_RESULTS
-  TODO: see if "--daemon" could be used instead
+  #TODO: see if "--daemon" could be used instead
   nohup paster serve test-core.ini 2>$CKAN_TEST_RESULTS/nohup.out &
   jobs -l
   cat $CKAN_TEST_RESULTS/nohup.out
   sleep 5
-  cd $CKAN_HOME/node_modules/mocha-phantomjs/bin/
-  ./mocha-phantomjs -R xunit http://localhost:5000/base/test/index.html > $CKAN_TEST_RESULTS/result.log
-  while read line; do echo $line | awk '/</{print $0}'; done < $CKAN_TEST_RESULTS/result.log > $CKAN_TEST_RESULTS/mocha-phantomjs.xml
-  cat $CKAN_TEST_RESULTS/mocha-phantomjs.xml
 
   #start tests
   cd $CKAN_HOME
   nosetests --with-pylons=test-core.ini --version
-  echo "running "$CKAN_TEST
-  echo "write result to nose.log"
-  nosetests -v --ckan --reset-db --with-pylons=test-core.ini --nologcapture --with-coverage --cover-package=$CKAN_TEST  --ignore-files="test_coding_standards\.py" --with-xunit --xunit-file=$CKAN_TEST_RESULTS/ckan.xml $CKAN_TEST > $CKAN_TEST_RESULTS/nose.log 2>&1
-  echo "running coding standard tests"
-  nosetests -v --ckan --reset-db --with-pylons=test-core.ini --nologcapture --nocapture --with-xunit --xunit-file=$CKAN_TEST_RESULTS/ckan_coding_standard.xml ckan/tests/legacy/test_coding_standards.py ckan/tests/test_coding_standards.py >> $CKAN_TEST_RESULTS/nose.log 2>&1
-  
-  EXT_TEST=$(echo $EXT_TEST | tr -d '"')
-  echo "running "$EXT_TEST
-  nosetests -v --ckan --reset-db --with-pylons=test-core.ini --nologcapture --with-xunit --xunit-file=$CKAN_TEST_RESULTS/ckanext.xml $EXT_TEST >> $CKAN_TEST_RESULTS/nose.log 2>&1
-  #added plugins
+  echo "RUN idmtests"
   paster --plugin=ckan spatial initdb -c test-core.ini
   nosetests -v --ckan --reset-db --with-pylons=test-idm.ini --nologcapture --with-coverage --cover-package=ckanext/idm --with-xunit --xunit-file=$CKAN_TEST_RESULTS/idm.xml ckanext/idm >> $CKAN_TEST_RESULTS/nose.log 2>&1
-  #paster config-tool test-core.ini ckan.plugins="scheming_datasets scheming_groups scheming_organizations scheming_test_plugin"
-  nosetests -v --ckan --reset-db --with-pylons=test-scheming.ini --nologcapture --with-coverage --cover-package=ckanext/scheming --with-xunit --xunit-file=$CKAN_TEST_RESULTS/scheming.xml ckanext/scheming >> $CKAN_TEST_RESULTS/nose.log 2>&1
-  #paster config-tool test-core.ini ckan.plugins="test_spatial_plugin harvest spatial_metadata spatial_query spatial_harvest_metadata_api gemini_csw_harvester gemini_doc_harvester gemini_waf_harvester"
-  nosetests -v --ckan --reset-db --with-pylons=test-spatial.ini --nologcapture --with-coverage --cover-package=ckanext/spatial --with-xunit --xunit-file=$CKAN_TEST_RESULTS/spatial.xml ckanext/spatial >> $CKAN_TEST_RESULTS/nose.log 2>&1
+  echo "idm plugin test finished..." 
+  if [[ $IDM_TEST_ONLY == "False" ]]; then
+    echo "running "$CKAN_TEST
+    echo "write result to nose.log"
+    nosetests -v --ckan --reset-db --with-pylons=test-core.ini --nologcapture --with-coverage --cover-package=$CKAN_TEST  --ignore-files="test_coding_standards\.py" --with-xunit --xunit-file=$CKAN_TEST_RESULTS/ckan.xml $CKAN_TEST > $CKAN_TEST_RESULTS/nose.log 2>&1
+    echo "running coding standard tests"
+    nosetests -v --ckan --reset-db --with-pylons=test-core.ini --nologcapture --nocapture --with-xunit --xunit-file=$CKAN_TEST_RESULTS/ckan_coding_standard.xml ckan/tests/legacy/test_coding_standards.py ckan/tests/test_coding_standards.py >> $CKAN_TEST_RESULTS/nose.log 2>&1
+    
+    EXT_TEST=$(echo $EXT_TEST | tr -d '"')
+    echo "running "$EXT_TEST
+    nosetests -v --ckan --reset-db --with-pylons=test-core.ini --nologcapture --with-xunit --xunit-file=$CKAN_TEST_RESULTS/ckanext.xml $EXT_TEST >> $CKAN_TEST_RESULTS/nose.log 2>&1
+    #paster config-tool test-core.ini ckan.plugins="scheming_datasets scheming_groups scheming_organizations scheming_test_plugin"
+    nosetests -v --ckan --reset-db --with-pylons=test-scheming.ini --nologcapture --with-coverage --cover-package=ckanext/scheming --with-xunit --xunit-file=$CKAN_TEST_RESULTS/scheming.xml ckanext/scheming >> $CKAN_TEST_RESULTS/nose.log 2>&1
+    #paster config-tool test-core.ini ckan.plugins="test_spatial_plugin harvest spatial_metadata spatial_query spatial_harvest_metadata_api gemini_csw_harvester gemini_doc_harvester gemini_waf_harvester"
+    nosetests -v --ckan --reset-db --with-pylons=test-spatial.ini --nologcapture --with-coverage --cover-package=ckanext/spatial --with-xunit --xunit-file=$CKAN_TEST_RESULTS/spatial.xml ckanext/spatial >> $CKAN_TEST_RESULTS/nose.log 2>&1
+    #UI tests
+    cd $CKAN_HOME/node_modules/mocha-phantomjs/bin/
+   ./mocha-phantomjs -R xunit http://localhost:5000/base/test/index.html > $CKAN_TEST_RESULTS/result.log
+    while read line; do echo $line | awk '/</{print $0}'; done < $CKAN_TEST_RESULTS/result.log > $CKAN_TEST_RESULTS/mocha-phantomjs.xml
+    cat $CKAN_TEST_RESULTS/mocha-phantomjs.xml
+  fi
   
 else
   sed -i "/^ckan.site_url.*=/s/=.*/= http:\/\/localhost:5000/" test-core.ini
