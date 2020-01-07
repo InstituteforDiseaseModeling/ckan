@@ -47,7 +47,7 @@ if [[ $CKAN_TEST_RUN == "True" ]]; then
   if [[ $IDM_TEST_ONLY == "False" ]]; then
     echo "running "$CKAN_TEST
     echo "write result to nose.log"
-    nosetests -v --ckan --reset-db --with-pylons=test-core.ini --nologcapture --with-coverage --cover-package=$CKAN_TEST  --ignore-files="test_coding_standards\.py" --with-xunit --xunit-file=$CKAN_TEST_RESULTS/ckan.xml $CKAN_TEST > $CKAN_TEST_RESULTS/nose.log 2>&1
+    nosetests -v --ckan --reset-db --with-pylons=test-core.ini --nologcapture --with-coverage --cover-package=$CKAN_TEST  --ignore-files="test_coding_standards\.py" --with-xunit --xunit-file=$CKAN_TEST_RESULTS/ckan.xml $CKAN_TEST >> $CKAN_TEST_RESULTS/nose.log 2>&1
     echo "running coding standard tests"
     nosetests -v --ckan --reset-db --with-pylons=test-core.ini --nologcapture --nocapture --with-xunit --xunit-file=$CKAN_TEST_RESULTS/ckan_coding_standard.xml ckan/tests/legacy/test_coding_standards.py ckan/tests/test_coding_standards.py >> $CKAN_TEST_RESULTS/nose.log 2>&1
     
