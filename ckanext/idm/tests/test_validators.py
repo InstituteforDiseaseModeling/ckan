@@ -22,10 +22,10 @@ class TestValidators(helpers.FunctionalTestBase):
         plugins.load(u'idm')
 
     '''
-    most set these in the config
-    ckan.range_max_date=2020/12/31
+    must set these in the config
+    ckan.range_max_date=2030/12/31
     ckan.range_min_date=1950/01/01
-    ckan.acquisition_max_date=2019/12/31
+    ckan.acquisition_max_date=2030/12/31
     ckan.acquisition_min_date=2019/01/01
     '''
 
@@ -35,7 +35,7 @@ class TestValidators(helpers.FunctionalTestBase):
 
     def test_reasonable_range_date_maxdate(self):
         v = get_validator(u'reasonable_range_date')
-        assert_raises(Invalid, v, u'2021/01/01')
+        assert_raises(Invalid, v, u'2031/01/01')
 
     def test_reasonable_range_date_upperbound(self):
         v = get_validator(u'reasonable_range_date')
