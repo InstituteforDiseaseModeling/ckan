@@ -1,6 +1,9 @@
 CKAN: The Open Source Data Portal Software
 ==========================================
 
+Note:
+:triangular_flag_on_post: **This is a fork of the official CKAN repository. This fork is being used for internal IDM purposes and is not for public distribution.** :triangular_flag_on_post:
+
 .. image:: https://img.shields.io/badge/license-AGPL-blue.svg?style=flat
     :target: https://opensource.org/licenses/AGPL-3.0
     :alt: License
